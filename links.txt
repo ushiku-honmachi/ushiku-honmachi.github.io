@@ -1,5 +1,5 @@
 # リンクの書き方: 「グループ | ボタンの名前 | アドレス」を1行ずつ。
-# グループは、次の3つから選びます: ごみ / 防災 / お問い合わせ
+# グループは、次から選びます: ごみ / 防災 / 防犯 / 場所 / お問い合わせ
 # 英語版のボタン名が必要なら、最後に「 | English name」を足します。
 # アドレスは https:// で始まるものか、mailto:メールアドレス だけが使えます。
 # 行の先頭の # を付けると、表示されなくなります。
@@ -8,5 +8,8 @@
 防災 | 洪水ハザードマップ(牛久市) | https://www.city.ushiku.lg.jp/kurashi-tetsuduki/anshin-anzen/bosai-anshinanzen/page010349.html | Flood hazard map (Ushiku City, Japanese)
 防災 | 防災うしく(牛久市) | https://www.city.ushiku.lg.jp/kurashi-tetsuduki/anshin-anzen/bosai-anshinanzen/page012492.html | Bosai Ushiku disaster info (Ushiku City, Japanese)
 防災 | 防災無線情報(牛久市) | https://www.city.ushiku.lg.jp/kurashi-tetsuduki/anshin-anzen/saigaikanren/page007264.html | Disaster radio broadcast info (Ushiku City, Japanese)
+防犯 | 茨城県警察 犯罪情報マップ(市町村別の犯罪発生状況) | https://www.pref.ibaraki.jp/kenkei/a01_safety/map/crime.html | Ibaraki Police crime map (by city, Japanese)
+防犯 | 茨城県警察 不審者情報マップ | https://www.pref.ibaraki.jp/kenkei/a01_safety/map/fushinsha.html | Ibaraki Police suspicious-person map (Japanese)
+場所 | 本町区民会館の地図を開く | https://www.google.com/maps/search/?api=1&query=%E6%9C%AC%E7%94%BA%E5%8C%BA%E6%B0%91%E4%BC%9A%E9%A4%A8%20%E7%89%9B%E4%B9%85%E5%B8%82 | Open map to Honmachi Community Hall
 #
 # お問い合わせ | メールで問い合わせる | mailto:ここにメールアドレス
