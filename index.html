@@ -133,6 +133,10 @@
   .group-title:first-child { margin-top: 0; }
   p + p { margin-top: 0.8em; }
   .note { color: var(--text-dim); font-size: 0.9rem; margin-top: 10px; }
+  .lyrics-box { margin-top: 12px; }
+  .lyrics-box summary { cursor: pointer; font-weight: bold; color: var(--main-dark); padding: 6px 0; }
+  .lyrics { margin-top: 8px; padding: 12px 16px; background: var(--bg); border-radius: 8px; }
+  .lyrics p + p { margin-top: 1.1em; }
   [hidden] { display: none !important; }
   footer {
     background: var(--main-dark);
@@ -164,6 +168,7 @@
   <a href="#news">お知らせ</a>
   <a href="#events">行事予定</a>
   <a href="#life" id="nav-life">ごみ・防災</a>
+  <a href="#song">本町の歌</a>
   <a href="#about">本町行政区について</a>
 </nav>
 
@@ -185,6 +190,27 @@
     <h2>ごみ出し・防災情報</h2>
     <div class="card pad" id="life-body"></div>
     <p class="note">最新の情報は、牛久市の公式ホームページをご確認ください。</p>
+  </section>
+
+  <section id="song">
+    <h2>本町の歌</h2>
+    <div class="card pad">
+      <p><strong>「本町のワクワク日和」</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(2025年バージョン)</span></p>
+      <audio controls preload="none" src="honmachi-uta.mp3" style="width:100%;margin-top:6px;"></audio>
+      <p class="note">作詞・作曲: 不明<br>AIを使って作った曲です。</p>
+      <details class="lyrics-box">
+        <summary>歌詞を見る</summary>
+        <div class="lyrics">
+        <p>朝日が照らすホンマチの空<br>笑顔の波が道端に広がる<br>祭りの音が聞こえてくるよ<br>老若男女みんなで集まろう</p>
+        <p>ホンマチ ホンマチ ワクワクの日<br>心ひとつに踊りましょう<br>みんなの笑顔が宝石みたい<br>きらり輝くホンマチの街</p>
+        <p>子どもも大人も手を取り合って<br>想い出作りの一歩を踏み出す<br>風に乗せよう 喜びの歌<br>全員の笑い声のハーモニー</p>
+        <p>ホンマチ ホンマチ ワクワクの日<br>心ひとつに踊りましょう<br>みんなの笑顔が宝石みたい<br>きらり輝くホンマチの街</p>
+        <p>オレンジ色の夕日が落ちて<br>夜空に灯る灯火が揺れる<br>それでも続くこの楽しさ<br>ホンマチの仲間にありがとう</p>
+        <p>ホンマチ ホンマチ ワクワクの日<br>心ひとつに踊りましょう<br>みんなの笑顔が宝石みたい<br>きらり輝くホンマチの街</p>
+        </div>
+      </details>
+      <div class="btns" style="margin-top:14px;"><a class="btn alt" href="honmachi-uta.mp3" download>曲をダウンロード</a></div>
+    </div>
   </section>
 
   <section id="about">
