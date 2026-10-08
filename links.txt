@@ -1,8 +1,11 @@
 # リンクの書き方: 「グループ | ボタンの名前 | アドレス」を1行ずつ。
 # グループは、次の3つから選びます: ごみ / 防災 / お問い合わせ
 # アドレスは https:// で始まるものか、mailto:メールアドレス だけが使えます。
-# 行の先頭の # を消すと、表示されます。
+# 行の先頭の # を付けると、表示されなくなります。
 #
-# ごみ | 牛久市 ごみの出し方・収集日 | https://ここに市のページのアドレス
-# 防災 | 牛久市 ハザードマップ・避難所 | https://ここに市のページのアドレス
+ごみ | ごみの分別・収集日カレンダー(牛久市) | https://www.city.ushiku.lg.jp/garbage.php
+防災 | 洪水ハザードマップ(牛久市) | https://www.city.ushiku.lg.jp/kurashi-tetsuduki/anshin-anzen/bosai-anshinanzen/page010349.html
+防災 | 防災うしく(牛久市) | https://www.city.ushiku.lg.jp/kurashi-tetsuduki/anshin-anzen/bosai-anshinanzen/page012492.html
+防災 | 防災無線情報(牛久市) | https://www.city.ushiku.lg.jp/kurashi-tetsuduki/anshin-anzen/saigaikanren/page007264.html
+#
 # お問い合わせ | メールで問い合わせる | mailto:ここにメールアドレス
