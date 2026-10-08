@@ -236,6 +236,7 @@
 <footer>
   <div data-i="footer1">牛久市 本町行政区</div>
   <div class="updated" id="updated"></div>
+  <div class="updated" id="counter" hidden></div>
   <div class="updated" data-i="footer3">このホームページには、個人の情報は掲載していません。</div>
 </footer>
 
@@ -268,6 +269,7 @@
     footer1:['牛久市 本町行政区','Honmachi District, Ushiku City'],
     footer3:['このホームページには、個人の情報は掲載していません。','This website does not publish any personal information.'],
     loading:['読み込み中です…','Loading…'],
+    visits:['このページが見られた回数: ','Page views so far: '],
     title:['牛久市 本町行政区ホームページ(実験的な運用)','Honmachi District Website, Ushiku City (trial operation)']
   };
   var X = { // JSで作る文字
@@ -475,6 +477,7 @@
     if (data.news && data.news.length && /^\d{4}-\d{1,2}-\d{1,2}/.test(data.news[0].date))
       document.getElementById('updated').textContent = tx(X.updated) + data.news[0].date;
     if (data.linksDone) renderLinks();
+    if (data.visits) { var c = document.getElementById('counter'); c.textContent = tx(T.visits) + data.visits; c.hidden = false; }
   }
 
   document.getElementById('lang-btn').addEventListener('click', function () {
@@ -484,6 +487,14 @@
   });
 
   render();
+
+  // アクセス数(GoatCounterの設定で公開をONにしたときだけ表示される)
+  try {
+    fetch('https://ushiku-honmachi.goatcounter.com/counter/TOTAL.json')
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (j) { if (j && j.count) { data.visits = String(j.count).replace(/[^0-9,. \u202f\u00a0]/g, ''); render(); } })
+      .catch(function () {});
+  } catch (e) {}
 
   load('news.txt').then(function (t) { data.news = parseItems(t); }).catch(function () { data.newsErr = true; }).then(render);
   load('events.txt').then(function (t) { data.events = parseItems(t); }).catch(function () { data.eventsErr = true; }).then(render);
