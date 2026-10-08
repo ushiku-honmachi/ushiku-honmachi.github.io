@@ -234,7 +234,8 @@
       var a = document.createElement('a');
       a.href = m[0];
       if (m[0].indexOf('https://') === 0) { a.target = '_blank'; a.rel = 'noopener'; }
-      a.textContent = m[0].indexOf('mailto:') === 0 ? 'メールを送る' : '詳しくはこちら';
+      a.textContent = m[0].indexOf('mailto:') === 0 ? 'メールを送る'
+        : (m[0].indexOf('google.com/maps') !== -1 ? '【地図を開く】' : '詳しくはこちら');
       el.appendChild(a);
       last = m.index + m[0].length;
     }
