@@ -7,6 +7,8 @@
 <meta name="description" content="牛久市 本町行政区のホームページです。お知らせ、行事予定、ごみ出し・防災情報などを掲載しています。">
 <meta name="theme-color" content="#2f5d50">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="本町行政区">
 <style>
   :root {
@@ -174,7 +176,7 @@
 <nav aria-label="ページ内の移動">
   <a href="#news" data-i="nav_news">お知らせ</a>
   <a href="#events" data-i="nav_events">行事予定</a>
-  <a href="#life" id="nav-life" data-i="nav_life">ごみ・防災</a>
+  <a href="#life" id="nav-life" data-i="nav_life">ごみ・防災・防犯</a>
   <a href="#song" data-i="nav_song">本町の歌</a>
   <a href="#about" data-i="nav_about">本町行政区について</a>
 </nav>
@@ -194,9 +196,9 @@
   </section>
 
   <section id="life" hidden>
-    <h2 data-i="h_life">ごみ出し・防災情報</h2>
+    <h2 data-i="h_life">ごみ出し・防災・防犯情報</h2>
     <div class="card pad" id="life-body"></div>
-    <p class="note" data-i="life_note">最新の情報は、牛久市の公式ホームページをご確認ください。</p>
+    <p class="note" data-i="life_note">最新の情報は、牛久市・茨城県警察の公式ホームページをご確認ください。</p>
   </section>
 
   <section id="song">
@@ -227,6 +229,7 @@
       <p data-i="about2">本町行政区では、区民会館の清掃や環境整備、防犯パトロール、募金活動、バーベキュー大会などの地域の行事を、区民の協力で行っています。</p>
       <p data-i="about3"><strong>新しくお引越しされた方へ</strong><br>
       区の活動や、加入のことなど、分からないことは、お気軽にお問い合わせください。</p>
+      <div id="place-body" style="margin-top:14px;"></div>
       <div id="contact-body" style="margin-top:14px;"></div>
     </div>
   </section>
@@ -252,13 +255,13 @@
     h1:['本町行政区 ホームページ','Honmachi District Website'],
     sub:['地域のお知らせ・行事・暮らしの情報','Local news, events and daily-life information'],
     trial:['(実験的な運用です)','(Trial operation)'],
-    nav_news:['お知らせ','News'], nav_events:['行事予定','Events'], nav_life:['ごみ・防災','Garbage & Safety'],
+    nav_news:['お知らせ','News'], nav_events:['行事予定','Events'], nav_life:['ごみ・防災・防犯','Garbage & Safety'],
     nav_song:['本町の歌','Our song'], nav_about:['本町行政区について','About us'],
     h_news:['お知らせ・回覧板','News & circulars'], h_events:['行事予定','Event schedule'],
-    h_life:['ごみ出し・防災情報','Garbage disposal & disaster prevention'], h_song:['本町の歌','The Honmachi song'],
+    h_life:['ごみ出し・防災・防犯情報','Garbage, disaster & crime prevention'], h_song:['本町の歌','The Honmachi song'],
     h_about:['本町行政区について','About Honmachi District'],
     events_note:['日付の早い順に並んでいます。灰色の文字は、終わった行事です。','Sorted by date. Gray text means the event is over.'],
-    life_note:['最新の情報は、牛久市の公式ホームページをご確認ください。','Please check the official Ushiku City website for the latest information. (The linked pages are in Japanese.)'],
+    life_note:['最新の情報は、牛久市・茨城県警察の公式ホームページをご確認ください。犯罪情報マップは、スマホでは見られないことがあります(スマホは、県警の防犯アプリ「いばらきポリス」をお使いください)。','Please check the official websites of Ushiku City and Ibaraki Prefectural Police for the latest information. The linked pages are in Japanese. The crime map may not open on smartphones; on a phone, use the police app "Ibaraki Police".'],
     song_title:['<strong>「本町のワクワク日和」</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(2025年バージョン)</span>',
       '<strong>"Honmachi no Wakuwaku Biyori"</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(Honmachi\'s Exciting Day, 2025 version)</span>'],
     song_note:['作詞・作曲: 不明<br>AIを使って作った曲です。','Lyrics &amp; music: unknown<br>This song was made with AI. (Sung in Japanese)'],
@@ -281,7 +284,7 @@
     updated:['最終更新: ','Last updated: '],
     contactNone:['お問い合わせ先は、準備中です。','Contact information is being prepared.'],
     mail:['メールを送る','Send email'], map:['【地図を開く】','[Open map]'], link:['詳しくはこちら','More info'],
-    g_gomi:['ごみ出し','Garbage disposal'], g_bosai:['防災・安全','Disaster prevention & safety'],
+    g_gomi:['ごみ出し','Garbage disposal'], g_bosai:['防災・安全','Disaster prevention & safety'], g_bouhan:['防犯(犯罪・不審者の情報)','Crime prevention (crime and suspicious-person info)'],
     jaOnly:['(日本語のみ)','(Japanese only)']
   };
   var lang = 'ja';
@@ -437,7 +440,7 @@
       return;
     }
     var groups = data.links, lifeCount = 0;
-    [['ごみ', X.g_gomi], ['防災', X.g_bosai]].forEach(function (g) {
+    [['ごみ', X.g_gomi], ['防災', X.g_bosai], ['防犯', X.g_bouhan]].forEach(function (g) {
       var arr = groups[g[0]];
       if (!arr || !arr.length) return;
       var h = document.createElement('div');
@@ -452,6 +455,15 @@
     });
     document.getElementById('life').hidden = !lifeCount;
     document.getElementById('nav-life').hidden = !lifeCount;
+    var pl = document.getElementById('place-body');
+    pl.innerHTML = '';
+    var ps = groups['場所'];
+    if (ps && ps.length) {
+      var box3 = document.createElement('div');
+      box3.className = 'btns';
+      ps.forEach(function (x) { box3.appendChild(makeBtn(lang === 'en' && x.en ? x.en : x.label, x.url, true)); });
+      pl.appendChild(box3);
+    }
     var cs = groups['お問い合わせ'];
     if (cs && cs.length) {
       var box2 = document.createElement('div');
