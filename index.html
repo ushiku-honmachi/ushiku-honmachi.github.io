@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>牛久市 本町地区 自治会ホームページ</title>
+<meta name="description" content="牛久市 本町地区の自治会ホームページです。お知らせ、行事予定、ごみ出し・防災情報などを掲載しています。">
+<meta name="theme-color" content="#2f5d50">
+<style>
+  :root {
+    --bg: #f6f4ee;
+    --panel: #ffffff;
+    --main: #2f5d50;
+    --main-dark: #234539;
+    --accent: #c0562b;
+    --text: #222222;
+    --text-dim: #5b5b55;
+    --border: #d9d5c8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+    font-size: 18px;
+    line-height: 1.8;
+  }
+  a { color: var(--main-dark); }
+  header {
+    background: var(--main);
+    color: #fff;
+    padding: 28px 16px 22px;
+    text-align: center;
+  }
+  header .area { font-size: 0.95rem; letter-spacing: 0.15em; opacity: 0.9; }
+  header h1 { font-size: 1.9rem; line-height: 1.4; margin: 4px 0; }
+  header .sub { font-size: 0.95rem; opacity: 0.9; }
+  nav {
+    background: var(--main-dark);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px 6px;
+    padding: 8px 8px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  nav a:hover, nav a:focus { background: rgba(255,255,255,0.18); }
+  main { max-width: 820px; margin: 0 auto; padding: 8px 16px 40px; }
+  section { margin-top: 36px; scroll-margin-top: 64px; }
+  h2 {
+    font-size: 1.45rem;
+    color: var(--main-dark);
+    border-left: 8px solid var(--main);
+    padding-left: 12px;
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 6px 20px;
+  }
+  .card.pad { padding: 18px 20px; }
+  .list { list-style: none; }
+  .list li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .list li:last-child { border-bottom: none; }
+  .list li[hidden] { display: none; }
+  .list .date {
+    flex: 0 0 auto;
+    min-width: 7.5em;
+    color: var(--accent);
+    font-weight: bold;
+  }
+  .list .text { flex: 1 1 240px; overflow-wrap: anywhere; }
+  .list li.past .date, .list li.past .text { color: var(--text-dim); }
+  .list li.past .date { font-weight: normal; }
+  .empty { color: var(--text-dim); }
+  .more {
+    display: block;
+    margin: 14px auto 0;
+    background: #fff;
+    color: var(--main-dark);
+    border: 2px solid var(--main);
+    border-radius: 8px;
+    padding: 8px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .more[hidden] { display: none; }
+  .btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+  .btn {
+    display: inline-block;
+    background: var(--main);
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 12px 22px;
+    line-height: 1.5;
+  }
+  .btn:hover, .btn:focus { background: var(--main-dark); }
+  .btn.alt { background: #fff; color: var(--main-dark); border: 2px solid var(--main); }
+  .group-title { font-weight: bold; margin: 18px 0 6px; color: var(--text); }
+  .group-title:first-child { margin-top: 0; }
+  p + p { margin-top: 0.8em; }
+  .note { color: var(--text-dim); font-size: 0.9rem; margin-top: 10px; }
+  [hidden] { display: none !important; }
+  footer {
+    background: var(--main-dark);
+    color: #fff;
+    text-align: center;
+    padding: 22px 16px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+  footer .updated { opacity: 0.85; }
+  @media (max-width: 480px) {
+    body { font-size: 17px; }
+    header h1 { font-size: 1.6rem; }
+    .card { padding: 4px 14px; }
+    .card.pad { padding: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="area">茨城県 牛久市</div>
+  <h1>本町地区 自治会ホームページ</h1>
+  <div class="sub">地域のお知らせ・行事・暮らしの情報</div>
+</header>
+
+<nav aria-label="ページ内の移動">
+  <a href="#news">お知らせ</a>
+  <a href="#events">行事予定</a>
+  <a href="#life" id="nav-life">ごみ・防災</a>
+  <a href="#about">自治会について</a>
+</nav>
+
+<main>
+
+  <section id="news">
+    <h2>お知らせ・回覧板</h2>
+    <div class="card"><ul class="list" id="news-list"><li class="empty">読み込み中です…</li></ul></div>
+    <button class="more" id="news-more" type="button" hidden>もっと見る</button>
+  </section>
+
+  <section id="events">
+    <h2>行事予定</h2>
+    <div class="card"><ul class="list" id="events-list"><li class="empty">読み込み中です…</li></ul></div>
+    <p class="note">灰色の文字は、終わった行事です。</p>
+  </section>
+
+  <section id="life" hidden>
+    <h2>ごみ出し・防災情報</h2>
+    <div class="card pad" id="life-body"></div>
+    <p class="note">最新の情報は、牛久市の公式ホームページをご確認ください。</p>
+  </section>
+
+  <section id="about">
+    <h2>自治会について</h2>
+    <div class="card pad">
+      <p>このホームページは、牛久市 本町地区の自治会が、地域のみなさまにお知らせや行事の情報をお届けするためのものです。</p>
+      <p>自治会は、ごみ集積所の管理、防犯・防災、清掃活動、地域の行事など、暮らしやすいまちをつくるために、住民の協力で運営されています。</p>
+      <p><strong>自治会への加入について</strong><br>
+      新しくお引越しされた方、まだ加入されていない方も、お気軽にお問い合わせください。</p>
+      <div id="contact-body" style="margin-top:14px;"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div>牛久市 本町地区 自治会</div>
+  <div class="updated" id="updated"></div>
+  <div class="updated">このホームページには、個人の情報は掲載していません。</div>
+</footer>
+
+<noscript><p style="padding:16px;text-align:center;">このページを見るには、JavaScript を有効にしてください。</p></noscript>
+
+<script>
+(function () {
+  var LIMIT = 5;
+
+  // 1分ごとに別のURLとして読み込み、古い表示が残らないようにする
+  function load(name) {
+    var url = name + '?t=' + Math.floor(Date.now() / 60000);
+    return fetch(url, { cache: 'no-store' }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return r.text();
+    });
+  }
+
+  // 行を読む: 空行と # で始まる行は無視する
+  function lines(text) {
+    return text.split(/\r?\n/).map(function (l) { return l.trim(); })
+      .filter(function (l) { return l && l.charAt(0) !== '#'; });
+  }
+
+  // 日付 | 内容
+  function parseItems(text) {
+    return lines(text).map(function (l) {
+      var i = l.indexOf('|');
+      if (i === -1) return { date: '', text: l };
+      return { date: l.slice(0, i).trim(), text: l.slice(i + 1).trim() };
+    });
+  }
+
+  // https:// と mailto: だけをリンクにする(文字は安全に組み立てる)
+  function addLinkedText(el, text) {
+    var re = /(https:\/\/|mailto:)[\x21-\x7E]+/g;
+    var last = 0, m;
+    while ((m = re.exec(text)) !== null) {
+      if (m.index > last) el.appendChild(document.createTextNode(text.slice(last, m.index)));
+      var a = document.createElement('a');
+      a.href = m[0];
+      if (m[0].indexOf('https://') === 0) { a.target = '_blank'; a.rel = 'noopener'; }
+      a.textContent = m[0].indexOf('mailto:') === 0 ? 'メールを送る' : '詳しくはこちら';
+      el.appendChild(a);
+      last = m.index + m[0].length;
+    }
+    if (last < text.length) el.appendChild(document.createTextNode(text.slice(last)));
+  }
+
+  function todayStr() {
+    var d = new Date();
+    var mm = ('0' + (d.getMonth() + 1)).slice(-2);
+    var dd = ('0' + d.getDate()).slice(-2);
+    return d.getFullYear() + '-' + mm + '-' + dd;
+  }
+
+  // 日付が YYYY-MM-DD の形のとき、その日が過ぎていたら true
+  function isPast(date) {
+    var m = /^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(date);
+    if (!m) return false;
+    var s = m[1] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[3]).slice(-2);
+    return s < todayStr();
+  }
+
+  function renderList(listEl, items, emptyText, limit, moreBtn, dim) {
+    listEl.innerHTML = '';
+    if (!items.length) {
+      var e = document.createElement('li');
+      e.className = 'empty';
+      e.textContent = emptyText;
+      listEl.appendChild(e);
+      return;
+    }
+    items.forEach(function (it, n) {
+      var li = document.createElement('li');
+      if (limit && n >= limit) li.hidden = true;
+      if (dim && isPast(it.date)) li.className = 'past';
+      if (it.date) {
+        var d = document.createElement('span');
+        d.className = 'date';
+        d.textContent = it.date;
+        li.appendChild(d);
+      }
+      var t = document.createElement('span');
+      t.className = 'text';
+      addLinkedText(t, it.text);
+      li.appendChild(t);
+      listEl.appendChild(li);
+    });
+    if (limit && moreBtn && items.length > limit) {
+      moreBtn.hidden = false;
+      moreBtn.textContent = 'もっと見る(あと ' + (items.length - limit) + '件)';
+      moreBtn.onclick = function () {
+        var rest = listEl.querySelectorAll('li[hidden]');
+        for (var k = 0; k < rest.length; k++) rest[k].hidden = false;
+        moreBtn.hidden = true;
+      };
+    }
+  }
+
+  // ---- お知らせ ----
+  load('news.txt').then(function (text) {
+    var items = parseItems(text);
+    renderList(document.getElementById('news-list'), items,
+      'お知らせは、まだありません。', LIMIT, document.getElementById('news-more'), false);
+    var first = items.length && /^\d{4}-\d{1,2}-\d{1,2}/.test(items[0].date) ? items[0].date : '';
+    if (first) document.getElementById('updated').textContent = '最終更新: ' + first;
+  }).catch(function () {
+    document.getElementById('news-list').innerHTML = '<li class="empty">お知らせを読み込めませんでした。しばらくしてからもう一度お試しください。</li>';
+  });
+
+  // ---- 行事予定 ----
+  load('events.txt').then(function (text) {
+    renderList(document.getElementById('events-list'), parseItems(text),
+      '行事の予定は、まだ決まっていません。', 0, null, true);
+  }).catch(function () {
+    document.getElementById('events-list').innerHTML = '<li class="empty">行事予定を読み込めませんでした。</li>';
+  });
+
+  // ---- リンク集 (グループ | 表示名 | URL) ----
+  function makeBtn(label, url, alt) {
+    var a = document.createElement('a');
+    a.className = 'btn' + (alt ? ' alt' : '');
+    a.href = url;
+    if (url.indexOf('https://') === 0) { a.target = '_blank'; a.rel = 'noopener'; }
+    a.textContent = label;
+    return a;
+  }
+
+  load('links.txt').then(function (text) {
+    var groups = {};
+    lines(text).forEach(function (l) {
+      var p = l.split('|').map(function (s) { return s.trim(); });
+      if (p.length < 3 || !p[0] || !p[1]) return;
+      var url = p.slice(2).join('|');
+      if (!/^(https:\/\/|mailto:)/.test(url)) return;
+      (groups[p[0]] = groups[p[0]] || []).push({ label: p[1], url: url });
+    });
+
+    // ごみ・防災
+    var lifeBody = document.getElementById('life-body');
+    var lifeCount = 0;
+    [['ごみ', 'ごみ出し'], ['防災', '防災・安全']].forEach(function (g) {
+      var arr = groups[g[0]];
+      if (!arr || !arr.length) return;
+      var h = document.createElement('div');
+      h.className = 'group-title';
+      h.textContent = g[1];
+      lifeBody.appendChild(h);
+      var box = document.createElement('div');
+      box.className = 'btns';
+      arr.forEach(function (x) { box.appendChild(makeBtn(x.label, x.url, false)); });
+      lifeBody.appendChild(box);
+      lifeCount += arr.length;
+    });
+    if (lifeCount) document.getElementById('life').hidden = false;
+    else document.getElementById('nav-life').hidden = true;
+
+    // お問い合わせ
+    var contact = document.getElementById('contact-body');
+    var cs = groups['お問い合わせ'];
+    if (cs && cs.length) {
+      var box2 = document.createElement('div');
+      box2.className = 'btns';
+      cs.forEach(function (x) { box2.appendChild(makeBtn(x.label, x.url, false)); });
+      contact.appendChild(box2);
+    } else {
+      contact.textContent = 'お問い合わせ先は、準備中です。';
+    }
+  }).catch(function () {
+    document.getElementById('nav-life').hidden = true;
+    document.getElementById('contact-body').textContent = 'お問い合わせ先は、準備中です。';
+  });
+})();
+</script>
+
+</body>
+</html>
