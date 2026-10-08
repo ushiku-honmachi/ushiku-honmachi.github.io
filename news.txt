@@ -1,9 +1,10 @@
 # お知らせの書き方: 「日付 | 内容」を1行ずつ。新しいものを一番上に足してください。
 # 日付は 2026-10-08 のように、半角で書きます。
 # 回覧板のPDFなどのアドレスは、前後に半角スペースを入れて、そのまま書けます。
-2026-10-08 | 【お手伝いをお願いします】運動会の応援席の設置作業です。10月10日(土)運動会の前日 15:00〜、10月11日(日)運動会の当日 7:00〜。牛久運動広場(三中近く) https://www.google.com/maps/search/?api=1&query=%E7%89%9B%E4%B9%85%E9%81%8B%E5%8B%95%E5%BA%83%E5%A0%B4 のグラウンドで、約1時間の作業です。よろしくお願いします
-2026-10-08 | 本町行政区のホームページを開設しました。回覧板のお知らせや、行事の予定を、スマホでも見られます
-2026-10-08 | 11月10日(火)に、牛久第三中学校の生徒さんとの交流会を開きます(予備日11月11日)。午前9:00〜11:20、本町区民館。漢字クイズ・折り紙・卓球・輪投げ・謎解き・ビンゴ。地区のみなさまの参加をお待ちしています
-2026-10-01 | 10月11日(日) 8:30開会、牛久運動広場(三中近く) https://www.google.com/maps/search/?api=1&query=%E7%89%9B%E4%B9%85%E9%81%8B%E5%8B%95%E5%BA%83%E5%A0%B4 で、みんなあつまれ運動会があります。事前申し込みなしで参加OKです
-2026-10-01 | 10月25日(日) 11:00〜14:00、本町区民会館で、バーベキュー大会を開きます
-2026-10-01 | 「赤い羽根共同募金運動」と歳末助け合い募金へのご協力をお願いします。目安は1世帯、赤い羽根500円・歳末助け合い300円です。班長さんが集金に伺います
+# 英語版を出すときは、「日付 | 日本語 | English」のように、最後に英語を足します(なくてもOK)。
+2026-10-08 | 【お手伝いをお願いします】運動会の応援席の設置作業です。10月10日(土)運動会の前日 15:00〜、10月11日(日)運動会の当日 7:00〜。牛久運動広場(三中近く) https://www.google.com/maps/search/?api=1&query=%E7%89%9B%E4%B9%85%E9%81%8B%E5%8B%95%E5%BA%83%E5%A0%B4 のグラウンドで、約1時間の作業です。よろしくお願いします | [Volunteers needed] Setting up spectator seating for the sports day: Sat, Oct 10 (the day before) from 3:00 PM, and Sun, Oct 11 (sports day) from 7:00 AM. About one hour of work at the Ushiku Sports Field (near Ushiku 3rd Junior High) https://www.google.com/maps/search/?api=1&query=%E7%89%9B%E4%B9%85%E9%81%8B%E5%8B%95%E5%BA%83%E5%A0%B4 Thank you for your help
+2026-10-08 | 本町行政区のホームページを開設しました。回覧板のお知らせや、行事の予定を、スマホでも見られます | The Honmachi District website is now open. You can read circular notices and event schedules on your phone
+2026-10-08 | 11月10日(火)に、牛久第三中学校の生徒さんとの交流会を開きます(予備日11月11日)。午前9:00〜11:20、本町区民館。漢字クイズ・折り紙・卓球・輪投げ・謎解き・ビンゴ。地区のみなさまの参加をお待ちしています | On Tue, Nov 10 we will hold an exchange event with students of Ushiku 3rd Junior High School (backup date: Nov 11). 9:00-11:20 AM, Honmachi Community Hall. Kanji quiz, origami, table tennis, ring toss, puzzles and bingo. Everyone in the district is welcome
+2026-10-01 | 10月11日(日) 8:30開会、牛久運動広場(三中近く) https://www.google.com/maps/search/?api=1&query=%E7%89%9B%E4%B9%85%E9%81%8B%E5%8B%95%E5%BA%83%E5%A0%B4 で、みんなあつまれ運動会があります。事前申し込みなしで参加OKです | Sun, Oct 11, opens 8:30 AM at the Ushiku Sports Field (near Ushiku 3rd Junior High) https://www.google.com/maps/search/?api=1&query=%E7%89%9B%E4%B9%85%E9%81%8B%E5%8B%95%E5%BA%83%E5%A0%B4 : the "Minna Atsumare" sports day. No advance registration needed
+2026-10-01 | 10月25日(日) 11:00〜14:00、本町区民会館で、バーベキュー大会を開きます | Sun, Oct 25, 11:00 AM-2:00 PM: barbecue party at the Honmachi Community Hall
+2026-10-01 | 「赤い羽根共同募金運動」と歳末助け合い募金へのご協力をお願いします。目安は1世帯、赤い羽根500円・歳末助け合い300円です。班長さんが集金に伺います | Please support the Red Feather Community Chest and the year-end mutual aid fund drives. Suggested amount per household: Red Feather 500 yen, year-end aid 300 yen. Your group leader will visit to collect

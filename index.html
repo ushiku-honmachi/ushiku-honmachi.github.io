@@ -155,53 +155,58 @@
     .card { padding: 4px 14px; }
     .card.pad { padding: 14px; }
   }
+  header { position: relative; }
+  .lang-btn { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.7); border-radius: 999px; padding: 6px 14px; font-size: 0.9rem; font-family: inherit; cursor: pointer; }
+  .lang-btn:hover { background: rgba(255,255,255,0.28); }
+  .jaonly { color: var(--text-dim); font-size: 0.85rem; }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="area">茨城県 牛久市</div>
-  <h1>本町行政区 ホームページ</h1>
-  <div class="sub">地域のお知らせ・行事・暮らしの情報</div>
-  <div class="trial">(実験的な運用です)</div>
+  <button class="lang-btn" id="lang-btn" type="button">English</button>
+  <div class="area" data-i="area">茨城県 牛久市</div>
+  <h1 data-i="h1">本町行政区 ホームページ</h1>
+  <div class="sub" data-i="sub">地域のお知らせ・行事・暮らしの情報</div>
+  <div class="trial" data-i="trial">(実験的な運用です)</div>
 </header>
 
 <nav aria-label="ページ内の移動">
-  <a href="#news">お知らせ</a>
-  <a href="#events">行事予定</a>
-  <a href="#life" id="nav-life">ごみ・防災</a>
-  <a href="#song">本町の歌</a>
-  <a href="#about">本町行政区について</a>
+  <a href="#news" data-i="nav_news">お知らせ</a>
+  <a href="#events" data-i="nav_events">行事予定</a>
+  <a href="#life" id="nav-life" data-i="nav_life">ごみ・防災</a>
+  <a href="#song" data-i="nav_song">本町の歌</a>
+  <a href="#about" data-i="nav_about">本町行政区について</a>
 </nav>
 
 <main>
 
   <section id="news">
-    <h2>お知らせ・回覧板</h2>
-    <div class="card"><ul class="list" id="news-list"><li class="empty">読み込み中です…</li></ul></div>
+    <h2 data-i="h_news">お知らせ・回覧板</h2>
+    <div class="card"><ul class="list" id="news-list"><li class="empty" data-i="loading">読み込み中です…</li></ul></div>
     <button class="more" id="news-more" type="button" hidden>もっと見る</button>
   </section>
 
   <section id="events">
-    <h2>行事予定</h2>
-    <div class="card"><ul class="list" id="events-list"><li class="empty">読み込み中です…</li></ul></div>
-    <p class="note">日付の早い順に並んでいます。灰色の文字は、終わった行事です。</p>
+    <h2 data-i="h_events">行事予定</h2>
+    <div class="card"><ul class="list" id="events-list"><li class="empty" data-i="loading">読み込み中です…</li></ul></div>
+    <p class="note" data-i="events_note">日付の早い順に並んでいます。灰色の文字は、終わった行事です。</p>
   </section>
 
   <section id="life" hidden>
-    <h2>ごみ出し・防災情報</h2>
+    <h2 data-i="h_life">ごみ出し・防災情報</h2>
     <div class="card pad" id="life-body"></div>
-    <p class="note">最新の情報は、牛久市の公式ホームページをご確認ください。</p>
+    <p class="note" data-i="life_note">最新の情報は、牛久市の公式ホームページをご確認ください。</p>
   </section>
 
   <section id="song">
-    <h2>本町の歌</h2>
+    <h2 data-i="h_song">本町の歌</h2>
     <div class="card pad">
-      <p><strong>「本町のワクワク日和」</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(2025年バージョン)</span></p>
+      <p data-i="song_title"><strong>「本町のワクワク日和」</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(2025年バージョン)</span></p>
       <audio controls preload="none" src="honmachi-uta.mp3" style="width:100%;margin-top:6px;"></audio>
-      <p class="note">作詞・作曲: 不明<br>AIを使って作った曲です。</p>
+      <p class="note" data-i="song_note">作詞・作曲: 不明<br>AIを使って作った曲です。</p>
       <details class="lyrics-box">
-        <summary>歌詞を見る</summary>
+        <summary data-i="lyrics">歌詞を見る</summary>
         <div class="lyrics">
         <p>朝日が照らすホンマチの空<br>笑顔の波が道端に広がる<br>祭りの音が聞こえてくるよ<br>老若男女みんなで集まろう</p>
         <p>ホンマチ ホンマチ ワクワクの日<br>心ひとつに踊りましょう<br>みんなの笑顔が宝石みたい<br>きらり輝くホンマチの街</p>
@@ -211,16 +216,16 @@
         <p>ホンマチ ホンマチ ワクワクの日<br>心ひとつに踊りましょう<br>みんなの笑顔が宝石みたい<br>きらり輝くホンマチの街</p>
         </div>
       </details>
-      <div class="btns" style="margin-top:14px;"><a class="btn alt" href="honmachi-uta.mp3" download>曲をダウンロード</a></div>
+      <div class="btns" style="margin-top:14px;"><a class="btn alt" href="honmachi-uta.mp3" download data-i="dl">曲をダウンロード</a></div>
     </div>
   </section>
 
   <section id="about">
-    <h2>本町行政区について</h2>
+    <h2 data-i="h_about">本町行政区について</h2>
     <div class="card pad">
-      <p>このホームページは、牛久市 本町行政区が、地域のみなさまにお知らせや行事の情報をお届けするためのものです。</p>
-      <p>本町行政区では、区民会館の清掃や環境整備、防犯パトロール、募金活動、バーベキュー大会などの地域の行事を、区民の協力で行っています。</p>
-      <p><strong>新しくお引越しされた方へ</strong><br>
+      <p data-i="about1">このホームページは、牛久市 本町行政区が、地域のみなさまにお知らせや行事の情報をお届けするためのものです。</p>
+      <p data-i="about2">本町行政区では、区民会館の清掃や環境整備、防犯パトロール、募金活動、バーベキュー大会などの地域の行事を、区民の協力で行っています。</p>
+      <p data-i="about3"><strong>新しくお引越しされた方へ</strong><br>
       区の活動や、加入のことなど、分からないことは、お気軽にお問い合わせください。</p>
       <div id="contact-body" style="margin-top:14px;"></div>
     </div>
@@ -229,9 +234,9 @@
 </main>
 
 <footer>
-  <div>牛久市 本町行政区</div>
+  <div data-i="footer1">牛久市 本町行政区</div>
   <div class="updated" id="updated"></div>
-  <div class="updated">このホームページには、個人の情報は掲載していません。</div>
+  <div class="updated" data-i="footer3">このホームページには、個人の情報は掲載していません。</div>
 </footer>
 
 <noscript><p style="padding:16px;text-align:center;">このページを見るには、JavaScript を有効にしてください。</p></noscript>
@@ -240,7 +245,58 @@
 (function () {
   var LIMIT = 5;
 
-  // 1分ごとに別のURLとして読み込み、古い表示が残らないようにする
+  // ---- 言語 (日本語 / English) ----
+  var T = {
+    area:['茨城県 牛久市','Ushiku City, Ibaraki'],
+    h1:['本町行政区 ホームページ','Honmachi District Website'],
+    sub:['地域のお知らせ・行事・暮らしの情報','Local news, events and daily-life information'],
+    trial:['(実験的な運用です)','(Trial operation)'],
+    nav_news:['お知らせ','News'], nav_events:['行事予定','Events'], nav_life:['ごみ・防災','Garbage & Safety'],
+    nav_song:['本町の歌','Our song'], nav_about:['本町行政区について','About us'],
+    h_news:['お知らせ・回覧板','News & circulars'], h_events:['行事予定','Event schedule'],
+    h_life:['ごみ出し・防災情報','Garbage disposal & disaster prevention'], h_song:['本町の歌','The Honmachi song'],
+    h_about:['本町行政区について','About Honmachi District'],
+    events_note:['日付の早い順に並んでいます。灰色の文字は、終わった行事です。','Sorted by date. Gray text means the event is over.'],
+    life_note:['最新の情報は、牛久市の公式ホームページをご確認ください。','Please check the official Ushiku City website for the latest information. (The linked pages are in Japanese.)'],
+    song_title:['<strong>「本町のワクワク日和」</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(2025年バージョン)</span>',
+      '<strong>"Honmachi no Wakuwaku Biyori"</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(Honmachi\'s Exciting Day, 2025 version)</span>'],
+    song_note:['作詞・作曲: 不明<br>AIを使って作った曲です。','Lyrics &amp; music: unknown<br>This song was made with AI. (Sung in Japanese)'],
+    lyrics:['歌詞を見る','Show lyrics (Japanese)'], dl:['曲をダウンロード','Download the song'],
+    about1:['このホームページは、牛久市 本町行政区が、地域のみなさまにお知らせや行事の情報をお届けするためのものです。','This website is run by Honmachi District, Ushiku City, to share news and event information with local residents.'],
+    about2:['本町行政区では、区民会館の清掃や環境整備、防犯パトロール、募金活動、バーベキュー大会などの地域の行事を、区民の協力で行っています。','Honmachi District carries out local activities with the cooperation of residents, such as cleaning and maintaining the community hall, crime-prevention patrols, charity fund drives and barbecue parties.'],
+    about3:['<strong>新しくお引越しされた方へ</strong><br>区の活動や、加入のことなど、分からないことは、お気軽にお問い合わせください。','<strong>For newcomers</strong><br>If you have any questions about our activities or about joining, please feel free to contact us.'],
+    footer1:['牛久市 本町行政区','Honmachi District, Ushiku City'],
+    footer3:['このホームページには、個人の情報は掲載していません。','This website does not publish any personal information.'],
+    loading:['読み込み中です…','Loading…'],
+    title:['牛久市 本町行政区ホームページ(実験的な運用)','Honmachi District Website, Ushiku City (trial operation)']
+  };
+  var X = { // JSで作る文字
+    noNews:['お知らせは、まだありません。','No news yet.'],
+    noEvents:['行事の予定は、まだ決まっていません。','No events are scheduled yet.'],
+    newsFail:['お知らせを読み込めませんでした。しばらくしてからもう一度お試しください。','Could not load the news. Please try again later.'],
+    eventsFail:['行事予定を読み込めませんでした。','Could not load the events.'],
+    more:['もっと見る(あと %n件)','Show more (%n more)'],
+    updated:['最終更新: ','Last updated: '],
+    contactNone:['お問い合わせ先は、準備中です。','Contact information is being prepared.'],
+    mail:['メールを送る','Send email'], map:['【地図を開く】','[Open map]'], link:['詳しくはこちら','More info'],
+    g_gomi:['ごみ出し','Garbage disposal'], g_bosai:['防災・安全','Disaster prevention & safety'],
+    jaOnly:['(日本語のみ)','(Japanese only)']
+  };
+  var lang = 'ja';
+  try {
+    var q = /[?&]lang=(en|ja)/.exec(location.search);
+    var saved = null;
+    try { saved = localStorage.getItem('honmachi-lang'); } catch (e) {}
+    if (q) lang = q[1];
+    else if (saved === 'en' || saved === 'ja') lang = saved;
+    else if (navigator.language && navigator.language.toLowerCase().indexOf('ja') !== 0) lang = 'en';
+  } catch (e) {}
+  var L = function () { return lang === 'en' ? 1 : 0; };
+  function tx(o) { return o[L()]; }
+
+  // ---- データ ----
+  var data = { news: null, events: null, links: null, newsErr: false, eventsErr: false, linksErr: false };
+
   function load(name) {
     var url = name + '?t=' + Math.floor(Date.now() / 60000);
     return fetch(url, { cache: 'no-store' }).then(function (r) {
@@ -248,23 +304,18 @@
       return r.text();
     });
   }
-
-  // 行を読む: 空行と # で始まる行は無視する
   function lines(text) {
     return text.split(/\r?\n/).map(function (l) { return l.trim(); })
       .filter(function (l) { return l && l.charAt(0) !== '#'; });
   }
-
-  // 日付 | 内容
+  // 日付 | 日本語 | English(なくてもOK)
   function parseItems(text) {
     return lines(text).map(function (l) {
-      var i = l.indexOf('|');
-      if (i === -1) return { date: '', text: l };
-      return { date: l.slice(0, i).trim(), text: l.slice(i + 1).trim() };
+      var p = l.split('|').map(function (x) { return x.trim(); });
+      if (p.length === 1) return { date: '', text: p[0], en: '' };
+      return { date: p[0], text: p[1], en: p.slice(2).join(' | ') };
     });
   }
-
-  // https:// と mailto: だけをリンクにする(文字は安全に組み立てる)
   function addLinkedText(el, text) {
     var re = /(https:\/\/|mailto:)[\x21-\x7E]+/g;
     var last = 0, m;
@@ -273,41 +324,34 @@
       var a = document.createElement('a');
       a.href = m[0];
       if (m[0].indexOf('https://') === 0) { a.target = '_blank'; a.rel = 'noopener'; }
-      a.textContent = m[0].indexOf('mailto:') === 0 ? 'メールを送る'
-        : (m[0].indexOf('google.com/maps') !== -1 ? '【地図を開く】' : '詳しくはこちら');
+      a.textContent = m[0].indexOf('mailto:') === 0 ? tx(X.mail)
+        : (m[0].indexOf('google.com/maps') !== -1 ? tx(X.map) : tx(X.link));
       el.appendChild(a);
       last = m.index + m[0].length;
     }
     if (last < text.length) el.appendChild(document.createTextNode(text.slice(last)));
   }
-
   function todayStr() {
     var d = new Date();
-    var mm = ('0' + (d.getMonth() + 1)).slice(-2);
-    var dd = ('0' + d.getDate()).slice(-2);
-    return d.getFullYear() + '-' + mm + '-' + dd;
+    return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
   }
-
-  // 日付が YYYY-MM-DD の形のとき、その日が過ぎていたら true
   function isPast(date) {
     var m = /^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(date);
     if (!m) return false;
-    var s = m[1] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[3]).slice(-2);
-    return s < todayStr();
+    return (m[1] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[3]).slice(-2)) < todayStr();
   }
-
-  // 2026-10-25 → 10月25日(日)。今年と違う年は、年も付ける
+  var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var WEN = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   function fmtDate(date) {
     var m = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(date);
     if (!m) return date;
     var d = new Date(+m[1], +m[2] - 1, +m[3]);
     if (isNaN(d.getTime())) return date;
+    var otherYear = (+m[1] !== new Date().getFullYear());
+    if (lang === 'en') return WEN[d.getDay()] + ', ' + MON[+m[2] - 1] + ' ' + (+m[3]) + (otherYear ? ', ' + m[1] : '');
     var w = '日月火水木金土'.charAt(d.getDay());
-    var y = (+m[1] !== new Date().getFullYear()) ? m[1] + '年' : '';
-    return y + (+m[2]) + '月' + (+m[3]) + '日(' + w + ')';
+    return (otherYear ? m[1] + '年' : '') + (+m[2]) + '月' + (+m[3]) + '日(' + w + ')';
   }
-
-  // これからの行事を日付の早い順に、終わった行事をそのあとに(新しい順)並べる
   function sortEvents(items) {
     function key(date) {
       var m = /^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(date);
@@ -326,6 +370,7 @@
 
   function renderList(listEl, items, emptyText, limit, moreBtn, dim) {
     listEl.innerHTML = '';
+    if (moreBtn) moreBtn.hidden = true;
     if (!items.length) {
       var e = document.createElement('li');
       e.className = 'empty';
@@ -345,13 +390,23 @@
       }
       var t = document.createElement('span');
       t.className = 'text';
-      addLinkedText(t, it.text);
+      if (lang === 'en' && it.en) {
+        addLinkedText(t, it.en);
+      } else {
+        addLinkedText(t, it.text);
+        if (lang === 'en') {
+          var j = document.createElement('span');
+          j.className = 'jaonly';
+          j.textContent = ' ' + tx(X.jaOnly);
+          t.appendChild(j);
+        }
+      }
       li.appendChild(t);
       listEl.appendChild(li);
     });
     if (limit && moreBtn && items.length > limit) {
       moreBtn.hidden = false;
-      moreBtn.textContent = 'もっと見る(あと ' + (items.length - limit) + '件)';
+      moreBtn.textContent = tx(X.more).replace('%n', items.length - limit);
       moreBtn.onclick = function () {
         var rest = listEl.querySelectorAll('li[hidden]');
         for (var k = 0; k < rest.length; k++) rest[k].hidden = false;
@@ -360,26 +415,6 @@
     }
   }
 
-  // ---- お知らせ ----
-  load('news.txt').then(function (text) {
-    var items = parseItems(text);
-    renderList(document.getElementById('news-list'), items,
-      'お知らせは、まだありません。', LIMIT, document.getElementById('news-more'), false);
-    var first = items.length && /^\d{4}-\d{1,2}-\d{1,2}/.test(items[0].date) ? items[0].date : '';
-    if (first) document.getElementById('updated').textContent = '最終更新: ' + first;
-  }).catch(function () {
-    document.getElementById('news-list').innerHTML = '<li class="empty">お知らせを読み込めませんでした。しばらくしてからもう一度お試しください。</li>';
-  });
-
-  // ---- 行事予定 ----
-  load('events.txt').then(function (text) {
-    renderList(document.getElementById('events-list'), sortEvents(parseItems(text)),
-      '行事の予定は、まだ決まっていません。', 0, null, true);
-  }).catch(function () {
-    document.getElementById('events-list').innerHTML = '<li class="empty">行事予定を読み込めませんでした。</li>';
-  });
-
-  // ---- リンク集 (グループ | 表示名 | URL) ----
   function makeBtn(label, url, alt) {
     var a = document.createElement('a');
     a.className = 'btn' + (alt ? ' alt' : '');
@@ -389,50 +424,80 @@
     return a;
   }
 
-  load('links.txt').then(function (text) {
-    var groups = {};
-    lines(text).forEach(function (l) {
-      var p = l.split('|').map(function (s) { return s.trim(); });
-      if (p.length < 3 || !p[0] || !p[1]) return;
-      var url = p.slice(2).join('|');
-      if (!/^(https:\/\/|mailto:)/.test(url)) return;
-      (groups[p[0]] = groups[p[0]] || []).push({ label: p[1], url: url });
-    });
-
-    // ごみ・防災
+  function renderLinks() {
     var lifeBody = document.getElementById('life-body');
-    var lifeCount = 0;
-    [['ごみ', 'ごみ出し'], ['防災', '防災・安全']].forEach(function (g) {
+    var contact = document.getElementById('contact-body');
+    lifeBody.innerHTML = '';
+    contact.innerHTML = '';
+    if (!data.links) {
+      document.getElementById('nav-life').hidden = true;
+      contact.textContent = tx(X.contactNone);
+      return;
+    }
+    var groups = data.links, lifeCount = 0;
+    [['ごみ', X.g_gomi], ['防災', X.g_bosai]].forEach(function (g) {
       var arr = groups[g[0]];
       if (!arr || !arr.length) return;
       var h = document.createElement('div');
       h.className = 'group-title';
-      h.textContent = g[1];
+      h.textContent = tx(g[1]);
       lifeBody.appendChild(h);
       var box = document.createElement('div');
       box.className = 'btns';
-      arr.forEach(function (x) { box.appendChild(makeBtn(x.label, x.url, false)); });
+      arr.forEach(function (x) { box.appendChild(makeBtn(lang === 'en' && x.en ? x.en : x.label, x.url, false)); });
       lifeBody.appendChild(box);
       lifeCount += arr.length;
     });
-    if (lifeCount) document.getElementById('life').hidden = false;
-    else document.getElementById('nav-life').hidden = true;
-
-    // お問い合わせ
-    var contact = document.getElementById('contact-body');
+    document.getElementById('life').hidden = !lifeCount;
+    document.getElementById('nav-life').hidden = !lifeCount;
     var cs = groups['お問い合わせ'];
     if (cs && cs.length) {
       var box2 = document.createElement('div');
       box2.className = 'btns';
-      cs.forEach(function (x) { box2.appendChild(makeBtn(x.label, x.url, false)); });
+      cs.forEach(function (x) { box2.appendChild(makeBtn(lang === 'en' && x.en ? x.en : x.label, x.url, false)); });
       contact.appendChild(box2);
     } else {
-      contact.textContent = 'お問い合わせ先は、準備中です。';
+      contact.textContent = tx(X.contactNone);
     }
-  }).catch(function () {
-    document.getElementById('nav-life').hidden = true;
-    document.getElementById('contact-body').textContent = 'お問い合わせ先は、準備中です。';
+  }
+
+  function render() {
+    document.documentElement.lang = lang;
+    document.title = tx(T.title);
+    var els = document.querySelectorAll('[data-i]');
+    for (var i = 0; i < els.length; i++) els[i].innerHTML = tx(T[els[i].getAttribute('data-i')]);
+    document.getElementById('lang-btn').textContent = lang === 'en' ? '日本語' : 'English';
+    var nl = document.getElementById('news-list'), el = document.getElementById('events-list');
+    if (data.newsErr) nl.innerHTML = '<li class="empty"></li>', nl.firstChild.textContent = tx(X.newsFail);
+    else if (data.news) renderList(nl, data.news, tx(X.noNews), LIMIT, document.getElementById('news-more'), false);
+    if (data.eventsErr) el.innerHTML = '<li class="empty"></li>', el.firstChild.textContent = tx(X.eventsFail);
+    else if (data.events) renderList(el, sortEvents(data.events), tx(X.noEvents), 0, null, true);
+    if (data.news && data.news.length && /^\d{4}-\d{1,2}-\d{1,2}/.test(data.news[0].date))
+      document.getElementById('updated').textContent = tx(X.updated) + data.news[0].date;
+    if (data.linksDone) renderLinks();
+  }
+
+  document.getElementById('lang-btn').addEventListener('click', function () {
+    lang = lang === 'en' ? 'ja' : 'en';
+    try { localStorage.setItem('honmachi-lang', lang); } catch (e) {}
+    render();
   });
+
+  render();
+
+  load('news.txt').then(function (t) { data.news = parseItems(t); }).catch(function () { data.newsErr = true; }).then(render);
+  load('events.txt').then(function (t) { data.events = parseItems(t); }).catch(function () { data.eventsErr = true; }).then(render);
+  load('links.txt').then(function (text) {
+    var groups = {};
+    lines(text).forEach(function (l) {
+      var p = l.split('|').map(function (x) { return x.trim(); });
+      if (p.length < 3 || !p[0] || !p[1]) return;
+      var url = p[2];
+      if (!/^(https:\/\/|mailto:)/.test(url)) return;
+      (groups[p[0]] = groups[p[0]] || []).push({ label: p[1], url: url, en: p[3] || '' });
+    });
+    data.links = groups;
+  }).catch(function () { data.links = null; }).then(function () { data.linksDone = true; render(); });
 })();
 </script>
 
