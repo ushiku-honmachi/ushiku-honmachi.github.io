@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#2f5d50">
+<title>カッパの川泳ぎ | 本町行政区</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<style>
+  :root { --bg:#f6f4ee; --panel:#fff; --main:#2f5d50; --main-dark:#234539; --text:#222; --text-dim:#5b5b55; --border:#d9d5c8; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif; line-height:1.7; font-size:18px; }
+  header { background:var(--main); color:#fff; text-align:center; padding:16px 12px; }
+  header h1 { margin:0; font-size:1.3rem; }
+  main { max-width:520px; margin:0 auto; padding:16px; }
+  .back { display:inline-block; margin:0 0 12px; color:var(--main-dark); font-weight:bold; }
+  #kappa-game-wrap { max-width:480px; margin:0 auto; text-align:center; }
+  #kappa-game-wrap canvas { width:100%; height:auto; display:block; border-radius:12px; touch-action:none; background:#3aa7d6; }
+  .kg-btns { margin-top:10px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .kg-btns button { font-size:1.05rem; padding:12px 22px; border:0; border-radius:999px; background:var(--main); color:#fff; cursor:pointer; font-family:inherit; }
+  .kg-btns button:active { background:var(--main-dark); }
+  .kg-help { font-size:0.85rem; color:var(--text-dim); margin-top:10px; line-height:1.6; text-align:left; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px 14px; }
+  #rank-box { margin-top:16px; background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:12px 16px; text-align:left; }
+  #rank-box h2 { margin:0 0 6px; font-size:1.05rem; color:var(--main-dark); }
+  #rank-list { margin:0; padding:0; list-style:none; }
+  #rank-list li { display:flex; justify-content:space-between; gap:8px; padding:6px 0; border-bottom:1px solid var(--border); }
+  #rank-list li:last-child { border-bottom:0; }
+  #rank-list .nm { font-weight:bold; overflow-wrap:anywhere; }
+  #rank-form { margin-top:10px; padding-top:10px; border-top:2px solid var(--main); }
+  #rank-form p { margin:0 0 8px; font-size:0.95rem; }
+  #rank-form .row { display:flex; gap:8px; }
+  #rank-name { flex:1; min-width:0; font-size:1rem; padding:10px; border:2px solid var(--border); border-radius:8px; font-family:inherit; }
+  #rank-send { font-size:1rem; padding:10px 18px; border:0; border-radius:8px; background:var(--main); color:#fff; font-family:inherit; cursor:pointer; }
+  #rank-send[disabled] { opacity:.5; }
+  .rank-note { color:var(--text-dim); font-size:0.8rem; margin:8px 0 0; }
+  footer { text-align:center; color:var(--text-dim); font-size:0.85rem; padding:16px; }
+</style>
+</head>
+<body>
+<header><h1 id="ttl">カッパの川泳ぎ</h1></header>
+<main>
+  <a class="back" id="back" href="index.html#game">← ホームページにもどる</a>
+  <div id="kappa-game-wrap">
+    <canvas id="kg-canvas" width="480" height="320"></canvas>
+    <div class="kg-btns">
+      <button id="kg-start" type="button">スタート</button>
+      <button id="kg-dash" type="button">スイスイダッシュ!</button>
+    </div>
+    <div id="rank-box" hidden>
+      <h2 id="rank-title">みんなのベスト3</h2>
+      <ol id="rank-list"></ol>
+      <div id="rank-form" hidden>
+        <p id="rank-msg"></p>
+        <div class="row"><input id="rank-name" type="text" maxlength="12" autocomplete="off"><button id="rank-send" type="button">のせる</button></div>
+      </div>
+      <p class="rank-note" id="rank-note"></p>
+    </div>
+    <div class="kg-help" id="kg-help"></div>
+  </div>
+</main>
+<footer id="foot">牛久市 本町行政区</footer>
+
+<script src="config.js"></script>
+<script>
+(function () {
+  // ---- 言語 (ホームページの日本語/English 切り替えを引き継ぐ) ----
+  var lang = 'ja';
+  try {
+    var q = /[?&]lang=(en|ja)/.exec(location.search), saved = null;
+    try { saved = localStorage.getItem('honmachi-lang'); } catch (e) {}
+    if (q) lang = q[1];
+    else if (saved === 'en' || saved === 'ja') lang = saved;
+    else if (navigator.language && navigator.language.toLowerCase().indexOf('ja') !== 0) lang = 'en';
+  } catch (e) {}
+  var S = {
+    ja: { title:'カッパの川泳ぎ', back:'← ホームページにもどる', start:'スタート', again:'もう一回', dash:'スイスイダッシュ!',
+          help:'上下に泳ぐ: 画面をなぞる / ↑↓キー<br>ダッシュ(岩をすり抜ける): ボタン / スペースキー(ボス戦では、お皿を投げる)<br>🥒きゅうり +10点 / 💧しずくで皿に水を補給 / 🪨岩に当たると皿の水が減るよ<br>🥒食べるほど大きくなる(岩に当たりやすく、遅くなる。ダッシュでやせる)<br>😋食べないと、はらぺこになって皿の水が早く減る<br>🥣友達が投げる大皿を取ると、しばらく水がどんどんたまる<br>🎣水面の釣り人がたらす糸のきゅうりは罠! 取るとゲームオーバー<br>🥣川の小皿は、持ち皿が増える(最大9枚)。大皿は、水も満タン<br>👑目標点で川の主が登場! 持ち皿を投げて倒そう(皿がないと勝てない。赤い帯は突進の合図。ぶつかるとゲームオーバー)<br>✨たまに光るものが流れてくる / 🌧雨で皿に水がたまる / 🟤濁流で動きがにぶくなる',
+          best:'ベスト ', plate:'皿の水', dashWait:'ダッシュ準備中…', dashOk:'ダッシュOK!',
+          over:'皿がカラカラ…!', score:'スコア ', pressAgain:'「もう一回」を押してね',
+          name:'カッパの川泳ぎ', goal:'きゅうりを集めて、皿の水を守れ!', pressStart:'「スタート」を押してね', foot:'牛久市 本町行政区',
+          rankTitle:'みんなのベスト3', rankEmpty:'まだ記録がありません。1位を目指そう!', pts:'点', newRec:'ベスト3に入りました! ニックネームを入れて「のせる」を押してね。',
+          namePh:'ニックネーム(12字まで)', send:'のせる', sent:'のせました!', fail:'送れませんでした。もう一度ためしてね。', loadFail:'ランキングを読み込めませんでした。',
+          note:'ニックネームと点数は、みんなに見えます。本名や、個人の情報は書かないでください。' },
+    en: { title:'Kappa River Swim', back:'← Back to the website', start:'Start', again:'Play again', dash:'Swoosh Dash!',
+          help:'Swim up/down: drag on the screen / arrow keys<br>Dash (pass through rocks): button / Space key (in the boss fight, throw a dish)<br>🥒 Cucumber +10 / 💧 Water drop refills the dish / 🪨 Rocks drain the dish<br>🥒 The more you eat, the bigger and slower you get (dash to slim down)<br>😋 If you do not eat, you get hungry and the dish dries faster<br>🥣 Catch the big dish a friend throws for a burst of water<br>🎣 The cucumber on the fishing line is a trap! Game over if you take it<br>🥣 Small dishes add to your stock (max 9). A big dish also fills the water<br>👑 At the target score the river boss appears! Throw your dishes to beat it (no dishes, no win; a red band warns of a charge)<br>✨ Shiny things sometimes float by / 🌧 Rain fills the dish / 🟤 Muddy flow slows you down',
+          best:'Best ', plate:'Dish water', dashWait:'Dash charging…', dashOk:'Dash ready!',
+          over:'The dish is dry…!', score:'Score ', pressAgain:'Press "Play again"',
+          name:'Kappa River Swim', goal:'Collect cucumbers and keep your dish full!', pressStart:'Press "Start"', foot:'Honmachi District, Ushiku City',
+          rankTitle:'Top 3 players', rankEmpty:'No records yet. Be the first!', pts:' pts', newRec:'You made the top 3! Enter a nickname and press "Post".',
+          namePh:'Nickname (up to 12 characters)', send:'Post', sent:'Posted!', fail:'Could not send. Please try again.', loadFail:'Could not load the ranking.',
+          note:'Your nickname and score will be visible to everyone. Please do not enter your real name or any personal information.' }
+  };
+  var STR = S[lang];
+  document.documentElement.lang = lang;
+  document.title = STR.title + ' | ' + (lang === 'en' ? 'Honmachi District' : '本町行政区');
+  document.getElementById('ttl').textContent = STR.title;
+  document.getElementById('back').textContent = STR.back;
+  document.getElementById('kg-dash').textContent = STR.dash;
+  document.getElementById('kg-help').innerHTML = STR.help;
+  document.getElementById('foot').textContent = STR.foot;
+
+  // ---- 英語表示用の置き換え(ゲーム画面の文字) ----
+  var EN = {
+    'スタート':'Start','もう一回':'Play again','つぎのステージへ':'Next stage','スイスイダッシュ！':'Swoosh Dash!','お皿を投げる':'Throw dish',
+    'ダッシュ準備中…':'Dash charging…','ダッシュOK!':'Dash ready!','皿の水':'Water','まるまる度':'Chubby','はらぺこ度':'Hungry',
+    '川の主 大ナマズ':'River boss: Giant Catfish','川の主があらわれた！':'The river boss appears!',
+    'スペース／ボタンでお皿を投げろ！':'Throw dishes with Space / the button!','皿がない！川の皿を拾え！':'No dishes! Pick some up!','皿がない！':'No dishes!',
+    'ヒット！':'Hit!','ガブッ！':'Chomp!','ゴツン！':'Bonk!','ほいっ！':'Here!','水+':'Water+','皿+1':'Dish+1','大皿ゲット！皿+1':'Big dish! Dish+1',
+    '雨で皿に水がたまる！':'Rain fills your dish!','雨がふってきた…！':'It started to rain…!','濁流！動きがにぶい…':'Muddy flow! You move slowly…','濁流がくるぞ！ダッシュで耐えろ！':'Muddy flow coming! Use dash!',
+    'ステージクリア！':'Stage clear!','川の主をたおした！ ボーナス +200':'River boss defeated! Bonus +200','「つぎのステージへ」を押してね':'Press "Next stage"',
+    'つられた〜！':'Hooked!','川の主にやられた〜！':'Beaten by the river boss!','皿がカラカラ…！':'The dish is dry…!','「もう一回」を押してね':'Press "Play again"',
+    'カッパの川泳ぎ':'Kappa River Swim','きゅうりを集めて、皿の水を守れ！':'Collect cucumbers and keep your dish full!','「スタート」を押してね':'Press "Start"'
+  };
+  function tr(t) {
+    if (lang !== 'en') return t;
+    if (EN[t]) return EN[t];
+    var m;
+    if ((m = /^きゅうり (\d+)点$/.exec(t))) return 'Score ' + m[1];
+    if ((m = /^ステージ (\d+)$/.exec(t))) return 'Stage ' + m[1];
+    if ((m = /^ヌシまであと (\d+)点$/.exec(t))) return m[1] + ' pts to the boss';
+    if ((m = /^ベスト (\d+)$/.exec(t))) return 'Best ' + m[1];
+    if ((m = /^持ち皿 (\d+)$/.exec(t))) return 'Dishes ' + m[1];
+    if ((m = /^大皿！あと(\d+)秒$/.exec(t))) return 'Big dish! ' + m[1] + 's left';
+    if ((m = /^スコア (\d+)　ベスト (\d+)$/.exec(t))) return 'Score ' + m[1] + '   Best ' + m[2];
+    if ((m = /^スコア (\d+)$/.exec(t))) return 'Score ' + m[1];
+    return t;
+  }
+
+  // ---- ランキング (Google スプレッドシート経由。config.js にアドレスがあるときだけ動く) ----
+  var RANK_URL = (typeof window.HONMACHI_RANK_URL === 'string') ? window.HONMACHI_RANK_URL : '';
+  var ranks = null;            // 読み込めたら配列、だめなら null
+  var rankBox = document.getElementById('rank-box');
+  var rankList = document.getElementById('rank-list');
+  var rankForm = document.getElementById('rank-form');
+  var rankName = document.getElementById('rank-name');
+  var rankSend = document.getElementById('rank-send');
+  var rankMsg = document.getElementById('rank-msg');
+  var pendingScore = 0;
+
+  function renderRanks() {
+    rankList.innerHTML = '';
+    if (!ranks) { var li0 = document.createElement('li'); li0.textContent = STR.loadFail; rankList.appendChild(li0); return; }
+    if (!ranks.length) { var li1 = document.createElement('li'); li1.textContent = STR.rankEmpty; rankList.appendChild(li1); return; }
+    ranks.forEach(function (r, i) {
+      var li = document.createElement('li');
+      var a = document.createElement('span'); a.className = 'nm'; a.textContent = (i + 1) + (lang === 'en' ? '. ' : '位  ') + r.name;
+      var b = document.createElement('span'); b.textContent = r.score + STR.pts;
+      li.appendChild(a); li.appendChild(b); rankList.appendChild(li);
+    });
+  }
+  function loadRanks() {
+    if (!RANK_URL) return Promise.resolve();
+    return fetch(RANK_URL + (RANK_URL.indexOf('?') < 0 ? '?' : '&') + 't=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { ranks = (j && j.ranks) ? j.ranks.slice(0, 3) : []; })
+      .catch(function () { ranks = null; })
+      .then(renderRanks);
+  }
+  if (RANK_URL) {
+    rankBox.hidden = false;
+    document.getElementById('rank-title').textContent = STR.rankTitle;
+    document.getElementById('rank-note').textContent = STR.note;
+    rankName.placeholder = STR.namePh; rankSend.textContent = STR.send;
+    try { rankName.value = localStorage.getItem('kappa_name') || ''; } catch (e) {}
+    loadRanks();
+  }
+  function onGameOver(sc) {
+    rankForm.hidden = true;
+    if (!RANK_URL || !ranks || sc <= 0) return;
+    if (ranks.length >= 3 && sc <= ranks[ranks.length - 1].score) return;
+    pendingScore = sc;
+    rankMsg.textContent = STR.newRec;
+    rankSend.disabled = false;
+    rankForm.hidden = false;
+  }
+  rankSend.addEventListener('click', function () {
+    var nm = (rankName.value || '').replace(/[<>&"'\\]/g, '').replace(/\s+/g, ' ').trim().slice(0, 12);
+    if (!nm || !pendingScore) { rankName.focus(); return; }
+    rankSend.disabled = true;
+    try { localStorage.setItem('kappa_name', nm); } catch (e) {}
+    fetch(RANK_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ name: nm, score: pendingScore }) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (j && j.ok) { pendingScore = 0; rankMsg.textContent = STR.sent; if (j.ranks) { ranks = j.ranks.slice(0, 3); renderRanks(); } setTimeout(function () { rankForm.hidden = true; }, 1500); }
+        else { rankMsg.textContent = STR.fail; rankSend.disabled = false; }
+      })
+      .catch(function () { rankMsg.textContent = STR.fail; rankSend.disabled = false; });
+  });
+
+  // ---- ゲーム本体 ----
+  var cv = document.getElementById('kg-canvas');
+  var ctx = cv.getContext('2d');
+  var _ft = ctx.fillText.bind(ctx);
+  ctx.fillText = function (t, x, y) { _ft(lang === 'en' ? tr(String(t)) : t, x, y); };
+  var W = cv.width, H = cv.height;
+  var startBtn = document.getElementById('kg-start');
+  var dashBtn = document.getElementById('kg-dash');
+  startBtn.textContent = tr('スタート');
+  dashBtn.textContent = tr('スイスイダッシュ！');
+
+  var kappa, objs, bubbles, rain, floaters, score, water, spawnT, dashT, dashCD, running, over, time, ev, evT, fat, hunger, buff, throwT, friend, reason, stage, goal, boss, cleared, hurtT, ammo, shots, throwCD, best = 0;
+  try { best = parseInt(localStorage.getItem('kappa_best') || '0', 10) || 0; } catch (e) {}
+
+  var keys = {};
+  var targetY = null;
+
+  function reset() {
+    kappa = { x: 80, y: H / 2, r: 18 }; reason = ''; stage = 1; goal = 150; boss = null; cleared = false; hurtT = 0; ammo = 0; shots = []; throwCD = 0; fat = 0; hunger = 0; buff = 0; friend = null; throwT = 18 + Math.random() * 8;
+    objs = []; floaters = []; score = 0; water = 100; spawnT = 0; dashT = 0; dashCD = 0; time = 0; over = false;
+    ev = null; evT = 9 + Math.random() * 4; // 最初のイベントまで約10秒
+    bubbles = [];
+    for (var i = 0; i < 18; i++) bubbles.push({ x: Math.random() * W, y: Math.random() * H, r: 2 + Math.random() * 4, s: 20 + Math.random() * 30 });
+    rain = [];
+    for (var k = 0; k < 60; k++) rain.push({ x: Math.random() * W, y: Math.random() * H, s: 420 + Math.random() * 200 });
+  }
+  reset();
+
+  function startGame() { reset(); rankForm.hidden = true; running = true; startBtn.textContent = tr('もう一回'); last = performance.now(); }
+  function throwPlate() {
+    if (!running || throwCD > 0) return;
+    if (ammo <= 0) { pop(kappa.x + 10, kappa.y - 34, '皿がない！', '#ff9a85'); throwCD = 0.4; return; }
+    ammo -= 1; throwCD = 0.25;
+    shots.push({ x: kappa.x + 22, y: kappa.y });
+  }
+  function action() { if (boss) throwPlate(); else dash(); }
+  function syncBtn() {
+    var want = tr(boss ? 'お皿を投げる' : 'スイスイダッシュ！');
+    if (dashBtn.textContent !== want) dashBtn.textContent = want;
+  }
+
+  function nextStage() {
+    stage += 1; goal = 150 + (stage - 1) * 150;
+    cleared = false; running = true; over = false; reason = '';
+    objs = []; floaters = []; shots = []; boss = null; water = 100; hunger = 0; buff = 0; hurtT = 0;
+    ev = null; evT = 8; startBtn.textContent = tr('もう一回'); last = performance.now();
+  }
+  function primary() { if (cleared) nextStage(); else startGame(); }
+  function dash() { if (running && dashCD <= 0 && dashT <= 0) { dashT = 0.7; dashCD = 3; fat = Math.max(0, fat - 0.15); } }
+
+  startBtn.addEventListener('click', function () { primary(); startBtn.blur(); });
+  dashBtn.addEventListener('click', function () { action(); dashBtn.blur(); });
+  window.addEventListener('keydown', function (e) {
+    if (['ArrowUp', 'ArrowDown', ' '].indexOf(e.key) >= 0) e.preventDefault();
+    keys[e.key] = true;
+    if (e.key === ' ' && !e.repeat) { if (!running) primary(); else action(); }
+  });
+  window.addEventListener('keyup', function (e) { keys[e.key] = false; if (e.key === ' ') e.preventDefault(); });
+
+  function pointerY(e) {
+    var rect = cv.getBoundingClientRect();
+    return (e.clientY - rect.top) * (H / rect.height);
+  }
+  cv.addEventListener('pointerdown', function (e) { targetY = pointerY(e); });
+  cv.addEventListener('pointermove', function (e) { if (e.buttons || e.pointerType === 'touch') targetY = pointerY(e); });
+  cv.addEventListener('pointerup', function () { targetY = null; });
+  cv.addEventListener('pointercancel', function () { targetY = null; });
+
+  function spawn() {
+    var t = Math.random();
+    var type = t < 0.04 ? 'gold' : (t < 0.1 && time > 12 ? 'bait' : (t < 0.46 ? 'cuc' : (t < 0.62 ? 'sdish' : (t < 0.76 ? 'drop' : 'rock'))));
+    if (boss && (type === 'rock' || type === 'bait')) type = Math.random() < 0.5 ? 'sdish' : 'cuc'; // ボス戦中は岩と釣り針の代わりに小皿ときゅうり
+    var yy = 30 + Math.random() * (H - 60);
+    objs.push({ type: type, x: W + 30, y: yy, y0: yy, r: type === 'rock' ? 18 : 13 });
+  }
+
+  function pop(x, y, text, color) { floaters.push({ x: x, y: y, t: text, c: color, l: 0.9 }); }
+
+  function startEvent() {
+    var isRain = Math.random() < 0.5;
+    ev = { type: isRain ? 'rain' : 'mud', warn: 1, left: isRain ? 6 : 2.5 };
+  }
+
+  function endGame(why) {
+    over = true; running = false; reason = why;
+    if (score > best) { best = score; try { localStorage.setItem('kappa_best', String(best)); } catch (e) {} }
+    onGameOver(score);
+  }
+
+  function clearStage() {
+    score += 200; water = Math.min(100, water + 50);
+    boss = null; cleared = true; running = false; objs = []; shots = [];
+    startBtn.textContent = tr('つぎのステージへ');
+    if (score > best) { best = score; try { localStorage.setItem('kappa_best', String(best)); } catch (e) {} }
+  }
+
+  function updateBoss(dt) {
+    var b = boss, home = W - 70, lv = Math.min(stage, 4);
+    b.t += dt;
+    if (b.state === 'enter') {
+      b.x -= 120 * dt;
+      if (b.x <= home) { b.x = home; b.state = 'idle'; b.t = 0; }
+    } else if (b.state === 'idle') {
+      b.y += Math.max(-70 * dt, Math.min(70 * dt, kappa.y - b.y));
+      b.spitT -= dt;
+      if (b.spitT <= 0) { objs.push({ type: 'rock', x: b.x - 50, y: b.y, y0: b.y, r: 18 }); b.spitT = 1.6 - 0.1 * lv; }
+      if (b.t > 2.4 - 0.2 * lv) { b.state = 'warn'; b.t = 0; b.lockY = kappa.y; }
+    } else if (b.state === 'warn') {
+      b.y += Math.max(-250 * dt, Math.min(250 * dt, b.lockY - b.y));
+      if (b.t > 1) { b.state = 'charge'; b.t = 0; }
+    } else if (b.state === 'charge') {
+      b.x -= (520 + 40 * stage) * dt;
+      if (b.x < -90) { b.state = 'return'; b.t = 0; }
+    } else if (b.state === 'return') {
+      b.x += 220 * dt;
+      if (b.x >= home) { b.x = home; b.state = 'idle'; b.t = 0; b.spitT = 1.2; }
+    } else if (b.state === 'stun') {
+      b.x += (home - b.x) * Math.min(1, 3 * dt);
+      if (b.t > 1.5) { b.state = 'idle'; b.t = 0; b.spitT = 1.2; }
+    }
+    var dx = b.x - 10 - kappa.x, dy = b.y - kappa.y;
+    if (b.state !== 'stun' && Math.sqrt(dx * dx + dy * dy) < b.r + kappa.r) {
+      pop(kappa.x, kappa.y - 34, 'ガブッ！', '#ff9a85');
+      endGame('boss');
+      return;
+    }
+  }
+
+  function update(dt) {
+    time += dt;
+
+    // イベント（雨・濁流）
+    if (!ev) { evT -= dt; if (evT <= 0) startEvent(); }
+    else if (ev.warn > 0) ev.warn -= dt;
+    else { ev.left -= dt; if (ev.left <= 0) { ev = null; evT = 12 + Math.random() * 8; } }
+    hunger = Math.min(1, hunger + 0.06 * dt);   // 食べないとだんだんはらぺこに
+    fat = Math.max(0, fat - 0.008 * dt);        // 太った分は少しずつ戻る
+    // 友達カッパが大皿を投げてくれる
+    throwT -= dt;
+    if (throwT <= 0) {
+      var fy = 40 + Math.random() * (H - 80);
+      friend = { y: fy, l: 1.2 };
+      objs.push({ type: 'plate', x: W + 30, y: fy, y0: fy, r: 18 });
+      pop(W - 70, fy - 26, 'ほいっ！', '#fff');
+      throwT = 25 + Math.random() * 15;
+    }
+    if (friend) { friend.l -= dt; if (friend.l <= 0) friend = null; }
+    if (buff > 0) buff -= dt;
+    var rainOn = !!ev && ev.type === 'rain' && ev.warn <= 0;
+    var mudOn = !!ev && ev.type === 'mud' && ev.warn <= 0;
+
+    var speedMul = dashT > 0 ? 1.6 : 1;
+    var slow = mudOn ? (dashT > 0 ? 0.75 : 0.4) : 1; // 濁流中は動きがにぶる（ダッシュなら少しましに泳げる）
+    var ms = (dashT > 0 ? 340 : 200) * slow * (1 - fat * 0.25);
+    kappa.r = 18 * (1 + fat * 0.7);
+    if (keys['ArrowUp'] || keys['w']) kappa.y -= ms * dt;
+    if (keys['ArrowDown'] || keys['s']) kappa.y += ms * dt;
+    if (targetY !== null) {
+      var d = targetY - kappa.y;
+      kappa.y += Math.max(-ms * dt, Math.min(ms * dt, d));
+    }
+    var lim = 6 + kappa.r;
+    kappa.y = Math.max(lim, Math.min(H - lim, kappa.y));
+
+    if (dashT > 0) dashT -= dt;
+    if (dashCD > 0) dashCD -= dt;
+
+    var base = Math.min(150 + score * 0.8, 320);
+    var sp = base * speedMul;
+    spawnT -= dt;
+    if (spawnT <= 0) { spawn(); spawnT = Math.max(0.35, 0.85 - score / 600); }
+
+    if (buff > 0 || rainOn) water = Math.min(100, water + (buff > 0 ? 30 : 14) * dt); // 雨の間は皿に水がたまり、減らない
+    else water -= dt * (3.6 + Math.min(score / 100, 4)) * (1 + hunger * 1.5); // はらぺこだと皿の水が早く減る
+
+    for (var i = objs.length - 1; i >= 0; i--) {
+      var o = objs[i];
+      o.x -= sp * dt;
+      if (o.type === 'plate') o.y = o.y0 + Math.sin(time * 5) * 18;
+      if (o.type === 'bait') o.y = o.y0 + Math.sin(time * 4 + o.x * 0.02) * 12;
+      var dx = o.x - kappa.x, dy = o.y - kappa.y;
+      var hit = Math.sqrt(dx * dx + dy * dy) < o.r + kappa.r - 4;
+      if (hit) {
+        if (o.type === 'cuc') { score += 10; water = Math.min(100, water + 3); fat = Math.min(1, fat + 0.05); hunger = Math.max(0, hunger - 0.5); pop(o.x, o.y, '+10', '#fff'); objs.splice(i, 1); continue; }
+        if (o.type === 'gold') { score += 100; water = Math.min(100, water + 15); fat = Math.min(1, fat + 0.1); hunger = 0; pop(o.x, o.y, '+100!', '#ffe14d'); objs.splice(i, 1); continue; }
+        if (o.type === 'bait') { pop(o.x, o.y, 'ガブッ！', '#ff9a85'); endGame('tsuri'); return; }
+        if (o.type === 'sdish') { ammo = Math.min(9, ammo + 1); pop(o.x, o.y, '皿+1', '#fff3d6'); objs.splice(i, 1); continue; }
+        if (o.type === 'plate') { buff = 8; water = 100; ammo = Math.min(9, ammo + 1); pop(o.x, o.y, '大皿ゲット！皿+1', '#bfe6ff'); objs.splice(i, 1); continue; }
+        if (o.type === 'drop') { water = Math.min(100, water + 25); pop(o.x, o.y, '水+', '#bfe6ff'); objs.splice(i, 1); continue; }
+        if (o.type === 'rock' && dashT <= 0) { water -= 30; pop(o.x, o.y, 'ゴツン！', '#ff9a85'); objs.splice(i, 1); continue; }
+      }
+      if (o.x < -40) objs.splice(i, 1);
+    }
+    for (var j = 0; j < bubbles.length; j++) {
+      var b = bubbles[j];
+      b.y -= b.s * dt; b.x -= sp * 0.2 * dt;
+      if (b.y < -10) { b.y = H + 10; b.x = Math.random() * W; }
+      if (b.x < -10) b.x = W + 10;
+    }
+    if (ev && ev.type === 'rain') {
+      for (var r = 0; r < rain.length; r++) {
+        var p = rain[r];
+        p.y += p.s * dt; p.x -= 60 * dt;
+        if (p.y > H) { p.y = -10; p.x = Math.random() * (W + 40); }
+        if (p.x < -10) p.x = W + 10;
+      }
+    }
+    for (var f = floaters.length - 1; f >= 0; f--) {
+      floaters[f].y -= 30 * dt; floaters[f].l -= dt;
+      if (floaters[f].l <= 0) floaters.splice(f, 1);
+    }
+    // 川の主
+    if (hurtT > 0) hurtT -= dt;
+    if (throwCD > 0) throwCD -= dt;
+    for (var si = shots.length - 1; si >= 0; si--) {
+      var sh = shots[si];
+      sh.x += 480 * dt;
+      if (boss && boss.state !== 'stun') {
+        var ex = (sh.x - boss.x) / 62, ey = (sh.y - boss.y) / 34;
+        if (ex * ex + ey * ey < 1) {
+          boss.hp -= 1; boss.state = 'stun'; boss.t = 0; hurtT = 0.3;
+          pop(boss.x, boss.y - 46, 'ヒット！', '#ffe14d');
+          shots.splice(si, 1);
+          if (boss.hp <= 0) { clearStage(); return; }
+          continue;
+        }
+      }
+      if (sh.x > W + 30) shots.splice(si, 1);
+    }
+    if (!boss && !cleared && score >= goal) {
+      boss = { x: W + 120, y: H / 2, hp: 3 + stage, maxhp: 3 + stage, state: 'enter', t: 0, spitT: 1.2, lockY: H / 2, r: 34 };
+      pop(W / 2, H / 2, '川の主があらわれた！', '#ffe14d');
+      pop(W / 2, H / 2 + 28, ammo > 0 ? 'スペース／ボタンでお皿を投げろ！' : '皿がない！川の皿を拾え！', '#fff');
+    }
+    if (boss) { updateBoss(dt); if (cleared || over) return; }
+    if (water <= 0) {
+      water = 0; endGame('dry');
+    }
+  }
+
+  function drawKappa() {
+    var x = kappa.x, y = kappa.y + Math.sin(time * 8) * 2;
+    ctx.save();
+    ctx.translate(x, y);
+    var sc = 1 + fat * 0.7; ctx.scale(sc, sc);
+    if (dashT > 0) { ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.fillRect(-60, -6, 50, 3); ctx.fillRect(-70, 6, 60, 3); }
+    ctx.fillStyle = '#7a5a2e'; ctx.beginPath(); ctx.ellipse(-8, 4, 16, 14, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#4fb85f'; ctx.beginPath(); ctx.ellipse(0, 4, 17, 14, 0, 0, 7); ctx.fill();
+    var k = Math.sin(time * 14) * 6;
+    ctx.fillStyle = '#3c9d4e';
+    ctx.beginPath(); ctx.ellipse(-16, 6 + k, 8, 4, 0, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(-16, 6 - k, 8, 4, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#5fcf70'; ctx.beginPath(); ctx.arc(8, -10, 12, 0, 7); ctx.fill();
+    ctx.fillStyle = '#2b2b2b';
+    ctx.beginPath(); ctx.arc(8, -17, 11, Math.PI * 1.05, Math.PI * 1.95); ctx.fill();
+    ctx.fillStyle = water > 25 ? '#e8f4ff' : '#d9c79a';
+    ctx.beginPath(); ctx.ellipse(8, -21, 9, 3.6, 0, 0, 7); ctx.fill();
+    if (water > 0) {
+      ctx.fillStyle = water > 25 ? '#4aa8ff' : '#8ab6d6';
+      ctx.beginPath(); ctx.ellipse(8, -21.5, 8 * water / 100 + 1, 2.6 * water / 100 + 0.5, 0, 0, 7); ctx.fill();
+    }
+    if (buff > 0) {
+      var bw = Math.min(1, buff * 2);
+      ctx.fillStyle = '#e8f4ff'; ctx.beginPath(); ctx.ellipse(8, -22, 9 + 9 * bw, 3.6 + 3 * bw, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = '#4aa8ff'; ctx.beginPath(); ctx.ellipse(8, -22.5, 8 + 9 * bw, 2.8 + 2.6 * bw, 0, 0, 7); ctx.fill();
+    }
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(13, -12, 3.6, 0, 7); ctx.fill();
+    ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(14, -12, 1.6, 0, 7); ctx.fill();
+    ctx.fillStyle = '#f5c542'; ctx.beginPath(); ctx.ellipse(19, -6, 7, 3.5, 0, 0, 7); ctx.fill();
+    ctx.strokeStyle = '#3c9d4e'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(8, 2); ctx.lineTo(20, 6 + Math.sin(time * 10) * 5); ctx.stroke();
+    ctx.restore();
+  }
+
+  function cucShape() {
+    ctx.beginPath();
+    ctx.moveTo(-14, -5); ctx.lineTo(14, -5); ctx.arc(14, 0, 5, -Math.PI / 2, Math.PI / 2); ctx.lineTo(-14, 5); ctx.arc(-14, 0, 5, Math.PI / 2, -Math.PI / 2);
+    ctx.fill();
+  }
+
+  function drawObj(o) {
+    ctx.save(); ctx.translate(o.x, o.y);
+    if (o.type === 'cuc') {
+      ctx.rotate(-0.3);
+      ctx.fillStyle = '#2f9e44'; cucShape();
+      ctx.fillStyle = '#b6e3a1';
+      for (var i = -10; i <= 10; i += 5) ctx.fillRect(i, -2, 1.5, 1.5);
+    } else if (o.type === 'gold') {
+      var tw = 0.5 + 0.5 * Math.sin(time * 9);
+      ctx.save(); ctx.rotate(-0.3);
+      ctx.shadowColor = '#ffe14d'; ctx.shadowBlur = 10 + 8 * tw;
+      ctx.fillStyle = '#f2b705'; cucShape();
+      ctx.restore();
+      ctx.fillStyle = '#fff3a3';
+      for (var g = -10; g <= 10; g += 5) ctx.fillRect(g, -3, 1.5, 1.5);
+      // きらめき
+      ctx.strokeStyle = 'rgba(255,255,255,' + (0.5 + 0.5 * tw) + ')'; ctx.lineWidth = 2; ctx.lineCap = 'round';
+      var s = 6 + 4 * tw;
+      ctx.beginPath(); ctx.moveTo(-14, -14 - s); ctx.lineTo(-14, -14 + s); ctx.moveTo(-14 - s, -14); ctx.lineTo(-14 + s, -14); ctx.stroke();
+    } else if (o.type === 'bait') {
+      // 釣り糸の先についたきゅうり（取るとゲームオーバー）
+      ctx.strokeStyle = 'rgba(255,255,255,0.75)'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(0, 8 - o.y); ctx.lineTo(0, -14); ctx.stroke();
+      ctx.save(); ctx.rotate(Math.PI / 2 - 0.2);
+      ctx.fillStyle = '#2f9e44'; cucShape();
+      ctx.fillStyle = '#b6e3a1';
+      for (var q = -10; q <= 10; q += 5) ctx.fillRect(q, -2, 1.5, 1.5);
+      ctx.restore();
+      ctx.strokeStyle = '#d6dde4'; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(0, -14); ctx.lineTo(0, 10); ctx.arc(-4, 10, 4, 0, Math.PI * 0.9); ctx.stroke();
+    } else if (o.type === 'sdish') {
+      ctx.rotate(Math.sin(time * 6 + o.x * 0.05) * 0.25);
+      ctx.fillStyle = '#fff3d6'; ctx.beginPath(); ctx.ellipse(0, 0, 11, 5, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = '#9fd0f5'; ctx.beginPath(); ctx.ellipse(0, -0.5, 7, 3, 0, 0, 7); ctx.fill();
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.ellipse(0, 0, 11, 5, 0, 0, 7); ctx.stroke();
+    } else if (o.type === 'plate') {
+      ctx.rotate(Math.sin(time * 6) * 0.3);
+      ctx.fillStyle = '#e8f4ff'; ctx.beginPath(); ctx.ellipse(0, 0, 18, 8, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = '#4aa8ff'; ctx.beginPath(); ctx.ellipse(0, -1, 13, 5, 0, 0, 7); ctx.fill();
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(0, 0, 18, 8, 0, 0, 7); ctx.stroke();
+    } else if (o.type === 'drop') {
+      ctx.fillStyle = '#bfe6ff'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(0, -13); ctx.quadraticCurveTo(12, 2, 0, 11); ctx.quadraticCurveTo(-12, 2, 0, -13); ctx.fill(); ctx.stroke();
+    } else {
+      ctx.fillStyle = '#7d8590';
+      ctx.beginPath(); ctx.moveTo(-16, 10); ctx.lineTo(-10, -12); ctx.lineTo(4, -17); ctx.lineTo(16, -6); ctx.lineTo(14, 12); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#9aa2ad'; ctx.beginPath(); ctx.moveTo(-10, -12); ctx.lineTo(4, -17); ctx.lineTo(2, -4); ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  var FONT = '"Zen Maru Gothic","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif';
+
+  // 水面の舟に乗った釣り人（針つききゅうりの上に付いて流れてくる）
+  function drawFisher(o) {
+    var bx = o.x + 34;
+    ctx.save();
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(bx - 32, 37); ctx.lineTo(bx + 32, 37); ctx.stroke();
+    ctx.fillStyle = '#8a5a34';
+    ctx.beginPath(); ctx.moveTo(bx - 26, 26); ctx.lineTo(bx + 26, 26); ctx.lineTo(bx + 18, 36); ctx.lineTo(bx - 18, 36); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#e07a3f'; ctx.fillRect(bx - 6, 14, 12, 12);
+    ctx.fillStyle = '#f2c9a0'; ctx.beginPath(); ctx.arc(bx, 10, 5, 0, 7); ctx.fill();
+    ctx.fillStyle = '#e8c872'; ctx.beginPath(); ctx.arc(bx, 7, 6, Math.PI, 0); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(bx, 7, 10, 2.5, 0, 0, 7); ctx.fill();
+    ctx.strokeStyle = '#f2c9a0'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(bx - 4, 18); ctx.lineTo(bx - 10, 20); ctx.stroke();
+    ctx.strokeStyle = '#6b4a2b'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(bx - 10, 20); ctx.lineTo(o.x, 8); ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawWeather() {
+    if (!ev) return;
+    var on = ev.warn <= 0;
+    if (ev.type === 'rain') {
+      ctx.fillStyle = 'rgba(30,50,90,' + (on ? 0.22 : 0.1) + ')'; ctx.fillRect(0, 0, W, H);
+      ctx.strokeStyle = 'rgba(220,240,255,0.55)'; ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      for (var i = 0; i < rain.length; i++) { ctx.moveTo(rain[i].x, rain[i].y); ctx.lineTo(rain[i].x - 3, rain[i].y + 12); }
+      ctx.stroke();
+    } else {
+      var a = on ? 0.4 : 0.12;
+      ctx.fillStyle = 'rgba(122,84,40,' + a + ')'; ctx.fillRect(0, 0, W, H);
+      if (on) {
+        ctx.strokeStyle = 'rgba(80,52,24,0.55)'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+        for (var m = 0; m < 9; m++) {
+          var yy = (m * 37 + 14) % H;
+          var xx = W - ((time * (500 + m * 40) + m * 90) % (W + 120)) + 60;
+          ctx.beginPath(); ctx.moveTo(xx, yy); ctx.lineTo(xx + 70, yy); ctx.stroke();
+        }
+      }
+    }
+    var text = ev.type === 'rain' ? (on ? '雨で皿に水がたまる！' : '雨がふってきた…！') : (on ? '濁流！動きがにぶい…' : '濁流がくるぞ！ダッシュで耐えろ！');
+    if (!on && Math.floor(time * 6) % 2 === 0) return; // 予告は点滅
+    ctx.font = 'bold 16px ' + FONT; ctx.textAlign = 'center';
+    var tw2 = ctx.measureText(text).width + 24;
+    ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.fillRect(W / 2 - tw2 / 2, 76, tw2, 28);
+    ctx.fillStyle = '#fff'; ctx.fillText(text, W / 2, 96);
+  }
+
+  function drawBoss() {
+    var b = boss; if (!b) return;
+    var stun = b.state === 'stun';
+    ctx.save(); ctx.translate(b.x, b.y);
+    if (stun && Math.floor(time * 12) % 2 === 0) ctx.globalAlpha = 0.55;
+    var hue = ['#4b5d6e', '#6b4f3a', '#3f6b5a'][(stage - 1) % 3];
+    var wag = Math.sin(time * 6) * 6;
+    ctx.fillStyle = hue;
+    ctx.beginPath(); ctx.moveTo(52, 0); ctx.lineTo(92, -22 + wag); ctx.lineTo(92, 22 + wag); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(0, 0, 62, 34, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.18)'; ctx.beginPath(); ctx.ellipse(0, 12, 50, 16, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#1e2730'; ctx.beginPath(); ctx.ellipse(-50, 8, 14, (b.state === 'idle' && b.spitT < 0.3) ? 12 : 7, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-34, -14, 7, 0, 7); ctx.fill();
+    ctx.fillStyle = (b.state === 'warn' || b.state === 'charge') ? '#e33' : '#000'; ctx.beginPath(); ctx.arc(-36, -14, 3, 0, 7); ctx.fill();
+    ctx.strokeStyle = '#111'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(-42, -24); ctx.lineTo(-26, -19); ctx.stroke();
+    ctx.strokeStyle = '#222';
+    for (var s = -1; s <= 1; s += 2) {
+      ctx.beginPath(); ctx.moveTo(-58, 2);
+      ctx.quadraticCurveTo(-80, 2 + s * 10 + Math.sin(time * 5 + s) * 6, -96, 2 + s * 20 + Math.sin(time * 5) * 6);
+      ctx.stroke();
+    }
+    ctx.restore();
+    if (stun) {
+      ctx.fillStyle = '#ffe14d';
+      for (var k = 0; k < 3; k++) {
+        var an = time * 5 + k * 2.1;
+        ctx.beginPath(); ctx.arc(b.x - 20 + Math.cos(an) * 26, b.y - 46 + Math.sin(an) * 6, 4, 0, 7); ctx.fill();
+      }
+    }
+  }
+
+  function drawShots() {
+    for (var i = 0; i < shots.length; i++) {
+      var s = shots[i];
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.ellipse(s.x, s.y, 12, 3 + 3 * Math.abs(Math.sin(time * 18)), 0, 0, 7); ctx.fill();
+      ctx.fillStyle = '#9fd0f5'; ctx.beginPath(); ctx.ellipse(s.x, s.y, 7, 1.5 + 1.5 * Math.abs(Math.sin(time * 18)), 0, 0, 7); ctx.fill();
+    }
+    ctx.font = '12px ' + FONT; ctx.textAlign = 'left'; ctx.fillStyle = '#fff';
+    ctx.fillText('持ち皿 ' + ammo, 10, H - 24);
+    for (var k = 0; k < ammo; k++) {
+      var px = 18 + k * 15;
+      ctx.fillStyle = '#fff3d6'; ctx.beginPath(); ctx.ellipse(px, H - 11, 6, 3, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = '#9fd0f5'; ctx.beginPath(); ctx.ellipse(px, H - 11.5, 3.5, 1.6, 0, 0, 7); ctx.fill();
+    }
+  }
+
+  function draw() {
+    var g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, '#6cc8ee'); g.addColorStop(1, '#2a7fb0');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = 'rgba(255,255,255,0.18)';
+    bubbles.forEach(function (b) { ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, 7); ctx.fill(); });
+    if (boss && boss.state === 'warn') {
+      ctx.fillStyle = 'rgba(255,60,60,' + (0.16 + 0.12 * Math.sin(time * 20)) + ')';
+      ctx.fillRect(0, boss.lockY - 30, W, 60);
+    }
+    objs.forEach(drawObj);
+    objs.forEach(function (o) { if (o.type === 'bait') drawFisher(o); });
+    drawBoss();
+    drawShots();
+    drawKappa();
+    drawWeather();
+    if (friend) {
+      var fx = W - 18 + (friend.l < 0.3 ? (0.3 - friend.l) * 80 : 0), fy2 = friend.y;
+      ctx.fillStyle = '#5fcf70'; ctx.beginPath(); ctx.arc(fx, fy2, 14, 0, 7); ctx.fill();
+      ctx.fillStyle = '#e8f4ff'; ctx.beginPath(); ctx.ellipse(fx, fy2 - 14, 7, 3, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(fx - 5, fy2 - 3, 3, 0, 7); ctx.fill();
+      ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(fx - 6, fy2 - 3, 1.4, 0, 7); ctx.fill();
+      ctx.fillStyle = '#f5c542'; ctx.beginPath(); ctx.ellipse(fx - 12, fy2 + 3, 6, 3, 0, 0, 7); ctx.fill();
+    }
+
+    ctx.font = 'bold 15px ' + FONT; ctx.textAlign = 'center';
+    floaters.forEach(function (f) { ctx.globalAlpha = Math.max(0, Math.min(1, f.l * 1.5)); ctx.fillStyle = f.c; ctx.fillText(f.t, f.x, f.y); });
+    ctx.globalAlpha = 1;
+
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 16px ' + FONT; ctx.textAlign = 'left';
+    ctx.fillText('きゅうり ' + score + '点', 10, 24);
+    ctx.font = '12px ' + FONT; ctx.textAlign = 'center';
+    ctx.fillText('ステージ ' + stage, W / 2, 18);
+    if (!boss) ctx.fillText('ヌシまであと ' + Math.max(0, goal - score) + '点', W / 2, 34);
+    if (boss) {
+      ctx.fillText('川の主 大ナマズ', W / 2, H - 22);
+      ctx.fillStyle = 'rgba(0,0,0,0.35)'; ctx.fillRect(W / 2 - 80, H - 16, 160, 10);
+      ctx.fillStyle = '#ff6b5a'; ctx.fillRect(W / 2 - 80, H - 16, 160 * Math.max(0, boss.hp) / boss.maxhp, 10);
+      ctx.fillStyle = '#fff';
+    }
+    ctx.font = 'bold 16px ' + FONT; ctx.textAlign = 'left';
+    ctx.textAlign = 'right'; ctx.fillText('ベスト ' + best, W - 10, 24);
+    ctx.font = '12px ' + FONT; ctx.fillText('まるまる度', W - 130, 44);
+    ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.fillRect(W - 122, 34, 112, 10);
+    ctx.fillStyle = fat > 0.7 ? '#ffb347' : '#a6e36f'; ctx.fillRect(W - 122, 34, 112 * fat, 10);
+    ctx.fillStyle = '#fff'; ctx.fillText('はらぺこ度', W - 130, 62);
+    ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.fillRect(W - 122, 52, 112, 10);
+    ctx.fillStyle = hunger > 0.7 ? '#ff7a59' : '#f5d76e'; ctx.fillRect(W - 122, 52, 112 * hunger, 10);
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'left'; ctx.font = '12px ' + FONT; ctx.fillText('皿の水', 10, 44);
+    ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.fillRect(52, 34, 120, 10);
+    ctx.fillStyle = water > 30 ? '#6fd0ff' : '#ff7a59'; ctx.fillRect(52, 34, 120 * water / 100, 10);
+    ctx.fillStyle = '#fff'; ctx.fillText(dashCD > 0 ? 'ダッシュ準備中…' : 'ダッシュOK!', 10, 62);
+    if (buff > 0) { ctx.fillStyle = '#bfe6ff'; ctx.fillText('大皿！あと' + Math.ceil(buff) + '秒', 10, 80); ctx.fillStyle = '#fff'; }
+
+    if (!running) {
+      ctx.fillStyle = 'rgba(0,0,0,0.45)'; ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
+      ctx.font = 'bold 26px ' + FONT;
+      if (cleared) {
+        ctx.fillText('ステージクリア！', W / 2, H / 2 - 30);
+        ctx.font = '18px ' + FONT; ctx.fillText('川の主をたおした！ ボーナス +200', W / 2, H / 2 + 2);
+        ctx.fillText('スコア ' + score, W / 2, H / 2 + 30);
+        ctx.fillText('「つぎのステージへ」を押してね', W / 2, H / 2 + 58);
+      } else if (over) {
+        ctx.fillText(reason === 'tsuri' ? 'つられた〜！' : (reason === 'boss' ? '川の主にやられた〜！' : '皿がカラカラ…！'), W / 2, H / 2 - 20);
+        ctx.font = '18px ' + FONT; ctx.fillText('スコア ' + score + '　ベスト ' + best, W / 2, H / 2 + 12);
+        ctx.fillText('「もう一回」を押してね', W / 2, H / 2 + 42);
+      } else {
+        ctx.fillText('カッパの川泳ぎ', W / 2, H / 2 - 20);
+        ctx.font = '16px ' + FONT; ctx.fillText('きゅうりを集めて、皿の水を守れ！', W / 2, H / 2 + 12);
+        ctx.fillText('「スタート」を押してね', W / 2, H / 2 + 40);
+      }
+    }
+  }
+
+  function syncLoopBtn() { syncBtn(); }
+  var last = performance.now();
+  function loop(now) {
+    var dt = Math.min(0.05, (now - last) / 1000); last = now;
+    if (running) update(dt); else time += dt;
+    syncLoopBtn();
+    draw();
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+<script data-goatcounter="https://ushiku-honmachi.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
