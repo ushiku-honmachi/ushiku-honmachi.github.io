@@ -222,6 +222,18 @@
     </div>
   </section>
 
+  <section id="game">
+    <h2 data-i="h_game">あそび</h2>
+    <div class="card pad">
+      <p data-i="game_text">ひと休みに、カッパのゲームで遊べます。きゅうりを集めて、頭のお皿の水を守ろう!</p>
+      <div id="rank-mini" hidden>
+        <div class="group-title" data-i="rank_t">みんなのベスト3</div>
+        <ol id="rank-mini-list" style="margin:0 0 12px;padding-left:1.6em;"></ol>
+      </div>
+      <div class="btns"><a class="btn" id="game-link" href="game.html" data-i="game_btn">カッパの川泳ぎをあそぶ</a></div>
+    </div>
+  </section>
+
   <section id="about">
     <h2 data-i="h_about">本町行政区について</h2>
     <div class="card pad">
@@ -245,6 +257,7 @@
 
 <noscript><p style="padding:16px;text-align:center;">このページを見るには、JavaScript を有効にしてください。</p></noscript>
 
+<script src="config.js"></script>
 <script>
 (function () {
   var LIMIT = 5;
@@ -260,6 +273,7 @@
     h_news:['お知らせ・回覧板','News & circulars'], h_events:['行事予定','Event schedule'],
     h_life:['ごみ出し・防災・防犯情報','Garbage, disaster & crime prevention'], h_song:['本町の歌','The Honmachi song'],
     h_about:['本町行政区について','About Honmachi District'],
+    h_game:['あそび','Play'], game_text:['ひと休みに、カッパのゲームで遊べます。きゅうりを集めて、頭のお皿の水を守ろう!','Take a break with a little kappa game. Collect cucumbers and keep the dish on its head full of water!'], game_btn:['カッパの川泳ぎをあそぶ','Play Kappa River Swim'], rank_t:['みんなのベスト3','Top 3 players'], pts:['点',' pts'],
     events_note:['日付の早い順に並んでいます。灰色の文字は、終わった行事です。','Sorted by date. Gray text means the event is over.'],
     life_note:['最新の情報は、牛久市・茨城県警察の公式ホームページをご確認ください。犯罪情報マップは、スマホでは見られないことがあります(スマホは、県警の防犯アプリ「いばらきポリス」をお使いください)。','Please check the official websites of Ushiku City and Ibaraki Prefectural Police for the latest information. The linked pages are in Japanese. The crime map may not open on smartphones; on a phone, use the police app "Ibaraki Police".'],
     song_title:['<strong>「本町のワクワク日和」</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(2025年バージョン)</span>',
@@ -475,6 +489,18 @@
     }
   }
 
+  function renderRankMini() {
+    var box = document.getElementById('rank-mini'), ol = document.getElementById('rank-mini-list');
+    if (!data.ranks || !data.ranks.length) { box.hidden = true; return; }
+    ol.innerHTML = '';
+    data.ranks.forEach(function (r) {
+      var li = document.createElement('li');
+      li.textContent = r.name + '  ' + r.score + tx(T.pts);
+      ol.appendChild(li);
+    });
+    box.hidden = false;
+  }
+
   function render() {
     document.documentElement.lang = lang;
     document.title = tx(T.title);
@@ -489,6 +515,7 @@
     if (data.news && data.news.length && /^\d{4}-\d{1,2}-\d{1,2}/.test(data.news[0].date))
       document.getElementById('updated').textContent = tx(X.updated) + data.news[0].date;
     if (data.linksDone) renderLinks();
+    renderRankMini();
     if (data.visits) { var c = document.getElementById('counter'); c.textContent = tx(T.visits) + data.visits; c.hidden = false; }
   }
 
@@ -499,6 +526,17 @@
   });
 
   render();
+
+  // ゲームのランキング(config.js にアドレスがあるときだけ表示される)
+  try {
+    var RU = window.HONMACHI_RANK_URL;
+    if (RU) {
+      fetch(RU + (RU.indexOf('?') < 0 ? '?' : '&') + 't=' + Date.now(), { cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (j) { if (j && j.ranks) { data.ranks = j.ranks.slice(0, 3); render(); } })
+        .catch(function () {});
+    }
+  } catch (e) {}
 
   // アクセス数(GoatCounterの設定で公開をONにしたときだけ表示される)
   try {
