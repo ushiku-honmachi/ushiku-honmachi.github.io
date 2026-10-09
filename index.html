@@ -532,9 +532,9 @@
     document.getElementById('lang-btn').textContent = lang === 'en' ? '日本語' : 'English';
     var nl = document.getElementById('news-list'), el = document.getElementById('events-list');
     if (data.newsErr) nl.innerHTML = '<li class="empty"></li>', nl.firstChild.textContent = tx(X.newsFail);
-    else if (data.news) renderList(nl, data.news, tx(X.noNews), LIMIT, document.getElementById('news-more'), false);
+    else if (data.news) renderList(nl, (data.pNews || []).concat(data.news), tx(X.noNews), LIMIT, document.getElementById('news-more'), false);
     if (data.eventsErr) el.innerHTML = '<li class="empty"></li>', el.firstChild.textContent = tx(X.eventsFail);
-    else if (data.events) renderList(el, sortEvents(data.events), tx(X.noEvents), 0, null, true);
+    else if (data.events) renderList(el, sortEvents((data.pEvents || []).concat(data.events)), tx(X.noEvents), 0, null, true);
     if (data.news && data.news.length && /^\d{4}-\d{1,2}-\d{1,2}/.test(data.news[0].date))
       document.getElementById('updated').textContent = tx(X.updated) + data.news[0].date;
     if (data.linksDone) renderLinks();
@@ -557,6 +557,26 @@
       fetch(RU + (RU.indexOf('?') < 0 ? '?' : '&') + 't=' + Date.now(), { cache: 'no-store' })
         .then(function (r) { return r.json(); })
         .then(function (j) { if (j && j.ranks) { data.ranks = j.ranks.slice(0, 3); render(); } })
+        .catch(function () {});
+    }
+  } catch (e) {}
+
+  // 役員の投稿(config.js にアドレスがあるときだけ。post.html から送られた内容)
+  try {
+    var PU = window.HONMACHI_RANK_URL;
+    if (PU) {
+      fetch(PU + (PU.indexOf('?') < 0 ? '?' : '&') + 'mode=posts&t=' + Date.now(), { cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (!j || !j.posts) return;
+          data.pNews = []; data.pEvents = [];
+          j.posts.forEach(function (x) {
+            var it = { date: String(x.date || ''), text: String(x.text || ''), en: String(x.en || '') };
+            if (!it.text) return;
+            (x.kind === 'event' ? data.pEvents : data.pNews).push(it);
+          });
+          render();
+        })
         .catch(function () {});
     }
   } catch (e) {}

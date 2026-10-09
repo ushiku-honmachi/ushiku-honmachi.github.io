@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#2f5d50">
+<title>連絡を書く | 本町行政区</title>
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<style>
+  :root { --bg:#f6f4ee; --panel:#fff; --main:#2f5d50; --main-dark:#234539; --text:#222; --text-dim:#5b5b55; --border:#d9d5c8; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif; line-height:1.7; font-size:18px; }
+  header { background:var(--main); color:#fff; text-align:center; padding:16px 12px; }
+  header h1 { margin:0; font-size:1.3rem; }
+  main { max-width:520px; margin:0 auto; padding:16px; }
+  .back { display:inline-block; margin:0 0 12px; color:var(--main-dark); font-weight:bold; }
+  form { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:14px 16px; }
+  label.t { display:block; font-weight:bold; margin:14px 0 4px; }
+  label.t:first-child { margin-top:0; }
+  .opt { font-weight:normal; color:var(--text-dim); font-size:0.85rem; }
+  input[type=date], input[type=password], input[type=text], textarea { width:100%; font-size:1rem; font-family:inherit; padding:10px; border:1px solid var(--border); border-radius:8px; background:#fff; }
+  textarea { min-height:110px; resize:vertical; }
+  .kinds { display:flex; gap:10px; }
+  .kinds label { flex:1; border:2px solid var(--border); border-radius:10px; padding:10px; text-align:center; cursor:pointer; }
+  .kinds input { display:none; }
+  .kinds input:checked + span { color:var(--main-dark); font-weight:bold; }
+  .kinds label:has(input:checked) { border-color:var(--main); background:#e8f1ed; }
+  .hint { font-size:0.85rem; color:var(--text-dim); margin:4px 0 0; }
+  button { margin-top:18px; width:100%; font-size:1.1rem; padding:14px; border:0; border-radius:999px; background:var(--main); color:#fff; font-family:inherit; cursor:pointer; }
+  button:disabled { opacity:0.5; }
+  #msg { margin-top:12px; font-weight:bold; }
+  #msg.ok { color:#1a6b3a; }
+  #msg.ng { color:#b3261e; }
+  .warn { font-size:0.85rem; color:var(--text-dim); background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px 14px; margin-top:14px; }
+</style>
+</head>
+<body>
+<header><h1>連絡を書く(役員用)</h1></header>
+<main>
+  <a class="back" href="index.html">← ホームページにもどる</a>
+  <form id="f" autocomplete="off">
+    <label class="t">どちらに載せますか</label>
+    <div class="kinds">
+      <label><input type="radio" name="kind" value="news" checked><span>お知らせ</span></label>
+      <label><input type="radio" name="kind" value="event"><span>行事予定</span></label>
+    </div>
+
+    <label class="t" for="date">日付</label>
+    <input type="date" id="date" required>
+    <p class="hint">お知らせは、書いた日のままで大丈夫です。行事予定は、行事の日を選びます。</p>
+
+    <label class="t" for="text">内容</label>
+    <textarea id="text" maxlength="400" required placeholder="例: 10月12日の清掃は、雨のため中止です"></textarea>
+    <p class="hint">個人の名前・電話番号・住所は書かないでください。</p>
+
+    <label class="t" for="en">English <span class="opt">(なくても大丈夫です)</span></label>
+    <textarea id="en" maxlength="800" style="min-height:70px"></textarea>
+
+    <label class="t" for="pass">合言葉</label>
+    <input type="password" id="pass" required>
+
+    <button type="submit" id="send">送信する</button>
+    <div id="msg" role="status"></div>
+  </form>
+  <p class="warn">送信すると、すぐホームページに出ます(1〜2分かかることがあります)。まちがえたときは、管理の人に伝えてください。</p>
+</main>
+<script src="config.js"></script>
+<script>
+(function () {
+  var f = document.getElementById('f'), msg = document.getElementById('msg'), btn = document.getElementById('send');
+  var d = new Date();
+  document.getElementById('date').value = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+  try { var p = localStorage.getItem('honmachi-pass'); if (p) document.getElementById('pass').value = p; } catch (e) {}
+
+  function say(t, ok) { msg.textContent = t; msg.className = ok ? 'ok' : 'ng'; }
+
+  f.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var url = window.HONMACHI_RANK_URL;
+    if (!url) { say('まだ準備中です(送り先が設定されていません)。', false); return; }
+    var kind = f.querySelector('input[name=kind]:checked').value;
+    var body = {
+      type: 'post', kind: kind,
+      date: document.getElementById('date').value,
+      text: document.getElementById('text').value,
+      en: document.getElementById('en').value,
+      pass: document.getElementById('pass').value
+    };
+    btn.disabled = true; say('送信中です…', true);
+    fetch(url, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (j && j.ok) {
+          try { localStorage.setItem('honmachi-pass', body.pass); } catch (e) {}
+          document.getElementById('text').value = '';
+          document.getElementById('en').value = '';
+          say('送信しました。ホームページを開いて、出ているか確かめてください。', true);
+        } else if (j && j.error === 'pass') say('合言葉がちがいます。', false);
+        else if (j && j.error === 'locked') say('合言葉のまちがいが続いたため、しばらく使えません。1時間後にもう一度どうぞ。', false);
+        else if (j && j.error === 'date') say('日付を選んでください。', false);
+        else if (j && j.error === 'text') say('内容を書いてください。', false);
+        else say('送れませんでした。もう一度ためしてください。', false);
+      })
+      .catch(function () { say('送れませんでした。電波を確かめて、もう一度ためしてください。', false); })
+      .then(function () { btn.disabled = false; });
+  });
+})();
+</script>
+</body>
+</html>
