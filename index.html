@@ -204,8 +204,26 @@
   <section id="song">
     <h2 data-i="h_song">本町の歌</h2>
     <div class="card pad">
-      <p data-i="song_title"><strong>「本町のワクワク日和」</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(2025年バージョン)</span></p>
-      <audio controls preload="none" src="honmachi-uta.mp3" style="width:100%;margin-top:6px;"></audio>
+      <div class="song-item">
+        <p data-i="song_v26"></p>
+        <audio controls preload="none" src="honmachi-uta-2026.mp3" style="width:100%;margin-top:6px;"></audio>
+        <div class="btns" style="margin-top:10px;"><a class="btn alt" href="honmachi-uta-2026.mp3" download data-i="dl">曲をダウンロード</a></div>
+      </div>
+      <div class="song-item" style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
+        <p data-i="song_v25"></p>
+        <audio controls preload="none" src="honmachi-uta.mp3" style="width:100%;margin-top:6px;"></audio>
+        <div class="btns" style="margin-top:10px;"><a class="btn alt" href="honmachi-uta.mp3" download data-i="dl">曲をダウンロード</a></div>
+      </div>
+      <div class="song-item" style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
+        <p data-i="song_m1"></p>
+        <audio controls preload="none" src="honmachi-uta-march.mp3" style="width:100%;margin-top:6px;"></audio>
+        <div class="btns" style="margin-top:10px;"><a class="btn alt" href="honmachi-uta-march.mp3" download data-i="dl">曲をダウンロード</a></div>
+      </div>
+      <div class="song-item" style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
+        <p data-i="song_m2"></p>
+        <audio controls preload="none" src="honmachi-uta-march2.mp3" style="width:100%;margin-top:6px;"></audio>
+        <div class="btns" style="margin-top:10px;"><a class="btn alt" href="honmachi-uta-march2.mp3" download data-i="dl">曲をダウンロード</a></div>
+      </div>
       <p class="note" data-i="song_note">作詞・作曲: 不明<br>AIを使って作った曲です。</p>
       <details class="lyrics-box">
         <summary data-i="lyrics">歌詞を見る</summary>
@@ -218,7 +236,6 @@
         <p>ホンマチ ホンマチ ワクワクの日<br>心ひとつに踊りましょう<br>みんなの笑顔が宝石みたい<br>きらり輝くホンマチの街</p>
         </div>
       </details>
-      <div class="btns" style="margin-top:14px;"><a class="btn alt" href="honmachi-uta.mp3" download data-i="dl">曲をダウンロード</a></div>
     </div>
   </section>
 
@@ -276,8 +293,14 @@
     h_game:['あそび','Play'], game_text:['ひと休みに、カッパのゲームで遊べます。きゅうりを集めて、頭のお皿の水を守ろう!','Take a break with a little kappa game. Collect cucumbers and keep the dish on its head full of water!'], game_btn:['カッパの川泳ぎをあそぶ','Play Kappa River Swim'], rank_t:['みんなのベスト3','Top 3 players'], pts:['点',' pts'],
     events_note:['日付の早い順に並んでいます。灰色の文字は、終わった行事です。','Sorted by date. Gray text means the event is over.'],
     life_note:['最新の情報は、牛久市・茨城県警察の公式ホームページをご確認ください。犯罪情報マップは、スマホでは見られないことがあります(スマホは、県警の防犯アプリ「いばらきポリス」をお使いください)。','Please check the official websites of Ushiku City and Ibaraki Prefectural Police for the latest information. The linked pages are in Japanese. The crime map may not open on smartphones; on a phone, use the police app "Ibaraki Police".'],
-    song_title:['<strong>「本町のワクワク日和」</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(2025年バージョン)</span>',
+    song_v26:['<strong>「本町のワクワク日和」</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(2026年バージョン)</span>',
+      '<strong>"Honmachi no Wakuwaku Biyori"</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(2026 version)</span>'],
+    song_v25:['<strong>「本町のワクワク日和」</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(2025年バージョン)</span>',
       '<strong>"Honmachi no Wakuwaku Biyori"</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(Honmachi\'s Exciting Day, 2025 version)</span>'],
+    song_m1:['<strong>「本町のワクワク日和」</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(行進バージョン)</span>',
+      '<strong>"Honmachi no Wakuwaku Biyori"</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(marching version)</span>'],
+    song_m2:['<strong>「本町のワクワク日和」</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(行進バージョン2)</span>',
+      '<strong>"Honmachi no Wakuwaku Biyori"</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(marching version 2)</span>'],
     song_note:['作詞・作曲: 不明<br>AIを使って作った曲です。','Lyrics &amp; music: unknown<br>This song was made with AI. (Sung in Japanese)'],
     lyrics:['歌詞を見る','Show lyrics (Japanese)'], dl:['曲をダウンロード','Download the song'],
     about1:['このホームページは、牛久市 本町行政区が、地域のみなさまにお知らせや行事の情報をお届けするためのものです。','This website is run by Honmachi District, Ushiku City, to share news and event information with local residents.'],
