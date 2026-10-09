@@ -34,6 +34,14 @@
   #rank-send { font-size:1rem; padding:10px 18px; border:0; border-radius:8px; background:var(--main); color:#fff; font-family:inherit; cursor:pointer; }
   #rank-send[disabled] { opacity:.5; }
   .rank-note { color:var(--text-dim); font-size:0.8rem; margin:8px 0 0; }
+  #video-box { margin-top:16px; background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:12px 16px; text-align:left; }
+  #video-box h2 { margin:0 0 8px; font-size:1.05rem; color:var(--main-dark); }
+  #video-frame { position:relative; width:100%; aspect-ratio:16/9; background:#1e2a26; border-radius:10px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+  #video-frame.tall { aspect-ratio:9/16; max-width:300px; margin:0 auto; }
+  #video-frame iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+  #video-btn { font-size:1.05rem; padding:12px 24px; border:0; border-radius:999px; background:var(--main); color:#fff; font-family:inherit; cursor:pointer; }
+  .video-note { color:var(--text-dim); font-size:0.8rem; margin:8px 0 0; }
+  .kg-more { margin-top:8px; } .kg-more summary { cursor:pointer; font-weight:bold; color:var(--main-dark); padding:4px 0; }
   footer { text-align:center; color:var(--text-dim); font-size:0.85rem; padding:16px; }
 </style>
 </head>
@@ -56,6 +64,11 @@
       </div>
       <p class="rank-note" id="rank-note"></p>
     </div>
+    <div id="video-box" hidden>
+      <h2 id="video-title">あそびかたの動画</h2>
+      <div id="video-frame"><button id="video-btn" type="button">動画を見る</button></div>
+      <p class="video-note" id="video-note"></p>
+    </div>
     <div class="kg-help" id="kg-help"></div>
   </div>
 </main>
@@ -75,19 +88,19 @@
   } catch (e) {}
   var S = {
     ja: { title:'カッパの川泳ぎ', back:'← ホームページにもどる', start:'スタート', again:'もう一回', dash:'スイスイダッシュ!',
-          help:'上下に泳ぐ: 画面をなぞる / ↑↓キー<br>ダッシュ(岩をすり抜ける): ボタン / スペースキー(ボス戦では、お皿を投げる)<br>🥒きゅうり +10点 / 💧しずくで皿に水を補給 / 🪨岩に当たると皿の水が減るよ<br>🥒食べるほど大きくなる(岩に当たりやすく、遅くなる。ダッシュでやせる)<br>😋食べないと、はらぺこになって皿の水が早く減る<br>🥣友達が投げる大皿を取ると、しばらく水がどんどんたまる<br>🎣水面の釣り人がたらす糸のきゅうりは罠! 取るとゲームオーバー<br>🥣川の小皿は、持ち皿が増える(最大9枚)。大皿は、水も満タン<br>👑目標点で川の主が登場! 持ち皿を投げて倒そう(皿がないと勝てない。赤い帯は突進の合図。ぶつかるとゲームオーバー)<br>✨たまに光るものが流れてくる / 🌧雨で皿に水がたまる / 🟤濁流で動きがにぶくなる',
+          more:'くわしいルール', help:'🏊 画面を上下になぞって、泳ぐ<br>🥒 きゅうりを集めて、点をとる<br>💧 皿の水が、なくなったら終わり(しずく・雨で補給)<br>🪨 岩は、ダッシュ(ボタン/スペース)でよける<br>👑 点がたまると、川の主が登場。皿を投げて、倒そう!', helpMore:'上下に泳ぐ: 画面をなぞる / ↑↓キー<br>ダッシュ(岩をすり抜ける): ボタン / スペースキー(ボス戦では、お皿を投げる)<br>🥒きゅうり +10点 / 💧しずくで皿に水を補給 / 🪨岩に当たると皿の水が減るよ<br>🥒食べるほど大きくなる(岩に当たりやすく、遅くなる。ダッシュでやせる)<br>😋食べないと、はらぺこになって皿の水が早く減る<br>🥣友達が投げる大皿を取ると、しばらく水がどんどんたまる<br>🎣水面の釣り人がたらす糸のきゅうりは罠! 取るとゲームオーバー<br>🥣川の小皿は、持ち皿が増える(最大9枚)。大皿は、水も満タン<br>👑目標点で川の主が登場! 持ち皿を投げて倒そう(皿がないと勝てない。赤い帯は突進の合図。ぶつかるとゲームオーバー)<br>✨たまに光るものが流れてくる / 🌧雨で皿に水がたまる / 🟤濁流で動きがにぶくなる',
           best:'ベスト ', plate:'皿の水', dashWait:'ダッシュ準備中…', dashOk:'ダッシュOK!',
           over:'皿がカラカラ…!', score:'スコア ', pressAgain:'「もう一回」を押してね',
           name:'カッパの川泳ぎ', goal:'きゅうりを集めて、皿の水を守れ!', pressStart:'「スタート」を押してね', foot:'牛久市 本町行政区',
-          rankTitle:'みんなのベスト3', rankEmpty:'まだ記録がありません。1位を目指そう!', pts:'点', newRec:'ベスト3に入りました! ニックネームを入れて「のせる」を押してね。',
+          videoTitle:'あそびかたの動画', videoBtn:'▶ 動画を見る', videoNote:'ボタンを押すと、YouTubeの動画が開きます。', rankTitle:'みんなのベスト3', rankEmpty:'まだ記録がありません。1位を目指そう!', pts:'点', newRec:'ベスト3に入りました! ニックネームを入れて「のせる」を押してね。',
           namePh:'ニックネーム(12字まで)', send:'のせる', sent:'のせました!', fail:'送れませんでした。もう一度ためしてね。', loadFail:'ランキングを読み込めませんでした。',
           note:'ニックネームと点数は、みんなに見えます。本名や、個人の情報は書かないでください。' },
     en: { title:'Kappa River Swim', back:'← Back to the website', start:'Start', again:'Play again', dash:'Swoosh Dash!',
-          help:'Swim up/down: drag on the screen / arrow keys<br>Dash (pass through rocks): button / Space key (in the boss fight, throw a dish)<br>🥒 Cucumber +10 / 💧 Water drop refills the dish / 🪨 Rocks drain the dish<br>🥒 The more you eat, the bigger and slower you get (dash to slim down)<br>😋 If you do not eat, you get hungry and the dish dries faster<br>🥣 Catch the big dish a friend throws for a burst of water<br>🎣 The cucumber on the fishing line is a trap! Game over if you take it<br>🥣 Small dishes add to your stock (max 9). A big dish also fills the water<br>👑 At the target score the river boss appears! Throw your dishes to beat it (no dishes, no win; a red band warns of a charge)<br>✨ Shiny things sometimes float by / 🌧 Rain fills the dish / 🟤 Muddy flow slows you down',
+          more:'More rules', help:'🏊 Drag up/down to swim<br>🥒 Collect cucumbers to score<br>💧 The game ends when the dish is dry (drops and rain refill it)<br>🪨 Dodge rocks with the dash (button / Space)<br>👑 At a high score the river boss appears. Throw dishes to beat it!', helpMore:'Swim up/down: drag on the screen / arrow keys<br>Dash (pass through rocks): button / Space key (in the boss fight, throw a dish)<br>🥒 Cucumber +10 / 💧 Water drop refills the dish / 🪨 Rocks drain the dish<br>🥒 The more you eat, the bigger and slower you get (dash to slim down)<br>😋 If you do not eat, you get hungry and the dish dries faster<br>🥣 Catch the big dish a friend throws for a burst of water<br>🎣 The cucumber on the fishing line is a trap! Game over if you take it<br>🥣 Small dishes add to your stock (max 9). A big dish also fills the water<br>👑 At the target score the river boss appears! Throw your dishes to beat it (no dishes, no win; a red band warns of a charge)<br>✨ Shiny things sometimes float by / 🌧 Rain fills the dish / 🟤 Muddy flow slows you down',
           best:'Best ', plate:'Dish water', dashWait:'Dash charging…', dashOk:'Dash ready!',
           over:'The dish is dry…!', score:'Score ', pressAgain:'Press "Play again"',
           name:'Kappa River Swim', goal:'Collect cucumbers and keep your dish full!', pressStart:'Press "Start"', foot:'Honmachi District, Ushiku City',
-          rankTitle:'Top 3 players', rankEmpty:'No records yet. Be the first!', pts:' pts', newRec:'You made the top 3! Enter a nickname and press "Post".',
+          videoTitle:'How to play (video)', videoBtn:'▶ Watch the video', videoNote:'Pressing the button loads the video from YouTube.', rankTitle:'Top 3 players', rankEmpty:'No records yet. Be the first!', pts:' pts', newRec:'You made the top 3! Enter a nickname and press "Post".',
           namePh:'Nickname (up to 12 characters)', send:'Post', sent:'Posted!', fail:'Could not send. Please try again.', loadFail:'Could not load the ranking.',
           note:'Your nickname and score will be visible to everyone. Please do not enter your real name or any personal information.' }
   };
@@ -97,8 +110,48 @@
   document.getElementById('ttl').textContent = STR.title;
   document.getElementById('back').textContent = STR.back;
   document.getElementById('kg-dash').textContent = STR.dash;
-  document.getElementById('kg-help').innerHTML = STR.help;
+  document.getElementById('kg-help').innerHTML = STR.help + '<details class="kg-more"><summary>' + STR.more + '</summary><div style="margin-top:8px">' + STR.helpMore + '</div></details>';
   document.getElementById('foot').textContent = STR.foot;
+
+  // ---- あそびかた動画 (config.js の HONMACHI_GAME_VIDEO に YouTube のアドレスを入れると表示される) ----
+  (function () {
+    var v = (typeof window.HONMACHI_GAME_VIDEO === 'string') ? window.HONMACHI_GAME_VIDEO.trim() : '';
+    if (!v) return;
+    var box0 = document.getElementById('video-box');
+    // YouTube ではなく、このサイトに置いた動画ファイル (mp4 など) を使うとき
+    if (/^[\w.\-\/]+\.(mp4|webm|mov|m4v)$/i.test(v)) {
+      var vf = document.getElementById('video-frame');
+      document.getElementById('video-title').textContent = STR.videoTitle;
+      document.getElementById('video-note').hidden = true;
+      vf.innerHTML = '';
+      vf.style.background = '#000';
+      var vd = document.createElement('video');
+      vd.src = v; vd.controls = true; vd.preload = 'none'; vd.setAttribute('playsinline', '');
+      vd.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
+      vf.appendChild(vd);
+      box0.hidden = false;
+      return;
+    }
+    var m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/.exec(v) || /^([\w-]{11})$/.exec(v);
+    if (!m) return;
+    var id = m[1], tall = /\/shorts\//.test(v);
+    var box = document.getElementById('video-box'), frame = document.getElementById('video-frame'), btn = document.getElementById('video-btn');
+    document.getElementById('video-title').textContent = STR.videoTitle;
+    document.getElementById('video-note').textContent = STR.videoNote;
+    btn.textContent = STR.videoBtn;
+    if (tall) frame.className = 'tall';
+    box.hidden = false;
+    btn.addEventListener('click', function () {
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0&autoplay=1&hl=' + lang;
+      f.title = STR.videoTitle;
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      f.setAttribute('allowfullscreen', '');
+      frame.innerHTML = '';
+      frame.appendChild(f);
+      document.getElementById('video-note').hidden = true;
+    });
+  })();
 
   // ---- 英語表示用の置き換え(ゲーム画面の文字) ----
   var EN = {
