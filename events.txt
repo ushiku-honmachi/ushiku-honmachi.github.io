@@ -3,7 +3,10 @@
 # (回覧板の「今月の行事」のうち、公開してよいものだけを載せています)
 # 英語版を出すときは、「日付 | 日本語 | English」のように、最後に英語を足します(なくてもOK)。
 2026-10-10 | 区民会館清掃(班長さん交代で実施・20,21,22,23班) 10:00〜 区民会館 | Community hall cleaning (group leaders take turns: groups 20, 21, 22, 23) from 10:00 AM, community hall
+2026-10-10 | 【お手伝い募集】運動会の準備 テント・机・椅子などの積み出し 13:00〜 区民会館 | [Volunteers needed] Sports day preparation: loading tents, tables and chairs from 1:00 PM, community hall
+2026-10-10 | 豚汁(運動会の昼食用)の買い出し 13:00〜 | Shopping for the pork miso soup (tonjiru) for the sports-day lunch, from 1:00 PM
 2026-10-10 | 【お手伝い募集】運動会の応援席の設置作業 15:00〜 牛久運動広場(三中近く) https://www.google.com/maps/search/?api=1&query=%E7%89%9B%E4%B9%85%E9%81%8B%E5%8B%95%E5%BA%83%E5%A0%B4 グラウンドで約1時間の作業です。前日に来られる方は、ぜひお願いします | [Volunteers needed] Setting up spectator seating for the sports day, from 3:00 PM at the Ushiku Sports Field (near Ushiku 3rd Junior High) https://www.google.com/maps/search/?api=1&query=%E7%89%9B%E4%B9%85%E9%81%8B%E5%8B%95%E5%BA%83%E5%A0%B4 About one hour of work on the ground. If you can come the day before, please help
+2026-10-10 | 豚汁の下処理 15:00〜 区民会館 | Preparing the pork miso soup (tonjiru) from 3:00 PM, community hall
 2026-10-11 | 【お手伝い募集】運動会の応援席の設置作業 7:00〜 牛久運動広場(三中近く) グラウンドで約1時間の作業です。当日、早めに来られる方は、ぜひお願いします | [Volunteers needed] Setting up spectator seating for the sports day, from 7:00 AM at the Ushiku Sports Field (near Ushiku 3rd Junior High). About one hour of work on the ground. If you can come early on the day, please help
 2026-10-11 | 牛久地区 市民体育祭(運動会) 8:30開会 牛久運動広場(三中近く) https://www.google.com/maps/search/?api=1&query=%E7%89%9B%E4%B9%85%E9%81%8B%E5%8B%95%E5%BA%83%E5%A0%B4 事前申し込みなしで参加OK。昼食はおにぎり・トン汁。くじ引き商品もあります | Ushiku Area Citizens' Sports Festival, opens 8:30 AM, Ushiku Sports Field (near Ushiku 3rd Junior High) https://www.google.com/maps/search/?api=1&query=%E7%89%9B%E4%B9%85%E9%81%8B%E5%8B%95%E5%BA%83%E5%A0%B4 No advance registration needed. Lunch: rice balls and pork miso soup. Prizes from the lottery too
 2026-10-17 | 区民会館 周囲の草取り(区民有志による環境整備) 8:00〜 区民会館 | Weeding around the community hall (environment work by volunteer residents) from 8:00 AM, community hall
