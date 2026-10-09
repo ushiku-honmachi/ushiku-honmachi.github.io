@@ -32,6 +32,8 @@
   #msg { margin-top:12px; font-weight:bold; }
   #msg.ok { color:#1a6b3a; }
   #msg.ng { color:#b3261e; }
+  .show { display:flex; align-items:center; gap:8px; margin-top:8px; font-size:0.95rem; cursor:pointer; }
+  .show input { width:22px; height:22px; }
   .warn { font-size:0.85rem; color:var(--text-dim); background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px 14px; margin-top:14px; }
 </style>
 </head>
@@ -59,6 +61,7 @@
 
     <label class="t" for="pass">合言葉</label>
     <input type="password" id="pass" required>
+    <label class="show"><input type="checkbox" id="showpass"> 合言葉を表示する(変換が見えます)</label>
 
     <button type="submit" id="send">送信する</button>
     <div id="msg" role="status"></div>
@@ -72,6 +75,10 @@
   var d = new Date();
   document.getElementById('date').value = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
   try { var p = localStorage.getItem('honmachi-pass'); if (p) document.getElementById('pass').value = p; } catch (e) {}
+
+  document.getElementById('showpass').addEventListener('change', function () {
+    document.getElementById('pass').type = this.checked ? 'text' : 'password';
+  });
 
   function say(t, ok) { msg.textContent = t; msg.className = ok ? 'ok' : 'ng'; }
 
