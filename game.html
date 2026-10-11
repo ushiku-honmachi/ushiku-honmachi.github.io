@@ -242,8 +242,17 @@
   });
 
   // ---- ゲーム本体（新しい版）。ランキングは、かっぱが全員いなくなったときに送る ----
-  window.kappaOnScore = function (r) { if (r && r.final) onGameOver(r.score); };
-  document.getElementById('kg-start').addEventListener('click', function () { rankForm.hidden = true; });
+  // かっぱが全員やられて終わったとき、その回のベストが3位より上なら、名前の欄を出す
+  var runBest = 0, posted = 0, shown = 0, runEnded = false;
+  window.kappaOnScore = function (r) {
+    if (!r) return;
+    if (r.score > runBest) runBest = r.score;
+    if (r.final) { runEnded = true; if (runBest > posted && runBest !== shown) { shown = runBest; onGameOver(runBest); } }
+  };
+  rankSend.addEventListener('click', function () { if (shown > posted) posted = shown; });
+  document.getElementById('kg-start').addEventListener('click', function () {
+    if (runEnded) { runBest = 0; posted = 0; shown = 0; runEnded = false; rankForm.hidden = true; }
+  });
 (function () {
   var cv = document.getElementById('kg-canvas');
   var ctx = cv.getContext('2d');
