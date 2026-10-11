@@ -5,42 +5,245 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#2f5d50">
 <title>カッパの川泳ぎ | 本町行政区</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <style>
-  body { margin: 0; background: #eef4ee; color: #1d2b22; font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", system-ui, sans-serif; line-height: 1.6; }
-  .top { background: #2f5d50; color: #fff; padding: 14px 16px; }
-  .top h1 { margin: 0; font-size: 20px; }
-  main { max-width: 520px; margin: 0 auto; padding: 14px 16px 24px; }
-  .back { display: inline-block; margin-bottom: 10px; color: #2f5d50; font-weight: bold; }
-  footer { text-align: center; color: #55655a; font-size: 13px; padding: 16px; }
+  :root { --bg:#f6f4ee; --panel:#fff; --main:#2f5d50; --main-dark:#234539; --text:#222; --text-dim:#5b5b55; --border:#d9d5c8; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif; line-height:1.7; font-size:18px; }
+  header { background:var(--main); color:#fff; text-align:center; padding:16px 12px; }
+  header h1 { margin:0; font-size:1.3rem; }
+  main { max-width:520px; margin:0 auto; padding:16px; }
+  .back { display:inline-block; margin:0 0 12px; color:var(--main-dark); font-weight:bold; }
+  #kappa-game-wrap { max-width:480px; margin:0 auto; text-align:center; }
+  #kappa-game-wrap canvas { width:100%; height:auto; display:block; border-radius:12px; touch-action:none; background:#3aa7d6; }
+  .kg-btns { margin-top:10px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .kg-btns button { font-size:1.05rem; padding:12px 22px; border:0; border-radius:999px; background:var(--main); color:#fff; cursor:pointer; font-family:inherit; }
+  .kg-btns button:active { background:var(--main-dark); }
+  .kg-help { font-size:0.85rem; color:var(--text-dim); margin-top:10px; line-height:1.6; text-align:left; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px 14px; }
+  #rank-box { margin-top:16px; background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:12px 16px; text-align:left; }
+  #rank-box h2 { margin:0 0 6px; font-size:1.05rem; color:var(--main-dark); }
+  #rank-list { margin:0; padding:0; list-style:none; }
+  #rank-list li { display:flex; justify-content:space-between; gap:8px; padding:6px 0; border-bottom:1px solid var(--border); }
+  #rank-list li:last-child { border-bottom:0; }
+  #rank-list .nm { font-weight:bold; overflow-wrap:anywhere; }
+  #rank-form { margin-top:10px; padding-top:10px; border-top:2px solid var(--main); }
+  #rank-form p { margin:0 0 8px; font-size:0.95rem; }
+  #rank-form .row { display:flex; gap:8px; }
+  #rank-name { flex:1; min-width:0; font-size:1rem; padding:10px; border:2px solid var(--border); border-radius:8px; font-family:inherit; }
+  #rank-send { font-size:1rem; padding:10px 18px; border:0; border-radius:8px; background:var(--main); color:#fff; font-family:inherit; cursor:pointer; }
+  #rank-send[disabled] { opacity:.5; }
+  .rank-note { color:var(--text-dim); font-size:0.8rem; margin:8px 0 0; }
+  #video-box { margin-top:16px; background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:12px 16px; text-align:left; }
+  #video-box h2 { margin:0 0 8px; font-size:1.05rem; color:var(--main-dark); }
+  #video-frame { position:relative; width:100%; aspect-ratio:16/9; background:#1e2a26; border-radius:10px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+  #video-frame.tall { aspect-ratio:9/16; max-width:300px; margin:0 auto; }
+  #video-frame iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+  #video-btn { font-size:1.05rem; padding:12px 24px; border:0; border-radius:999px; background:var(--main); color:#fff; font-family:inherit; cursor:pointer; }
+  .video-note { color:var(--text-dim); font-size:0.8rem; margin:8px 0 0; }
+  .kg-more { margin-top:8px; } .kg-more summary { cursor:pointer; font-weight:bold; color:var(--main-dark); padding:4px 0; }
+  footer { text-align:center; color:var(--text-dim); font-size:0.85rem; padding:16px; }
 </style>
 </head>
 <body>
-<header class="top"><h1>カッパの川泳ぎ</h1></header>
+<header><h1 id="ttl">カッパの川泳ぎ</h1></header>
 <main>
-<a class="back" href="https://ushiku-honmachi.github.io/index.html#game">← ホームページにもどる</a>
-<!-- ここから：カッパの川泳ぎゲーム（貼り付け用） -->
-<!-- ホームページの好きな場所にそのままコピペしてください。外部ファイル不要です。 -->
-<div id="kappa-game-wrap">
-  <style>
-    #kappa-game-wrap { max-width: 480px; margin: 0 auto; font-family: sans-serif; text-align: center; }
-    #kappa-game-wrap canvas { width: 100%; height: auto; display: block; border-radius: 12px; touch-action: none; background: #3aa7d6; }
-    #kappa-game-wrap .kg-btns { margin-top: 8px; display: flex; gap: 8px; justify-content: center; }
-    #kappa-game-wrap button { font-size: 16px; padding: 10px 18px; border: 0; border-radius: 999px; background: #3c9d4e; color: #fff; cursor: pointer; }
-    #kappa-game-wrap button:active { background: #2d7a3b; }
-    #kappa-game-wrap .kg-help { font-size: 12px; color: #555; margin-top: 6px; line-height: 1.5; }
-  </style>
-  <div style="font-size:11px;color:#777;margin-bottom:4px">更新版 10/11 22:40（かっぱ2人制・大ガラス修正・ヒーロー入り）</div>
-  <canvas id="kg-canvas" width="480" height="320"></canvas>
-  <div class="kg-btns">
-    <button id="kg-start">スタート</button>
-    <button id="kg-dash">スイスイダッシュ！</button>
+  <a class="back" id="back" href="index.html#game">← ホームページにもどる</a>
+  <div id="kappa-game-wrap">
+    <canvas id="kg-canvas" width="480" height="320"></canvas>
+    <div class="kg-btns">
+      <button id="kg-start" type="button">スタート</button>
+      <button id="kg-dash" type="button">スイスイダッシュ!</button>
+    </div>
+    <div id="rank-box" hidden>
+      <h2 id="rank-title">みんなのベスト3</h2>
+      <ol id="rank-list"></ol>
+      <div id="rank-form" hidden>
+        <p id="rank-msg"></p>
+        <div class="row"><input id="rank-name" type="text" maxlength="12" autocomplete="off"><button id="rank-send" type="button">のせる</button></div>
+      </div>
+      <p class="rank-note" id="rank-note"></p>
+    </div>
+    <div id="video-box" hidden>
+      <h2 id="video-title">あそびかたの動画</h2>
+      <div id="video-frame"><button id="video-btn" type="button">動画を見る</button></div>
+      <p class="video-note" id="video-note"></p>
+    </div>
+    <div class="kg-help" id="kg-help"></div>
   </div>
-  <div class="kg-help">
-    ↑↓キー or 画面をなぞって上下に泳ぐ ／ スペース or ボタンでダッシュ（岩をすり抜ける）／ボス戦ではお皿を投げる<br>👑各ステージの最後にボス！持ち皿を投げて倒す（皿がないと勝てない）。大ガニ／大ガラス／皿割りオバケ／ゴミの山の大怪獣<br>🏁川泳ぎ → 滝のぼり → 川泳ぎ → きゅうりキャッチ → 川泳ぎ → 積み皿バランス → 川泳ぎ → 進化ゲーム と続く（持ち皿は持ち越し）<br>🌊滝のぼり：左右になぞって岩や流木をよける／🥒キャッチ：お皿で受ける、針つきはNG／🍽積み皿：タップで置く／🧬進化：ごはんを食べて進化、どくはガード<br>
-    🥒きゅうり＋10点　💧頭の皿に水を補給　🪨岩に当たると皿の水が減るよ<br>🥒食べるほど大きくなる（岩に当たりやすく遅くなる。ダッシュでやせる）<br>😋食べないとはらぺこになり、皿の水が早く減る<br>🥣友達が投げる大皿を取ると、しばらく水がどんどんたまる<br>🎣水面の釣り人がたらす糸のきゅうりは罠！取るとゲームオーバー<br>🥣川の小皿は持ち皿が増える（最大9枚）。大皿は水も満タン<br>👑目標点で川の主が登場！持ち皿を投げて倒そう（皿がないと勝てない。赤い帯は突進の合図。ぶつかるとゲームオーバー）<br>✨たまに光るものが流れてくる　🌧雨で皿に水がたまる　🟤濁流で動きがにぶくなる
-  </div>
-</div>
+</main>
+<footer id="foot">牛久市 本町行政区</footer>
+
+<script src="config.js"></script>
 <script>
+(function () {
+  // ---- 言語 (ホームページの日本語/English 切り替えを引き継ぐ) ----
+  var lang = 'ja';
+  try {
+    var q = /[?&]lang=(en|ja)/.exec(location.search), saved = null;
+    try { saved = localStorage.getItem('honmachi-lang'); } catch (e) {}
+    if (q) lang = q[1];
+    else if (saved === 'en' || saved === 'ja') lang = saved;
+    else if (navigator.language && navigator.language.toLowerCase().indexOf('ja') !== 0) lang = 'en';
+  } catch (e) {}
+  var S = {
+    ja: { title:'カッパの川泳ぎ', back:'← ホームページにもどる', start:'スタート', again:'もう一回', dash:'スイスイダッシュ!',
+          more:'くわしいルール', help:'🏊 画面を上下になぞって、泳ぐ<br>🥒 きゅうりを集めて、点をとる<br>💧 皿の水が、なくなったら終わり(しずく・雨で補給)<br>🪨 岩は、ダッシュ(ボタン/スペース)でよける<br>👑 点がたまると、川の主が登場。皿を投げて、倒そう!', helpMore:'🆕 ステージが進むと、滝のぼり・きゅうりキャッチ・積み皿・進化ゲームにも挑戦！ 各ステージの最後にはボスがいて、集めた皿を投げて倒す。かっぱは2人まで（1000点でボーナスで1人ふえる）。<br>上下に泳ぐ: 画面をなぞる / ↑↓キー<br>ダッシュ(岩をすり抜ける): ボタン / スペースキー(ボス戦では、お皿を投げる)<br>🥒きゅうり +10点 / 💧しずくで皿に水を補給 / 🪨岩に当たると皿の水が減るよ<br>🥒食べるほど大きくなる(岩に当たりやすく、遅くなる。ダッシュでやせる)<br>😋食べないと、はらぺこになって皿の水が早く減る<br>🥣友達が投げる大皿を取ると、しばらく水がどんどんたまる<br>🎣水面の釣り人がたらす糸のきゅうりは罠! 取るとゲームオーバー<br>🥣川の小皿は、持ち皿が増える(最大9枚)。大皿は、水も満タン<br>👑目標点で川の主が登場! 持ち皿を投げて倒そう(皿がないと勝てない。赤い帯は突進の合図。ぶつかるとゲームオーバー)<br>✨たまに光るものが流れてくる / 🌧雨で皿に水がたまる / 🟤濁流で動きがにぶくなる',
+          best:'ベスト ', plate:'皿の水', dashWait:'ダッシュ準備中…', dashOk:'ダッシュOK!',
+          over:'皿がカラカラ…!', score:'スコア ', pressAgain:'「もう一回」を押してね',
+          name:'カッパの川泳ぎ', goal:'きゅうりを集めて、皿の水を守れ!', pressStart:'「スタート」を押してね', foot:'牛久市 本町行政区',
+          videoTitle:'あそびかたの動画', videoBtn:'▶ 動画を見る', videoNote:'ボタンを押すと、YouTubeの動画が開きます。', rankTitle:'みんなのベスト3', rankEmpty:'まだ記録がありません。1位を目指そう!', pts:'点', newRec:'ベスト3に入りました! ニックネームを入れて「のせる」を押してね。',
+          namePh:'ニックネーム(12字まで)', send:'のせる', sent:'のせました!', fail:'送れませんでした。もう一度ためしてね。', loadFail:'ランキングを読み込めませんでした。',
+          note:'ニックネームと点数は、みんなに見えます。本名や、個人の情報は書かないでください。' },
+    en: { title:'Kappa River Swim', back:'← Back to the website', start:'Start', again:'Play again', dash:'Swoosh Dash!',
+          more:'More rules', help:'🏊 Drag up/down to swim<br>🥒 Collect cucumbers to score<br>💧 The game ends when the dish is dry (drops and rain refill it)<br>🪨 Dodge rocks with the dash (button / Space)<br>👑 At a high score the river boss appears. Throw dishes to beat it!', helpMore:'Swim up/down: drag on the screen / arrow keys<br>Dash (pass through rocks): button / Space key (in the boss fight, throw a dish)<br>🥒 Cucumber +10 / 💧 Water drop refills the dish / 🪨 Rocks drain the dish<br>🥒 The more you eat, the bigger and slower you get (dash to slim down)<br>😋 If you do not eat, you get hungry and the dish dries faster<br>🥣 Catch the big dish a friend throws for a burst of water<br>🎣 The cucumber on the fishing line is a trap! Game over if you take it<br>🥣 Small dishes add to your stock (max 9). A big dish also fills the water<br>👑 At the target score the river boss appears! Throw your dishes to beat it (no dishes, no win; a red band warns of a charge)<br>✨ Shiny things sometimes float by / 🌧 Rain fills the dish / 🟤 Muddy flow slows you down',
+          best:'Best ', plate:'Dish water', dashWait:'Dash charging…', dashOk:'Dash ready!',
+          over:'The dish is dry…!', score:'Score ', pressAgain:'Press "Play again"',
+          name:'Kappa River Swim', goal:'Collect cucumbers and keep your dish full!', pressStart:'Press "Start"', foot:'Honmachi District, Ushiku City',
+          videoTitle:'How to play (video)', videoBtn:'▶ Watch the video', videoNote:'Pressing the button loads the video from YouTube.', rankTitle:'Top 3 players', rankEmpty:'No records yet. Be the first!', pts:' pts', newRec:'You made the top 3! Enter a nickname and press "Post".',
+          namePh:'Nickname (up to 12 characters)', send:'Post', sent:'Posted!', fail:'Could not send. Please try again.', loadFail:'Could not load the ranking.',
+          note:'Your nickname and score will be visible to everyone. Please do not enter your real name or any personal information.' }
+  };
+  var STR = S[lang];
+  document.documentElement.lang = lang;
+  document.title = STR.title + ' | ' + (lang === 'en' ? 'Honmachi District' : '本町行政区');
+  document.getElementById('ttl').textContent = STR.title;
+  document.getElementById('back').textContent = STR.back;
+  document.getElementById('kg-dash').textContent = STR.dash;
+  document.getElementById('kg-help').innerHTML = STR.help + '<details class="kg-more"><summary>' + STR.more + '</summary><div style="margin-top:8px">' + STR.helpMore + '</div></details>';
+  document.getElementById('foot').textContent = STR.foot;
+
+  // ---- あそびかた動画 (config.js の HONMACHI_GAME_VIDEO に YouTube のアドレスを入れると表示される) ----
+  (function () {
+    var v = (typeof window.HONMACHI_GAME_VIDEO === 'string') ? window.HONMACHI_GAME_VIDEO.trim() : '';
+    if (!v) return;
+    var box0 = document.getElementById('video-box');
+    // YouTube ではなく、このサイトに置いた動画ファイル (mp4 など) を使うとき
+    if (/^[\w.\-\/]+\.(mp4|webm|mov|m4v)$/i.test(v)) {
+      var vf = document.getElementById('video-frame');
+      document.getElementById('video-title').textContent = STR.videoTitle;
+      document.getElementById('video-note').hidden = true;
+      vf.innerHTML = '';
+      vf.style.background = '#000';
+      var vd = document.createElement('video');
+      vd.src = v; vd.controls = true; vd.preload = 'none'; vd.setAttribute('playsinline', '');
+      vd.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
+      vf.appendChild(vd);
+      box0.hidden = false;
+      return;
+    }
+    var m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/.exec(v) || /^([\w-]{11})$/.exec(v);
+    if (!m) return;
+    var id = m[1], tall = /\/shorts\//.test(v);
+    var box = document.getElementById('video-box'), frame = document.getElementById('video-frame'), btn = document.getElementById('video-btn');
+    document.getElementById('video-title').textContent = STR.videoTitle;
+    document.getElementById('video-note').textContent = STR.videoNote;
+    btn.textContent = STR.videoBtn;
+    if (tall) frame.className = 'tall';
+    box.hidden = false;
+    btn.addEventListener('click', function () {
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0&autoplay=1&hl=' + lang;
+      f.title = STR.videoTitle;
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      f.setAttribute('allowfullscreen', '');
+      frame.innerHTML = '';
+      frame.appendChild(f);
+      document.getElementById('video-note').hidden = true;
+    });
+  })();
+
+  // ---- 英語表示用の置き換え(ゲーム画面の文字) ----
+  var EN = {
+    'スタート':'Start','もう一回':'Play again','つぎのステージへ':'Next stage','スイスイダッシュ！':'Swoosh Dash!','お皿を投げる':'Throw dish',
+    'ダッシュ準備中…':'Dash charging…','ダッシュOK!':'Dash ready!','皿の水':'Water','まるまる度':'Chubby','はらぺこ度':'Hungry',
+    '川の主 大ナマズ':'River boss: Giant Catfish','川の主があらわれた！':'The river boss appears!',
+    'スペース／ボタンでお皿を投げろ！':'Throw dishes with Space / the button!','皿がない！川の皿を拾え！':'No dishes! Pick some up!','皿がない！':'No dishes!',
+    'ヒット！':'Hit!','ガブッ！':'Chomp!','ゴツン！':'Bonk!','ほいっ！':'Here!','水+':'Water+','皿+1':'Dish+1','大皿ゲット！皿+1':'Big dish! Dish+1',
+    '雨で皿に水がたまる！':'Rain fills your dish!','雨がふってきた…！':'It started to rain…!','濁流！動きがにぶい…':'Muddy flow! You move slowly…','濁流がくるぞ！ダッシュで耐えろ！':'Muddy flow coming! Use dash!',
+    'ステージクリア！':'Stage clear!','川の主をたおした！ ボーナス +200':'River boss defeated! Bonus +200','「つぎのステージへ」を押してね':'Press "Next stage"',
+    'つられた〜！':'Hooked!','川の主にやられた〜！':'Beaten by the river boss!','皿がカラカラ…！':'The dish is dry…!','「もう一回」を押してね':'Press "Play again"',
+    'カッパの川泳ぎ':'Kappa River Swim','きゅうりを集めて、皿の水を守れ！':'Collect cucumbers and keep your dish full!','「スタート」を押してね':'Press "Start"'
+  };
+  function tr(t) {
+    if (lang !== 'en') return t;
+    if (EN[t]) return EN[t];
+    var m;
+    if ((m = /^きゅうり (\d+)点$/.exec(t))) return 'Score ' + m[1];
+    if ((m = /^ステージ (\d+)$/.exec(t))) return 'Stage ' + m[1];
+    if ((m = /^ヌシまであと (\d+)点$/.exec(t))) return m[1] + ' pts to the boss';
+    if ((m = /^ベスト (\d+)$/.exec(t))) return 'Best ' + m[1];
+    if ((m = /^持ち皿 (\d+)$/.exec(t))) return 'Dishes ' + m[1];
+    if ((m = /^大皿！あと(\d+)秒$/.exec(t))) return 'Big dish! ' + m[1] + 's left';
+    if ((m = /^スコア (\d+)　ベスト (\d+)$/.exec(t))) return 'Score ' + m[1] + '   Best ' + m[2];
+    if ((m = /^スコア (\d+)$/.exec(t))) return 'Score ' + m[1];
+    return t;
+  }
+
+  // ---- ランキング (Google スプレッドシート経由。config.js にアドレスがあるときだけ動く) ----
+  var RANK_URL = (typeof window.HONMACHI_RANK_URL === 'string') ? window.HONMACHI_RANK_URL : '';
+  var ranks = null;            // 読み込めたら配列、だめなら null
+  var rankBox = document.getElementById('rank-box');
+  var rankList = document.getElementById('rank-list');
+  var rankForm = document.getElementById('rank-form');
+  var rankName = document.getElementById('rank-name');
+  var rankSend = document.getElementById('rank-send');
+  var rankMsg = document.getElementById('rank-msg');
+  var pendingScore = 0;
+
+  function renderRanks() {
+    rankList.innerHTML = '';
+    if (!ranks) { var li0 = document.createElement('li'); li0.textContent = STR.loadFail; rankList.appendChild(li0); return; }
+    if (!ranks.length) { var li1 = document.createElement('li'); li1.textContent = STR.rankEmpty; rankList.appendChild(li1); return; }
+    ranks.forEach(function (r, i) {
+      var li = document.createElement('li');
+      var a = document.createElement('span'); a.className = 'nm'; a.textContent = (i + 1) + (lang === 'en' ? '. ' : '位  ') + r.name;
+      var b = document.createElement('span'); b.textContent = r.score + STR.pts;
+      li.appendChild(a); li.appendChild(b); rankList.appendChild(li);
+    });
+  }
+  function loadRanks() {
+    if (!RANK_URL) return Promise.resolve();
+    return fetch(RANK_URL + (RANK_URL.indexOf('?') < 0 ? '?' : '&') + 't=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { ranks = (j && j.ranks) ? j.ranks.slice(0, 3) : []; })
+      .catch(function () { ranks = null; })
+      .then(renderRanks);
+  }
+  if (RANK_URL) {
+    rankBox.hidden = false;
+    document.getElementById('rank-title').textContent = STR.rankTitle;
+    document.getElementById('rank-note').textContent = STR.note;
+    rankName.placeholder = STR.namePh; rankSend.textContent = STR.send;
+    try { rankName.value = localStorage.getItem('kappa_name') || ''; } catch (e) {}
+    loadRanks();
+  }
+  function onGameOver(sc) {
+    rankForm.hidden = true;
+    if (!RANK_URL || !ranks || sc <= 0) return;
+    if (ranks.length >= 3 && sc <= ranks[ranks.length - 1].score) return;
+    pendingScore = sc;
+    rankMsg.textContent = STR.newRec;
+    rankSend.disabled = false;
+    rankForm.hidden = false;
+  }
+  rankSend.addEventListener('click', function () {
+    var nm = (rankName.value || '').replace(/[<>&"'\\]/g, '').replace(/\s+/g, ' ').trim().slice(0, 12);
+    if (!nm || !pendingScore) { rankName.focus(); return; }
+    rankSend.disabled = true;
+    try { localStorage.setItem('kappa_name', nm); } catch (e) {}
+    fetch(RANK_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ name: nm, score: pendingScore }) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (j && j.ok) { pendingScore = 0; rankMsg.textContent = STR.sent; if (j.ranks) { ranks = j.ranks.slice(0, 3); renderRanks(); } setTimeout(function () { rankForm.hidden = true; }, 1500); }
+        else { rankMsg.textContent = STR.fail; rankSend.disabled = false; }
+      })
+      .catch(function () { rankMsg.textContent = STR.fail; rankSend.disabled = false; });
+  });
+
+  // ---- ゲーム本体（新しい版）。ランキングは、かっぱが全員いなくなったときに送る ----
+  window.kappaOnScore = function (r) { if (r && r.final) onGameOver(r.score); };
+  document.getElementById('kg-start').addEventListener('click', function () { rankForm.hidden = true; });
 (function () {
   var cv = document.getElementById('kg-canvas');
   var ctx = cv.getContext('2d');
@@ -180,7 +383,7 @@
     if (over) return;
     over = true; running = false; reason = why; lives -= 1;
     startBtn.textContent = lives > 0 ? 'もう一回' : 'はじめから';
-    try { if (window.kappaOnScore) window.kappaOnScore({ score: score, stage: stageNo }); } catch (e) {}
+    try { if (window.kappaOnScore) window.kappaOnScore({ score: score, stage: stageNo, final: lives <= 0 }); } catch (e) {}
     if (score > best) { best = score; try { localStorage.setItem('kappa_best', String(best)); } catch (e) {} }
   }
 
@@ -1811,10 +2014,8 @@
   }
   requestAnimationFrame(loop);
 })();
+})();
 </script>
-<!-- ここまで -->
-
-</main>
-<footer>牛久市 本町行政区</footer>
+<script data-goatcounter="https://ushiku-honmachi.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
