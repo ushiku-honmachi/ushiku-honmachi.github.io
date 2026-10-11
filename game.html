@@ -5,296 +5,144 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#2f5d50">
 <title>カッパの川泳ぎ | 本町行政区</title>
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <style>
-  :root { --bg:#f6f4ee; --panel:#fff; --main:#2f5d50; --main-dark:#234539; --text:#222; --text-dim:#5b5b55; --border:#d9d5c8; }
-  * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif; line-height:1.7; font-size:18px; }
-  header { background:var(--main); color:#fff; text-align:center; padding:16px 12px; }
-  header h1 { margin:0; font-size:1.3rem; }
-  main { max-width:520px; margin:0 auto; padding:16px; }
-  .back { display:inline-block; margin:0 0 12px; color:var(--main-dark); font-weight:bold; }
-  #kappa-game-wrap { max-width:480px; margin:0 auto; text-align:center; }
-  #kappa-game-wrap canvas { width:100%; height:auto; display:block; border-radius:12px; touch-action:none; background:#3aa7d6; }
-  .kg-btns { margin-top:10px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-  .kg-btns button { font-size:1.05rem; padding:12px 22px; border:0; border-radius:999px; background:var(--main); color:#fff; cursor:pointer; font-family:inherit; }
-  .kg-btns button:active { background:var(--main-dark); }
-  .kg-help { font-size:0.85rem; color:var(--text-dim); margin-top:10px; line-height:1.6; text-align:left; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px 14px; }
-  #rank-box { margin-top:16px; background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:12px 16px; text-align:left; }
-  #rank-box h2 { margin:0 0 6px; font-size:1.05rem; color:var(--main-dark); }
-  #rank-list { margin:0; padding:0; list-style:none; }
-  #rank-list li { display:flex; justify-content:space-between; gap:8px; padding:6px 0; border-bottom:1px solid var(--border); }
-  #rank-list li:last-child { border-bottom:0; }
-  #rank-list .nm { font-weight:bold; overflow-wrap:anywhere; }
-  #rank-form { margin-top:10px; padding-top:10px; border-top:2px solid var(--main); }
-  #rank-form p { margin:0 0 8px; font-size:0.95rem; }
-  #rank-form .row { display:flex; gap:8px; }
-  #rank-name { flex:1; min-width:0; font-size:1rem; padding:10px; border:2px solid var(--border); border-radius:8px; font-family:inherit; }
-  #rank-send { font-size:1rem; padding:10px 18px; border:0; border-radius:8px; background:var(--main); color:#fff; font-family:inherit; cursor:pointer; }
-  #rank-send[disabled] { opacity:.5; }
-  .rank-note { color:var(--text-dim); font-size:0.8rem; margin:8px 0 0; }
-  #video-box { margin-top:16px; background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:12px 16px; text-align:left; }
-  #video-box h2 { margin:0 0 8px; font-size:1.05rem; color:var(--main-dark); }
-  #video-frame { position:relative; width:100%; aspect-ratio:16/9; background:#1e2a26; border-radius:10px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
-  #video-frame.tall { aspect-ratio:9/16; max-width:300px; margin:0 auto; }
-  #video-frame iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
-  #video-btn { font-size:1.05rem; padding:12px 24px; border:0; border-radius:999px; background:var(--main); color:#fff; font-family:inherit; cursor:pointer; }
-  .video-note { color:var(--text-dim); font-size:0.8rem; margin:8px 0 0; }
-  .kg-more { margin-top:8px; } .kg-more summary { cursor:pointer; font-weight:bold; color:var(--main-dark); padding:4px 0; }
-  footer { text-align:center; color:var(--text-dim); font-size:0.85rem; padding:16px; }
+  body { margin: 0; background: #eef4ee; color: #1d2b22; font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", system-ui, sans-serif; line-height: 1.6; }
+  .top { background: #2f5d50; color: #fff; padding: 14px 16px; }
+  .top h1 { margin: 0; font-size: 20px; }
+  main { max-width: 520px; margin: 0 auto; padding: 14px 16px 24px; }
+  .back { display: inline-block; margin-bottom: 10px; color: #2f5d50; font-weight: bold; }
+  footer { text-align: center; color: #55655a; font-size: 13px; padding: 16px; }
 </style>
 </head>
 <body>
-<header><h1 id="ttl">カッパの川泳ぎ</h1></header>
+<header class="top"><h1>カッパの川泳ぎ</h1></header>
 <main>
-  <a class="back" id="back" href="index.html#game">← ホームページにもどる</a>
-  <div id="kappa-game-wrap">
-    <canvas id="kg-canvas" width="480" height="320"></canvas>
-    <div class="kg-btns">
-      <button id="kg-start" type="button">スタート</button>
-      <button id="kg-dash" type="button">スイスイダッシュ!</button>
-    </div>
-    <div id="rank-box" hidden>
-      <h2 id="rank-title">みんなのベスト3</h2>
-      <ol id="rank-list"></ol>
-      <div id="rank-form" hidden>
-        <p id="rank-msg"></p>
-        <div class="row"><input id="rank-name" type="text" maxlength="12" autocomplete="off"><button id="rank-send" type="button">のせる</button></div>
-      </div>
-      <p class="rank-note" id="rank-note"></p>
-    </div>
-    <div id="video-box" hidden>
-      <h2 id="video-title">あそびかたの動画</h2>
-      <div id="video-frame"><button id="video-btn" type="button">動画を見る</button></div>
-      <p class="video-note" id="video-note"></p>
-    </div>
-    <div class="kg-help" id="kg-help"></div>
+<a class="back" href="https://ushiku-honmachi.github.io/index.html#game">← ホームページにもどる</a>
+<!-- ここから：カッパの川泳ぎゲーム（貼り付け用） -->
+<!-- ホームページの好きな場所にそのままコピペしてください。外部ファイル不要です。 -->
+<div id="kappa-game-wrap">
+  <style>
+    #kappa-game-wrap { max-width: 480px; margin: 0 auto; font-family: sans-serif; text-align: center; }
+    #kappa-game-wrap canvas { width: 100%; height: auto; display: block; border-radius: 12px; touch-action: none; background: #3aa7d6; }
+    #kappa-game-wrap .kg-btns { margin-top: 8px; display: flex; gap: 8px; justify-content: center; }
+    #kappa-game-wrap button { font-size: 16px; padding: 10px 18px; border: 0; border-radius: 999px; background: #3c9d4e; color: #fff; cursor: pointer; }
+    #kappa-game-wrap button:active { background: #2d7a3b; }
+    #kappa-game-wrap .kg-help { font-size: 12px; color: #555; margin-top: 6px; line-height: 1.5; }
+  </style>
+  <div style="font-size:11px;color:#777;margin-bottom:4px">更新版 10/11 22:40（かっぱ2人制・大ガラス修正・ヒーロー入り）</div>
+  <canvas id="kg-canvas" width="480" height="320"></canvas>
+  <div class="kg-btns">
+    <button id="kg-start">スタート</button>
+    <button id="kg-dash">スイスイダッシュ！</button>
   </div>
-</main>
-<footer id="foot">牛久市 本町行政区</footer>
-
-<script src="config.js"></script>
+  <div class="kg-help">
+    ↑↓キー or 画面をなぞって上下に泳ぐ ／ スペース or ボタンでダッシュ（岩をすり抜ける）／ボス戦ではお皿を投げる<br>👑各ステージの最後にボス！持ち皿を投げて倒す（皿がないと勝てない）。大ガニ／大ガラス／皿割りオバケ／ゴミの山の大怪獣<br>🏁川泳ぎ → 滝のぼり → 川泳ぎ → きゅうりキャッチ → 川泳ぎ → 積み皿バランス → 川泳ぎ → 進化ゲーム と続く（持ち皿は持ち越し）<br>🌊滝のぼり：左右になぞって岩や流木をよける／🥒キャッチ：お皿で受ける、針つきはNG／🍽積み皿：タップで置く／🧬進化：ごはんを食べて進化、どくはガード<br>
+    🥒きゅうり＋10点　💧頭の皿に水を補給　🪨岩に当たると皿の水が減るよ<br>🥒食べるほど大きくなる（岩に当たりやすく遅くなる。ダッシュでやせる）<br>😋食べないとはらぺこになり、皿の水が早く減る<br>🥣友達が投げる大皿を取ると、しばらく水がどんどんたまる<br>🎣水面の釣り人がたらす糸のきゅうりは罠！取るとゲームオーバー<br>🥣川の小皿は持ち皿が増える（最大9枚）。大皿は水も満タン<br>👑目標点で川の主が登場！持ち皿を投げて倒そう（皿がないと勝てない。赤い帯は突進の合図。ぶつかるとゲームオーバー）<br>✨たまに光るものが流れてくる　🌧雨で皿に水がたまる　🟤濁流で動きがにぶくなる
+  </div>
+</div>
 <script>
 (function () {
-  // ---- 言語 (ホームページの日本語/English 切り替えを引き継ぐ) ----
-  var lang = 'ja';
-  try {
-    var q = /[?&]lang=(en|ja)/.exec(location.search), saved = null;
-    try { saved = localStorage.getItem('honmachi-lang'); } catch (e) {}
-    if (q) lang = q[1];
-    else if (saved === 'en' || saved === 'ja') lang = saved;
-    else if (navigator.language && navigator.language.toLowerCase().indexOf('ja') !== 0) lang = 'en';
-  } catch (e) {}
-  var S = {
-    ja: { title:'カッパの川泳ぎ', back:'← ホームページにもどる', start:'スタート', again:'もう一回', dash:'スイスイダッシュ!',
-          more:'くわしいルール', help:'🏊 画面を上下になぞって、泳ぐ<br>🥒 きゅうりを集めて、点をとる<br>💧 皿の水が、なくなったら終わり(しずく・雨で補給)<br>🪨 岩は、ダッシュ(ボタン/スペース)でよける<br>👑 点がたまると、川の主が登場。皿を投げて、倒そう!', helpMore:'上下に泳ぐ: 画面をなぞる / ↑↓キー<br>ダッシュ(岩をすり抜ける): ボタン / スペースキー(ボス戦では、お皿を投げる)<br>🥒きゅうり +10点 / 💧しずくで皿に水を補給 / 🪨岩に当たると皿の水が減るよ<br>🥒食べるほど大きくなる(岩に当たりやすく、遅くなる。ダッシュでやせる)<br>😋食べないと、はらぺこになって皿の水が早く減る<br>🥣友達が投げる大皿を取ると、しばらく水がどんどんたまる<br>🎣水面の釣り人がたらす糸のきゅうりは罠! 取るとゲームオーバー<br>🥣川の小皿は、持ち皿が増える(最大9枚)。大皿は、水も満タン<br>👑目標点で川の主が登場! 持ち皿を投げて倒そう(皿がないと勝てない。赤い帯は突進の合図。ぶつかるとゲームオーバー)<br>✨たまに光るものが流れてくる / 🌧雨で皿に水がたまる / 🟤濁流で動きがにぶくなる',
-          best:'ベスト ', plate:'皿の水', dashWait:'ダッシュ準備中…', dashOk:'ダッシュOK!',
-          over:'皿がカラカラ…!', score:'スコア ', pressAgain:'「もう一回」を押してね',
-          name:'カッパの川泳ぎ', goal:'きゅうりを集めて、皿の水を守れ!', pressStart:'「スタート」を押してね', foot:'牛久市 本町行政区',
-          videoTitle:'あそびかたの動画', videoBtn:'▶ 動画を見る', videoNote:'ボタンを押すと、YouTubeの動画が開きます。', rankTitle:'みんなのベスト3', rankEmpty:'まだ記録がありません。1位を目指そう!', pts:'点', newRec:'ベスト3に入りました! ニックネームを入れて「のせる」を押してね。',
-          namePh:'ニックネーム(12字まで)', send:'のせる', sent:'のせました!', fail:'送れませんでした。もう一度ためしてね。', loadFail:'ランキングを読み込めませんでした。',
-          note:'ニックネームと点数は、みんなに見えます。本名や、個人の情報は書かないでください。' },
-    en: { title:'Kappa River Swim', back:'← Back to the website', start:'Start', again:'Play again', dash:'Swoosh Dash!',
-          more:'More rules', help:'🏊 Drag up/down to swim<br>🥒 Collect cucumbers to score<br>💧 The game ends when the dish is dry (drops and rain refill it)<br>🪨 Dodge rocks with the dash (button / Space)<br>👑 At a high score the river boss appears. Throw dishes to beat it!', helpMore:'Swim up/down: drag on the screen / arrow keys<br>Dash (pass through rocks): button / Space key (in the boss fight, throw a dish)<br>🥒 Cucumber +10 / 💧 Water drop refills the dish / 🪨 Rocks drain the dish<br>🥒 The more you eat, the bigger and slower you get (dash to slim down)<br>😋 If you do not eat, you get hungry and the dish dries faster<br>🥣 Catch the big dish a friend throws for a burst of water<br>🎣 The cucumber on the fishing line is a trap! Game over if you take it<br>🥣 Small dishes add to your stock (max 9). A big dish also fills the water<br>👑 At the target score the river boss appears! Throw your dishes to beat it (no dishes, no win; a red band warns of a charge)<br>✨ Shiny things sometimes float by / 🌧 Rain fills the dish / 🟤 Muddy flow slows you down',
-          best:'Best ', plate:'Dish water', dashWait:'Dash charging…', dashOk:'Dash ready!',
-          over:'The dish is dry…!', score:'Score ', pressAgain:'Press "Play again"',
-          name:'Kappa River Swim', goal:'Collect cucumbers and keep your dish full!', pressStart:'Press "Start"', foot:'Honmachi District, Ushiku City',
-          videoTitle:'How to play (video)', videoBtn:'▶ Watch the video', videoNote:'Pressing the button loads the video from YouTube.', rankTitle:'Top 3 players', rankEmpty:'No records yet. Be the first!', pts:' pts', newRec:'You made the top 3! Enter a nickname and press "Post".',
-          namePh:'Nickname (up to 12 characters)', send:'Post', sent:'Posted!', fail:'Could not send. Please try again.', loadFail:'Could not load the ranking.',
-          note:'Your nickname and score will be visible to everyone. Please do not enter your real name or any personal information.' }
-  };
-  var STR = S[lang];
-  document.documentElement.lang = lang;
-  document.title = STR.title + ' | ' + (lang === 'en' ? 'Honmachi District' : '本町行政区');
-  document.getElementById('ttl').textContent = STR.title;
-  document.getElementById('back').textContent = STR.back;
-  document.getElementById('kg-dash').textContent = STR.dash;
-  document.getElementById('kg-help').innerHTML = STR.help + '<details class="kg-more"><summary>' + STR.more + '</summary><div style="margin-top:8px">' + STR.helpMore + '</div></details>';
-  document.getElementById('foot').textContent = STR.foot;
-
-  // ---- あそびかた動画 (config.js の HONMACHI_GAME_VIDEO に YouTube のアドレスを入れると表示される) ----
-  (function () {
-    var v = (typeof window.HONMACHI_GAME_VIDEO === 'string') ? window.HONMACHI_GAME_VIDEO.trim() : '';
-    if (!v) return;
-    var box0 = document.getElementById('video-box');
-    // YouTube ではなく、このサイトに置いた動画ファイル (mp4 など) を使うとき
-    if (/^[\w.\-\/]+\.(mp4|webm|mov|m4v)$/i.test(v)) {
-      var vf = document.getElementById('video-frame');
-      document.getElementById('video-title').textContent = STR.videoTitle;
-      document.getElementById('video-note').hidden = true;
-      vf.innerHTML = '';
-      vf.style.background = '#000';
-      var vd = document.createElement('video');
-      vd.src = v; vd.controls = true; vd.preload = 'none'; vd.setAttribute('playsinline', '');
-      vd.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
-      vf.appendChild(vd);
-      box0.hidden = false;
-      return;
-    }
-    var m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/.exec(v) || /^([\w-]{11})$/.exec(v);
-    if (!m) return;
-    var id = m[1], tall = /\/shorts\//.test(v);
-    var box = document.getElementById('video-box'), frame = document.getElementById('video-frame'), btn = document.getElementById('video-btn');
-    document.getElementById('video-title').textContent = STR.videoTitle;
-    document.getElementById('video-note').textContent = STR.videoNote;
-    btn.textContent = STR.videoBtn;
-    if (tall) frame.className = 'tall';
-    box.hidden = false;
-    btn.addEventListener('click', function () {
-      var f = document.createElement('iframe');
-      f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0&autoplay=1&hl=' + lang;
-      f.title = STR.videoTitle;
-      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-      f.setAttribute('allowfullscreen', '');
-      frame.innerHTML = '';
-      frame.appendChild(f);
-      document.getElementById('video-note').hidden = true;
-    });
-  })();
-
-  // ---- 英語表示用の置き換え(ゲーム画面の文字) ----
-  var EN = {
-    'スタート':'Start','もう一回':'Play again','つぎのステージへ':'Next stage','スイスイダッシュ！':'Swoosh Dash!','お皿を投げる':'Throw dish',
-    'ダッシュ準備中…':'Dash charging…','ダッシュOK!':'Dash ready!','皿の水':'Water','まるまる度':'Chubby','はらぺこ度':'Hungry',
-    '川の主 大ナマズ':'River boss: Giant Catfish','川の主があらわれた！':'The river boss appears!',
-    'スペース／ボタンでお皿を投げろ！':'Throw dishes with Space / the button!','皿がない！川の皿を拾え！':'No dishes! Pick some up!','皿がない！':'No dishes!',
-    'ヒット！':'Hit!','ガブッ！':'Chomp!','ゴツン！':'Bonk!','ほいっ！':'Here!','水+':'Water+','皿+1':'Dish+1','大皿ゲット！皿+1':'Big dish! Dish+1',
-    '雨で皿に水がたまる！':'Rain fills your dish!','雨がふってきた…！':'It started to rain…!','濁流！動きがにぶい…':'Muddy flow! You move slowly…','濁流がくるぞ！ダッシュで耐えろ！':'Muddy flow coming! Use dash!',
-    'ステージクリア！':'Stage clear!','川の主をたおした！ ボーナス +200':'River boss defeated! Bonus +200','「つぎのステージへ」を押してね':'Press "Next stage"',
-    'つられた〜！':'Hooked!','川の主にやられた〜！':'Beaten by the river boss!','皿がカラカラ…！':'The dish is dry…!','「もう一回」を押してね':'Press "Play again"',
-    'カッパの川泳ぎ':'Kappa River Swim','きゅうりを集めて、皿の水を守れ！':'Collect cucumbers and keep your dish full!','「スタート」を押してね':'Press "Start"'
-  };
-  function tr(t) {
-    if (lang !== 'en') return t;
-    if (EN[t]) return EN[t];
-    var m;
-    if ((m = /^きゅうり (\d+)点$/.exec(t))) return 'Score ' + m[1];
-    if ((m = /^ステージ (\d+)$/.exec(t))) return 'Stage ' + m[1];
-    if ((m = /^ヌシまであと (\d+)点$/.exec(t))) return m[1] + ' pts to the boss';
-    if ((m = /^ベスト (\d+)$/.exec(t))) return 'Best ' + m[1];
-    if ((m = /^持ち皿 (\d+)$/.exec(t))) return 'Dishes ' + m[1];
-    if ((m = /^大皿！あと(\d+)秒$/.exec(t))) return 'Big dish! ' + m[1] + 's left';
-    if ((m = /^スコア (\d+)　ベスト (\d+)$/.exec(t))) return 'Score ' + m[1] + '   Best ' + m[2];
-    if ((m = /^スコア (\d+)$/.exec(t))) return 'Score ' + m[1];
-    return t;
-  }
-
-  // ---- ランキング (Google スプレッドシート経由。config.js にアドレスがあるときだけ動く) ----
-  var RANK_URL = (typeof window.HONMACHI_RANK_URL === 'string') ? window.HONMACHI_RANK_URL : '';
-  var ranks = null;            // 読み込めたら配列、だめなら null
-  var rankBox = document.getElementById('rank-box');
-  var rankList = document.getElementById('rank-list');
-  var rankForm = document.getElementById('rank-form');
-  var rankName = document.getElementById('rank-name');
-  var rankSend = document.getElementById('rank-send');
-  var rankMsg = document.getElementById('rank-msg');
-  var pendingScore = 0;
-
-  function renderRanks() {
-    rankList.innerHTML = '';
-    if (!ranks) { var li0 = document.createElement('li'); li0.textContent = STR.loadFail; rankList.appendChild(li0); return; }
-    if (!ranks.length) { var li1 = document.createElement('li'); li1.textContent = STR.rankEmpty; rankList.appendChild(li1); return; }
-    ranks.forEach(function (r, i) {
-      var li = document.createElement('li');
-      var a = document.createElement('span'); a.className = 'nm'; a.textContent = (i + 1) + (lang === 'en' ? '. ' : '位  ') + r.name;
-      var b = document.createElement('span'); b.textContent = r.score + STR.pts;
-      li.appendChild(a); li.appendChild(b); rankList.appendChild(li);
-    });
-  }
-  function loadRanks() {
-    if (!RANK_URL) return Promise.resolve();
-    return fetch(RANK_URL + (RANK_URL.indexOf('?') < 0 ? '?' : '&') + 't=' + Date.now(), { cache: 'no-store' })
-      .then(function (r) { return r.json(); })
-      .then(function (j) { ranks = (j && j.ranks) ? j.ranks.slice(0, 3) : []; })
-      .catch(function () { ranks = null; })
-      .then(renderRanks);
-  }
-  if (RANK_URL) {
-    rankBox.hidden = false;
-    document.getElementById('rank-title').textContent = STR.rankTitle;
-    document.getElementById('rank-note').textContent = STR.note;
-    rankName.placeholder = STR.namePh; rankSend.textContent = STR.send;
-    try { rankName.value = localStorage.getItem('kappa_name') || ''; } catch (e) {}
-    loadRanks();
-  }
-  function onGameOver(sc) {
-    rankForm.hidden = true;
-    if (!RANK_URL || !ranks || sc <= 0) return;
-    if (ranks.length >= 3 && sc <= ranks[ranks.length - 1].score) return;
-    pendingScore = sc;
-    rankMsg.textContent = STR.newRec;
-    rankSend.disabled = false;
-    rankForm.hidden = false;
-  }
-  rankSend.addEventListener('click', function () {
-    var nm = (rankName.value || '').replace(/[<>&"'\\]/g, '').replace(/\s+/g, ' ').trim().slice(0, 12);
-    if (!nm || !pendingScore) { rankName.focus(); return; }
-    rankSend.disabled = true;
-    try { localStorage.setItem('kappa_name', nm); } catch (e) {}
-    fetch(RANK_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ name: nm, score: pendingScore }) })
-      .then(function (r) { return r.json(); })
-      .then(function (j) {
-        if (j && j.ok) { pendingScore = 0; rankMsg.textContent = STR.sent; if (j.ranks) { ranks = j.ranks.slice(0, 3); renderRanks(); } setTimeout(function () { rankForm.hidden = true; }, 1500); }
-        else { rankMsg.textContent = STR.fail; rankSend.disabled = false; }
-      })
-      .catch(function () { rankMsg.textContent = STR.fail; rankSend.disabled = false; });
-  });
-
-  // ---- ゲーム本体 ----
   var cv = document.getElementById('kg-canvas');
   var ctx = cv.getContext('2d');
-  var _ft = ctx.fillText.bind(ctx);
-  ctx.fillText = function (t, x, y) { _ft(lang === 'en' ? tr(String(t)) : t, x, y); };
   var W = cv.width, H = cv.height;
   var startBtn = document.getElementById('kg-start');
   var dashBtn = document.getElementById('kg-dash');
-  startBtn.textContent = tr('スタート');
-  dashBtn.textContent = tr('スイスイダッシュ！');
 
-  var kappa, objs, bubbles, rain, floaters, score, water, spawnT, dashT, dashCD, running, over, time, ev, evT, fat, hunger, buff, throwT, friend, reason, stage, goal, boss, cleared, hurtT, ammo, shots, throwCD, best = 0;
+  var kappa, objs, bubbles, rain, floaters, score, water, spawnT, dashT, dashCD, running, over, time, ev, evT, fat, hunger, buff, throwT, friend, reason, stage, goal, boss, cleared, hurtT, ammo, shots, throwCD, mode = 'river', stageNo = 1, fallLv = 1, stageStartScore = 0, stageStartAmmo = 0, intro = false, climb = 0, fallGoal = 150, scrollY = 0, fallSp = 0, gust = null, gustT = 8, stageIdx = 0, catchCaught = 0, catchGoal = 14, stk = [], curP = null, pieces = [], camOff = 0, stackGoal = 10, placeCD = 0, evoExp = 0, evoTier = 0, evoEnv = null, evoPending = null, evoWarn = 0, evoT = 8, evoFlash = 0, kscale = 1, lives = 2, bonusUsed = false, evoShell = 0, evoBub = 0, evoBubT = 0, evoB = [], evoCute = false, boss2 = null, shots2 = [], bossCP = null, best = 0;
   try { best = parseInt(localStorage.getItem('kappa_best') || '0', 10) || 0; } catch (e) {}
 
   var keys = {};
   var targetY = null;
+  var targetX = null;
 
-  function reset() {
-    kappa = { x: 80, y: H / 2, r: 18 }; reason = ''; stage = 1; goal = 150; boss = null; cleared = false; hurtT = 0; ammo = 0; shots = []; throwCD = 0; fat = 0; hunger = 0; buff = 0; friend = null; throwT = 18 + Math.random() * 8;
-    objs = []; floaters = []; score = 0; water = 100; spawnT = 0; dashT = 0; dashCD = 0; time = 0; over = false;
+  var SEQ = ['river', 'fall', 'river', 'catch', 'river', 'stack', 'river', 'evo'];
+  var ENVS = [
+    { name: 'ふつう', msg: 'ふつうの川。緑のごはんが栄養たっぷり', good: 0, tint: 'rgba(60,200,120,0.10)' },
+    { name: '寒波', msg: 'さむい！ 青いごはんが栄養たっぷり', good: 1, tint: 'rgba(70,130,255,0.22)' },
+    { name: '猛暑', msg: 'あつい！ オレンジのごはんが栄養たっぷり', good: 2, tint: 'rgba(255,130,50,0.22)' }
+  ];
+  var NCOL = ['#6fdc7a', '#6aa8ff', '#ffa24a'];
+  var TIERN = ['さいぼう', 'ミジンコ', 'おたまじゃくし', 'カッパ', '武者カッパ'];
+  var EVO_TH = [20, 40, 60, 80], PHN = ['うみ', 'かわ', 'もり'], PHBG = [['#0d2b36', '#1b6a78'], ['#0f3a3a', '#2f8f6a'], ['#173a22', '#6bb06f']];
+  function evoPhase() { return evoTier < 2 ? 1 : (evoTier < 4 ? 2 : 3); }
+  var PH = 14;
+
+  function reset(sc, am) {
+    sc = sc || 0;
+    kappa = mode === 'river' ? { x: 80, y: H / 2, r: 18 } : (mode === 'catch' ? { x: W / 2, y: H - 58, r: 18 } : (mode === 'evo' ? { x: W / 2, y: H - 110, r: 12 } : { x: W / 2, y: H - 110, r: 18 }));
+    boss2 = null; shots2 = []; bossCP = null;
+    catchCaught = 0; catchGoal = 14 + 3 * (fallLv - 1);
+    stk = [{ x: W / 2, w: 130 }]; pieces = []; camOff = 0; stackGoal = 10 + 2 * (fallLv - 1); placeCD = 0; curP = null; newCur();
+    evoExp = 0; evoTier = 0; evoEnv = ENVS[0]; evoPending = null; evoWarn = 0; evoT = 8; evoFlash = 0; kscale = 1; evoShell = 0; evoBub = 0; evoBubT = 0; evoB = []; evoCute = false;
+    reason = ''; goal = sc + 150 + Math.min(stage - 1, 5) * 60; boss = null; cleared = false; intro = false; hurtT = 0; ammo = am || 0; shots = [];
+    climb = 0; fallGoal = 150 + (fallLv - 1) * 40; scrollY = 0; fallSp = 0; gust = null; gustT = 7 + Math.random() * 3; throwCD = 0; fat = 0; hunger = 0; buff = 0; friend = null; throwT = 18 + Math.random() * 8;
+    objs = []; floaters = []; score = sc; water = 100; spawnT = 0; dashT = 0; dashCD = 0; time = 0; over = false;
     ev = null; evT = 9 + Math.random() * 4; // 最初のイベントまで約10秒
     bubbles = [];
     for (var i = 0; i < 18; i++) bubbles.push({ x: Math.random() * W, y: Math.random() * H, r: 2 + Math.random() * 4, s: 20 + Math.random() * 30 });
     rain = [];
     for (var k = 0; k < 60; k++) rain.push({ x: Math.random() * W, y: Math.random() * H, s: 420 + Math.random() * 200 });
   }
-  reset();
+  function setCanvas(m) {
+    var w = m === 'river' ? 480 : 320, h = m === 'river' ? 320 : 480;
+    if (cv.width !== w) cv.width = w;
+    if (cv.height !== h) cv.height = h;
+    W = cv.width; H = cv.height;
+    cv.style.maxWidth = m === 'river' ? '' : '320px';
+    cv.style.margin = '0 auto';
+  }
+  function fullReset() {
+    mode = 'river'; stageIdx = 0; stageNo = 1; stage = 1; fallLv = 1; stageStartScore = 0; stageStartAmmo = 0; lives = 2; bonusUsed = false;
+    setCanvas('river'); reset(0, 0);
+  }
+  fullReset();
 
-  function startGame() { reset(); rankForm.hidden = true; running = true; startBtn.textContent = tr('もう一回'); last = performance.now(); }
+  function startGame() {
+    if (intro) { intro = false; }
+    else if (over && lives > 0) {
+      var cp = bossCP;
+      reset(cp ? cp.score : stageStartScore, cp ? Math.max(cp.ammo, 3) : stageStartAmmo);
+      if (cp) startBoss2(cp.kind);
+    }
+    else { fullReset(); }
+    running = true; startBtn.textContent = 'もう一回'; last = performance.now();
+  }
   function throwPlate() {
     if (!running || throwCD > 0) return;
     if (ammo <= 0) { pop(kappa.x + 10, kappa.y - 34, '皿がない！', '#ff9a85'); throwCD = 0.4; return; }
     ammo -= 1; throwCD = 0.25;
     shots.push({ x: kappa.x + 22, y: kappa.y });
   }
-  function action() { if (boss) throwPlate(); else dash(); }
+  function action() { if (mode === 'river' && boss) throwPlate(); else if (boss2) throwPlate2(); else if (mode === 'stack') placePlate(); else dash(); }
   function syncBtn() {
-    var want = tr(boss ? 'お皿を投げる' : 'スイスイダッシュ！');
+    var want = ({ fall: 'ジャンプ！', catch: 'お皿ひろげ！', stack: 'お皿を置く！', evo: 'ガード！' })[mode] || (boss ? 'お皿を投げる' : 'スイスイダッシュ！');
+    if (boss2) want = 'お皿を投げる';
     if (dashBtn.textContent !== want) dashBtn.textContent = want;
   }
 
   function nextStage() {
-    stage += 1; goal = 150 + (stage - 1) * 150;
-    cleared = false; running = true; over = false; reason = '';
-    objs = []; floaters = []; shots = []; boss = null; water = 100; hunger = 0; buff = 0; hurtT = 0;
-    ev = null; evT = 8; startBtn.textContent = tr('もう一回'); last = performance.now();
+    var sc = score, am = ammo;
+    stageStartScore = sc; stageStartAmmo = am;
+    stageIdx += 1; stageNo = stageIdx + 1;
+    mode = SEQ[stageIdx % SEQ.length];
+    if (mode === 'river') stage += 1;
+    fallLv = Math.floor(stageIdx / SEQ.length) + 1;
+    setCanvas(mode);
+    reset(sc, am);
+    running = false; intro = true; startBtn.textContent = 'スタート'; last = performance.now();
   }
-  function primary() { if (cleared) nextStage(); else startGame(); }
-  function dash() { if (running && dashCD <= 0 && dashT <= 0) { dashT = 0.7; dashCD = 3; fat = Math.max(0, fat - 0.15); } }
+  var land = null;
+  function primary() {
+    if (land) { land = null; nextStage(); }
+    else if (cleared) { land = { t: 0 }; startBtn.textContent = 'スキップ'; }
+    else startGame();
+  }
+  function dash() { if (running && dashCD <= 0 && dashT <= 0) { if (mode === 'catch') { dashT = 3; dashCD = 7; } else { dashT = 0.7; dashCD = 3; } fat = Math.max(0, fat - 0.15); } }
 
   startBtn.addEventListener('click', function () { primary(); startBtn.blur(); });
   dashBtn.addEventListener('click', function () { action(); dashBtn.blur(); });
   window.addEventListener('keydown', function (e) {
-    if (['ArrowUp', 'ArrowDown', ' '].indexOf(e.key) >= 0) e.preventDefault();
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].indexOf(e.key) >= 0) e.preventDefault();
     keys[e.key] = true;
     if (e.key === ' ' && !e.repeat) { if (!running) primary(); else action(); }
   });
@@ -304,10 +152,14 @@
     var rect = cv.getBoundingClientRect();
     return (e.clientY - rect.top) * (H / rect.height);
   }
-  cv.addEventListener('pointerdown', function (e) { targetY = pointerY(e); });
-  cv.addEventListener('pointermove', function (e) { if (e.buttons || e.pointerType === 'touch') targetY = pointerY(e); });
-  cv.addEventListener('pointerup', function () { targetY = null; });
-  cv.addEventListener('pointercancel', function () { targetY = null; });
+  function pointerX(e) {
+    var rect = cv.getBoundingClientRect();
+    return (e.clientX - rect.left) * (W / rect.width);
+  }
+  cv.addEventListener('pointerdown', function (e) { targetY = pointerY(e); targetX = pointerX(e); if (mode === 'stack' && running && !boss2) placePlate(); });
+  cv.addEventListener('pointermove', function (e) { if (e.buttons || e.pointerType === 'touch') { targetY = pointerY(e); targetX = pointerX(e); } });
+  cv.addEventListener('pointerup', function () { targetY = null; targetX = null; });
+  cv.addEventListener('pointercancel', function () { targetY = null; targetX = null; });
 
   function spawn() {
     var t = Math.random();
@@ -325,15 +177,18 @@
   }
 
   function endGame(why) {
-    over = true; running = false; reason = why;
+    if (over) return;
+    over = true; running = false; reason = why; lives -= 1;
+    startBtn.textContent = lives > 0 ? 'もう一回' : 'はじめから';
+    try { if (window.kappaOnScore) window.kappaOnScore({ score: score, stage: stageNo }); } catch (e) {}
     if (score > best) { best = score; try { localStorage.setItem('kappa_best', String(best)); } catch (e) {} }
-    onGameOver(score);
   }
 
   function clearStage() {
     score += 200; water = Math.min(100, water + 50);
-    boss = null; cleared = true; running = false; objs = []; shots = [];
-    startBtn.textContent = tr('つぎのステージへ');
+    boss = null; boss2 = null; shots2 = []; bossCP = null; cleared = true; running = false; objs = []; shots = [];
+    startBtn.textContent = 'つぎのステージへ';
+    try { if (window.kappaOnScore) window.kappaOnScore({ score: score, stage: stageNo }); } catch (e) {}
     if (score > best) { best = score; try { localStorage.setItem('kappa_best', String(best)); } catch (e) {} }
   }
 
@@ -369,7 +224,112 @@
     }
   }
 
+  function spawnFall() {
+    if (boss2) { var tt = Math.random(), ty = tt < 0.5 ? 'sdish' : (tt < 0.75 ? 'cuc' : 'drop'), bx = 34 + Math.random() * (W - 68); objs.push({ type: ty, x: bx, x0: bx, y: -30, r: 13 }); return; }
+    if (Math.random() < 0.07) { var kx0 = 40 + Math.random() * (W - 80); objs.push({ type: 'koi', x: kx0, x0: kx0, y: H - 34, r: 16, warn: 1.1, vy: -(150 + 10 * fallLv), ph: Math.random() * 6, said: false }); return; }
+    var t = Math.random(), type;
+    if (t < 0.03) type = 'gold';
+    else if (t < 0.11) type = 'sdish';
+    else if (t < 0.45) type = 'cuc';
+    else if (t < 0.57) type = 'drop';
+    else if (t < 0.82) type = 'rock';
+    else type = 'log';
+    if (type === 'log' && Math.random() < 0.45) {
+      var gw = 2 * kappa.r + 12, gx = gw / 2 + 16 + Math.random() * (W - gw - 32);
+      objs.push({ type: 'wall', x: 0, x0: 0, y: -20, r: 8, gx: gx, gw: gw });
+      return;
+    }
+    var x = type === 'log' ? 50 + Math.random() * (W - 100) : 34 + Math.random() * (W - 68);
+    objs.push({ type: type, x: x, x0: x, y: -30, r: type === 'rock' ? 18 : 13 });
+  }
+
+  // 滝のぼりステージ（縦スクロール）
+  function updateFall(dt) {
+    time += dt;
+    var dashing = dashT > 0;
+    var ms = dashing ? 330 : 230;
+    if (keys['ArrowLeft'] || keys['a']) kappa.x -= ms * dt;
+    if (keys['ArrowRight'] || keys['d']) kappa.x += ms * dt;
+    if (targetX !== null) kappa.x += Math.max(-ms * dt, Math.min(ms * dt, targetX - kappa.x));
+    // 横からの水流
+    if (!gust) { gustT -= dt; if (gustT <= 0) gust = { dir: Math.random() < 0.5 ? -1 : 1, warn: 1, left: 2.2 }; }
+    else if (gust.warn > 0) gust.warn -= dt;
+    else {
+      kappa.x += gust.dir * (110 + 10 * fallLv) * (dashing ? 0.4 : 1) * dt;
+      gust.left -= dt;
+      if (gust.left <= 0) { gust = null; gustT = 9 + Math.random() * 6; }
+    }
+    var lim = kappa.r + 14;
+    kappa.x = Math.max(lim, Math.min(W - lim, kappa.x));
+    if (dashT > 0) dashT -= dt;
+    if (dashCD > 0) dashCD -= dt;
+    if (hurtT > 0) hurtT -= dt;
+    if (buff > 0) buff -= dt;
+
+    var climbSp = boss2 ? 0 : (dashing ? 9 : 4.5);
+    climb += climbSp * dt;
+    fallSp = 90 + climbSp * 20;
+    scrollY += fallSp * dt;
+
+    spawnT -= dt;
+    if (spawnT <= 0) { spawnFall(); spawnT = boss2 ? 1.0 : Math.max(0.28, 0.6 - 0.04 * fallLv); }
+    throwT -= dt;
+    if (throwT <= 0) {
+      var px = 40 + Math.random() * (W - 80);
+      objs.push({ type: 'plate', x: px, x0: px, y: -30, r: 18 });
+      pop(px, 60, 'ほいっ！', '#fff');
+      throwT = 18 + Math.random() * 10;
+    }
+
+    if (buff > 0) water = Math.min(100, water + 30 * dt);
+    else water -= dt * 2.8 * (1 + 0.1 * (fallLv - 1));
+
+    for (var i = objs.length - 1; i >= 0; i--) {
+      var o = objs[i];
+      if (o.type !== 'koi') { o.y += (o.vy || fallSp) * dt; if (o.vx) o.x += o.vx * dt; }
+      if (o.type === 'plate') o.x = o.x0 + Math.sin(time * 5) * 18;
+      var dx = o.x - kappa.x, dy = o.y - kappa.y, hit;
+      if (o.type === 'koi') {
+        if (o.warn > 0) { o.warn -= dt; continue; }
+        o.y += o.vy * dt; o.x = o.x0 + Math.sin(time * 2.5 + o.ph) * 22;
+        var kdx = o.x - kappa.x, kd1 = Math.sqrt(kdx * kdx + (o.y - kappa.y) * (o.y - kappa.y)), kd2 = Math.sqrt(kdx * kdx + (o.y + 16 - kappa.y) * (o.y + 16 - kappa.y));
+        if (!dashing && Math.min(kd1, kd2) < o.r + kappa.r - 6) { water -= 25; pop(kappa.x, kappa.y - 30, 'コイにぶつかった！', '#ff9a85'); objs.splice(i, 1); continue; }
+        if (!o.said && o.y < kappa.y - 26) { o.said = true; score += 15; pop(o.x, o.y - 10, 'お先に〜！', '#ffb36b'); pop(kappa.x, kappa.y - 34, 'どうぞどうぞ +15', '#fff'); }
+        if (o.y < -70) objs.splice(i, 1);
+        continue;
+      }
+      if (o.type === 'wall') {
+        if (!dashing && Math.abs(dy) < 10 && (kappa.x - kappa.r + 4 < o.gx - o.gw / 2 || kappa.x + kappa.r - 4 > o.gx + o.gw / 2)) { water -= 20; pop(kappa.x, o.y, 'ガツン！', '#ff9a85'); objs.splice(i, 1); }
+        else if (o.y > H + 60) objs.splice(i, 1);
+        continue;
+      }
+      if (o.type === 'log') hit = Math.abs(dx) < 38 + kappa.r - 8 && Math.abs(dy) < 8 + kappa.r - 6;
+      else hit = Math.sqrt(dx * dx + dy * dy) < o.r + kappa.r - 4;
+      if (hit) {
+        if (o.type === 'cuc') { score += 10; water = Math.min(100, water + 3); pop(o.x, o.y, '+10', '#fff'); objs.splice(i, 1); continue; }
+        if (o.type === 'gold') { score += 100; water = Math.min(100, water + 15); pop(o.x, o.y, '+100!', '#ffe14d'); objs.splice(i, 1); continue; }
+        if (o.type === 'sdish') { ammo = Math.min(9, ammo + 1); pop(o.x, o.y, '皿+1', '#fff3d6'); objs.splice(i, 1); continue; }
+        if (o.type === 'plate') { buff = 8; water = 100; ammo = Math.min(9, ammo + 1); pop(o.x, o.y, '大皿ゲット！皿+1', '#bfe6ff'); objs.splice(i, 1); continue; }
+        if (o.type === 'drop') { water = Math.min(100, water + 25); pop(o.x, o.y, '水+', '#bfe6ff'); objs.splice(i, 1); continue; }
+        if (o.type === 'rock' && !dashing) { water -= 25; pop(o.x, o.y, 'ゴツン！', '#ff9a85'); objs.splice(i, 1); continue; }
+        if (o.type === 'log' && !dashing) { water -= 20; pop(o.x, o.y, 'ガツン！', '#ff9a85'); objs.splice(i, 1); continue; }
+      }
+      if (o.y > H + 60 || o.x < -50 || o.x > W + 50) objs.splice(i, 1);
+    }
+    for (var f = floaters.length - 1; f >= 0; f--) {
+      floaters[f].y -= 30 * dt; floaters[f].l -= dt;
+      if (floaters[f].l <= 0) floaters.splice(f, 1);
+    }
+    if (boss2) { updateBoss2(dt); if (cleared || over) return; }
+    else if (climb >= fallGoal) { climb = fallGoal; startBoss2('crab'); }
+    if (water <= 0) { water = 0; endGame('dry'); }
+  }
+
   function update(dt) {
+    if (mode === 'fall') { updateFall(dt); return; }
+    if (mode === 'catch') { updateCatch(dt); return; }
+    if (mode === 'stack') { updateStack(dt); return; }
+    if (mode === 'evo') { updateEvo(dt); return; }
     time += dt;
 
     // イベント（雨・濁流）
@@ -471,7 +431,7 @@
       if (sh.x > W + 30) shots.splice(si, 1);
     }
     if (!boss && !cleared && score >= goal) {
-      boss = { x: W + 120, y: H / 2, hp: 3 + stage, maxhp: 3 + stage, state: 'enter', t: 0, spitT: 1.2, lockY: H / 2, r: 34 };
+      boss = { x: W + 120, y: H / 2, hp: 3 + Math.min(stage, 6), maxhp: 3 + Math.min(stage, 6), state: 'enter', t: 0, spitT: 1.2, lockY: H / 2, r: 34 };
       pop(W / 2, H / 2, '川の主があらわれた！', '#ffe14d');
       pop(W / 2, H / 2 + 28, ammo > 0 ? 'スペース／ボタンでお皿を投げろ！' : '皿がない！川の皿を拾え！', '#fff');
     }
@@ -485,8 +445,9 @@
     var x = kappa.x, y = kappa.y + Math.sin(time * 8) * 2;
     ctx.save();
     ctx.translate(x, y);
-    var sc = 1 + fat * 0.7; ctx.scale(sc, sc);
-    if (dashT > 0) { ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.fillRect(-60, -6, 50, 3); ctx.fillRect(-70, 6, 60, 3); }
+    if (mode === 'fall') ctx.rotate(-1.2);
+    var sc = (1 + fat * 0.7) * kscale; ctx.scale(sc, sc);
+    if (dashT > 0 && (mode === 'river' || mode === 'fall')) { ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.fillRect(-60, -6, 50, 3); ctx.fillRect(-70, 6, 60, 3); }
     ctx.fillStyle = '#7a5a2e'; ctx.beginPath(); ctx.ellipse(-8, 4, 16, 14, 0, 0, 7); ctx.fill();
     ctx.fillStyle = '#4fb85f'; ctx.beginPath(); ctx.ellipse(0, 4, 17, 14, 0, 0, 7); ctx.fill();
     var k = Math.sin(time * 14) * 6;
@@ -523,7 +484,43 @@
 
   function drawObj(o) {
     ctx.save(); ctx.translate(o.x, o.y);
-    if (o.type === 'cuc') {
+    if (o.type === 'fake') {
+      ctx.rotate(-0.3);
+      if (o.sub === 'zuc') {
+        ctx.fillStyle = '#3f9a45'; ctx.save(); ctx.scale(1, 1.2); cucShape(); ctx.restore();
+        ctx.fillStyle = '#a8d98c';
+        for (var zi = -12; zi <= 12; zi += 6) ctx.fillRect(zi, -5, 2.2, 10);
+        ctx.fillStyle = '#6b8f3a'; ctx.fillRect(-20, -3, 5, 6);
+      } else {
+        ctx.fillStyle = '#58b04a'; cucShape();
+        ctx.fillStyle = '#2d7a33';
+        for (var gi = -12; gi <= 12; gi += 4) { ctx.beginPath(); ctx.arc(gi, -2.5, 1.7, 0, 7); ctx.arc(gi + 2, 2.5, 1.7, 0, 7); ctx.fill(); }
+      }
+    } else if (o.type === 'bub') {
+      ctx.fillStyle = 'rgba(150,225,255,0.55)'; ctx.strokeStyle = '#e6fbff'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(0, 0, 12, 0, 7); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-4, -4, 3.2, 0, 7); ctx.arc(5, 4, 1.8, 0, 7); ctx.fill();
+    } else if (o.type === 'shl') {
+      ctx.fillStyle = '#8a6a3a'; ctx.beginPath(); ctx.arc(0, 0, 12, 0, 7); ctx.fill();
+      ctx.strokeStyle = '#d9b873'; ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.moveTo(-6, -6); ctx.lineTo(6, -6); ctx.lineTo(10, 0); ctx.lineTo(6, 6); ctx.lineTo(-6, 6); ctx.lineTo(-10, 0); ctx.closePath(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-6, -6); ctx.lineTo(0, 0); ctx.lineTo(6, -6); ctx.moveTo(0, 0); ctx.lineTo(0, 12); ctx.stroke();
+    } else if (o.type === 'koi') {
+      if (o.warn > 0) {
+        ctx.globalAlpha = 0.5 + 0.4 * Math.sin(time * 18); ctx.fillStyle = '#ffb36b'; ctx.beginPath(); ctx.ellipse(0, 0, 11, 24, 0, 0, 7); ctx.fill(); ctx.globalAlpha = 1;
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 18px ' + FONT; ctx.textAlign = 'center'; ctx.fillText('！', 0, -2);
+      } else {
+        var sw = Math.sin(time * 10 + o.ph) * 5;
+        ctx.fillStyle = '#ff8a3d'; ctx.beginPath(); ctx.moveTo(sw, 38); ctx.lineTo(-11 + sw, 52); ctx.lineTo(0 + sw, 46); ctx.lineTo(11 + sw, 52); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = '#ff7a2c'; ctx.beginPath(); ctx.ellipse(0, 18, 11, 24, sw * 0.02, 0, 7); ctx.fill();
+        ctx.fillStyle = '#fff4ea'; ctx.beginPath(); ctx.ellipse(-3, 12, 5, 8, 0, 0, 7); ctx.ellipse(4, 26, 4, 6, 0, 0, 7); ctx.fill();
+        ctx.fillStyle = '#e0301f'; ctx.beginPath(); ctx.ellipse(3, 5, 4, 5, 0, 0, 7); ctx.fill();
+        ctx.fillStyle = '#ff6a1f'; ctx.beginPath(); ctx.ellipse(-11, 14, 4, 8, 0.5, 0, 7); ctx.ellipse(11, 14, 4, 8, -0.5, 0, 7); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-4, -2, 2.4, 0, 7); ctx.arc(4, -2, 2.4, 0, 7); ctx.fill();
+        ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(-4, -3, 1.2, 0, 7); ctx.arc(4, -3, 1.2, 0, 7); ctx.fill();
+        ctx.strokeStyle = '#ffd9a8'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(-3, -8); ctx.quadraticCurveTo(-10, -12, -14, -6); ctx.moveTo(3, -8); ctx.quadraticCurveTo(10, -12, 14, -6); ctx.stroke();
+      }
+    } else if (o.type === 'cuc') {
       ctx.rotate(-0.3);
       ctx.fillStyle = '#2f9e44'; cucShape();
       ctx.fillStyle = '#b6e3a1';
@@ -561,6 +558,38 @@
       ctx.fillStyle = '#e8f4ff'; ctx.beginPath(); ctx.ellipse(0, 0, 18, 8, 0, 0, 7); ctx.fill();
       ctx.fillStyle = '#4aa8ff'; ctx.beginPath(); ctx.ellipse(0, -1, 13, 5, 0, 0, 7); ctx.fill();
       ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(0, 0, 18, 8, 0, 0, 7); ctx.stroke();
+    } else if (o.type === 'nut') {
+      ctx.fillStyle = NCOL[o.col || 0]; ctx.beginPath(); ctx.arc(0, 0, 11, 0, 7); ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.beginPath(); ctx.arc(-3.5, -3.5, 3.5, 0, 7); ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(0, 0, 11, 0, 7); ctx.stroke();
+    } else if (o.type === 'tox') {
+      var tv = (o.ph | 0) % 3; ctx.rotate(time * 2 + (o.ph || 0));
+      if (tv === 0) {
+        ctx.fillStyle = 'rgba(170,220,240,0.9)'; ctx.fillRect(-5, -11, 10, 20); ctx.fillStyle = '#3b7fa6'; ctx.fillRect(-3, -15, 6, 5); ctx.fillStyle = '#e8f6ff'; ctx.fillRect(-5, -2, 10, 4);
+      } else if (tv === 1) {
+        ctx.fillStyle = '#b9c0c8'; ctx.fillRect(-6, -9, 12, 18); ctx.fillStyle = '#d6453a'; ctx.fillRect(-6, -3, 12, 6); ctx.fillStyle = '#7d848c'; ctx.fillRect(-6, -9, 12, 2.5); ctx.fillRect(-6, 6.5, 12, 2.5);
+      } else {
+        ctx.fillStyle = '#2b2430'; ctx.beginPath(); ctx.moveTo(-10, 2); ctx.quadraticCurveTo(-12, -9, -2, -9); ctx.quadraticCurveTo(10, -12, 11, -1); ctx.quadraticCurveTo(12, 9, 0, 10); ctx.quadraticCurveTo(-11, 11, -10, 2); ctx.fill();
+        ctx.fillStyle = 'rgba(120,255,200,0.55)'; ctx.beginPath(); ctx.ellipse(-3, -4, 4, 2, 0.5, 0, 7); ctx.fill(); ctx.fillStyle = 'rgba(255,120,220,0.5)'; ctx.beginPath(); ctx.ellipse(4, 3, 3, 1.6, -0.4, 0, 7); ctx.fill();
+      }
+    } else if (o.type === 'wall') {
+      var segs = [[0, o.gx - o.gw / 2], [o.gx + o.gw / 2, W]];
+      for (var sg = 0; sg < 2; sg++) {
+        var x0 = segs[sg][0], x1 = segs[sg][1];
+        ctx.fillStyle = '#8a5a34'; ctx.fillRect(x0, -8, x1 - x0, 16);
+        ctx.fillStyle = '#a8744a'; ctx.fillRect(x0, -8, x1 - x0, 5);
+        ctx.fillStyle = '#c9965f';
+        ctx.beginPath(); ctx.ellipse(sg ? x0 : x1, 0, 5, 8, 0, 0, 7); ctx.fill();
+        ctx.strokeStyle = '#6b4a2b'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.ellipse(sg ? x0 : x1, 0, 2.5, 4.5, 0, 0, 7); ctx.stroke();
+      }
+    } else if (o.type === 'log') {
+      ctx.fillStyle = '#8a5a34'; ctx.fillRect(-36, -8, 72, 16);
+      ctx.fillStyle = '#a8744a'; ctx.fillRect(-36, -8, 72, 5);
+      ctx.fillStyle = '#c9965f';
+      ctx.beginPath(); ctx.ellipse(-36, 0, 5, 8, 0, 0, 7); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(36, 0, 5, 8, 0, 0, 7); ctx.fill();
+      ctx.strokeStyle = '#6b4a2b'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.ellipse(36, 0, 2.5, 4.5, 0, 0, 7); ctx.stroke();
     } else if (o.type === 'drop') {
       ctx.fillStyle = '#bfe6ff'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(0, -13); ctx.quadraticCurveTo(12, 2, 0, 11); ctx.quadraticCurveTo(-12, 2, 0, -13); ctx.fill(); ctx.stroke();
@@ -670,7 +699,74 @@
     }
   }
 
+  function drawLives() {
+    if (land) return;
+    var n = lives, x0 = W / 2 - (n * 16) / 2 - 22, y0 = H - 14;
+    ctx.save(); ctx.font = 'bold 11px ' + FONT; ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(0,0,0,0.35)'; ctx.fillRect(x0 - 6, y0 - 12, 44 + n * 16, 18);
+    ctx.fillStyle = '#fff'; ctx.fillText('かっぱ', x0, y0 + 1);
+    for (var i = 0; i < n; i++) { var cx = x0 + 42 + i * 16; ctx.fillStyle = '#5fcf70'; ctx.beginPath(); ctx.arc(cx, y0 - 3, 5.5, 0, 7); ctx.fill(); ctx.fillStyle = '#e8f4ff'; ctx.fillRect(cx - 3, y0 - 10, 6, 2.5); }
+    ctx.restore();
+  }
+  function drawLandKappa(x, y, walk, t) {
+    var bob = walk ? Math.abs(Math.sin(t * 9)) * 3 : 0;
+    ctx.save(); ctx.translate(x, y - bob);
+    if (walk) {
+      ctx.fillStyle = '#4cb85f';
+      var l = Math.sin(t * 9) * 4;
+      ctx.fillRect(-8 + l, 10 + bob, 6, 8 - bob); ctx.fillRect(3 - l, 10 + bob, 6, 8 - bob);
+      ctx.fillStyle = '#f5c542'; ctx.fillRect(-9 + l, 16, 9, 3); ctx.fillRect(2 - l, 16, 9, 3);
+    }
+    ctx.fillStyle = '#9a6b3e'; ctx.beginPath(); ctx.ellipse(-12, 0, 9, 11, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#5fcf70'; ctx.beginPath(); ctx.arc(0, 0, 15, 0, 7); ctx.fill();
+    ctx.fillStyle = '#e8f4ff'; ctx.beginPath(); ctx.ellipse(2, -15, 8, 3.4, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#4aa8ff'; ctx.beginPath(); ctx.ellipse(2, -15.4, 6.5, 2.4, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(7, -4, 3.4, 0, 7); ctx.fill();
+    ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(8, -4, 1.5, 0, 7); ctx.fill();
+    ctx.fillStyle = '#f5c542'; ctx.beginPath(); ctx.ellipse(14, 2, 6, 3, 0, 0, 7); ctx.fill();
+    ctx.restore();
+  }
+  function drawLand() {
+    var t = land.t, wy = H * 0.58, gy = wy - 18, bx = W * 0.5, tx = W * 0.58;
+    var g = ctx.createLinearGradient(0, 0, 0, wy); g.addColorStop(0, '#9fdcf5'); g.addColorStop(1, '#e6f6e6');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#fff'; ctx.globalAlpha = 0.85;
+    [[0.15, 0.12], [0.6, 0.2], [0.85, 0.08]].forEach(function (c) { var cx = W * c[0] + Math.sin(time * 0.3 + c[0] * 9) * 6, cy = H * c[1]; ctx.beginPath(); ctx.ellipse(cx, cy, 26, 10, 0, 0, 7); ctx.ellipse(cx + 16, cy + 3, 18, 8, 0, 0, 7); ctx.fill(); });
+    ctx.globalAlpha = 1;
+    // 陸
+    ctx.fillStyle = '#8a6a44'; ctx.beginPath(); ctx.moveTo(bx, H); ctx.lineTo(bx, wy); ctx.lineTo(tx, gy); ctx.lineTo(W, gy); ctx.lineTo(W, H); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#5fb35a'; ctx.beginPath(); ctx.moveTo(bx - 4, wy + 2); ctx.lineTo(tx, gy - 2); ctx.lineTo(W, gy - 2); ctx.lineTo(W, gy + 8); ctx.lineTo(tx + 2, gy + 8); ctx.lineTo(bx + 4, wy + 12); ctx.closePath(); ctx.fill();
+    for (var i = 0; i < 6; i++) { var gx2 = tx + 14 + i * ((W - tx) / 6); ctx.strokeStyle = '#3f8f46'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(gx2, gy - 2); ctx.lineTo(gx2 - 3, gy - 10); ctx.moveTo(gx2, gy - 2); ctx.lineTo(gx2 + 3, gy - 9); ctx.stroke(); }
+    // 次のステージの立て札
+    var nm = NAMES[SEQ[(stageIdx + 1) % SEQ.length]];
+    ctx.fillStyle = '#7a5530'; ctx.fillRect(W - 62, gy - 44, 5, 44);
+    ctx.fillStyle = '#c9965f'; ctx.fillRect(W - 114, gy - 70, 112, 30);
+    ctx.fillStyle = '#4a3320'; ctx.font = '700 11px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('つぎは', W - 58, gy - 56); ctx.fillText(nm, W - 58, gy - 44);
+    // 水（かっぱの前後）
+    var kx, ky, phase;
+    var e = function (u) { u = Math.max(0, Math.min(1, u)); return u * u * (3 - 2 * u); };
+    if (t < 1.4) { phase = 1; kx = W * 0.12 + W * 0.36 * e(t / 1.4); ky = wy + 10 + Math.sin(t * 6) * 3; }
+    else if (t < 2.1) { phase = 2; var u = e((t - 1.4) / 0.7); kx = W * 0.48 + (tx + 8 - W * 0.48) * u; ky = wy + 10 + (gy - 16 - wy - 10) * u - Math.sin(u * Math.PI) * 14; }
+    else { phase = 3; var u2 = (t - 2.1) / 1.6; kx = tx + 8 + (W + 40 - tx - 8) * u2; ky = gy - 16; }
+    var wetFrac = phase === 1 ? 1 : (phase === 2 ? Math.max(0, 1 - (t - 1.4) / 0.5) : 0);
+    drawLandKappa(kx, ky, phase === 3, t);
+    ctx.fillStyle = 'rgba(42,127,176,0.55)'; ctx.fillRect(0, wy, bx, H - wy);
+    ctx.fillStyle = '#2a7fb0'; ctx.fillRect(0, wy + 26, bx, H - wy - 26);
+    if (phase === 1) { ctx.strokeStyle = 'rgba(255,255,255,0.8)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(kx - 4, wy + 1, 22, 4, 0, 0, 7); ctx.stroke(); }
+    ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = 2; ctx.beginPath();
+    for (var x = 0; x <= bx; x += 8) { var yy = wy + Math.sin(x * 0.12 + time * 3) * 2; if (x) ctx.lineTo(x, yy); else ctx.moveTo(x, yy); }
+    ctx.stroke();
+    if (phase === 2 && t > 1.7) for (var d = 0; d < 4; d++) { ctx.fillStyle = 'rgba(190,230,255,0.9)'; ctx.beginPath(); ctx.arc(kx - 10 - d * 5, ky + 14 + ((t * 80 + d * 9) % 24), 2, 0, 7); ctx.fill(); }
+    ctx.fillStyle = '#1d3b52'; ctx.textAlign = 'center'; ctx.font = '700 16px sans-serif';
+    ctx.fillText(phase === 3 ? 'つぎのステージへ！' : 'りくにあがるよ…', W / 2, H * 0.1 + 20);
+    ctx.fillStyle = 'rgba(255,255,255,' + Math.max(0, (t - 3.3) / 0.4) + ')'; ctx.fillRect(0, 0, W, H);
+  }
+
   function draw() {
+    if (land) { drawLand(); return; }
+    if (mode === 'fall') { drawFall(); return; }
+    if (mode === 'catch') { drawCatch(); return; }
+    if (mode === 'stack') { drawStack(); return; }
+    if (mode === 'evo') { drawEvo(); return; }
     var g = ctx.createLinearGradient(0, 0, 0, H);
     g.addColorStop(0, '#6cc8ee'); g.addColorStop(1, '#2a7fb0');
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
@@ -702,7 +798,7 @@
     ctx.fillStyle = '#fff'; ctx.font = 'bold 16px ' + FONT; ctx.textAlign = 'left';
     ctx.fillText('きゅうり ' + score + '点', 10, 24);
     ctx.font = '12px ' + FONT; ctx.textAlign = 'center';
-    ctx.fillText('ステージ ' + stage, W / 2, 18);
+    ctx.fillText('ステージ ' + stageNo, W / 2, 18);
     if (!boss) ctx.fillText('ヌシまであと ' + Math.max(0, goal - score) + '点', W / 2, 34);
     if (boss) {
       ctx.fillText('川の主 大ナマズ', W / 2, H - 22);
@@ -725,39 +821,1000 @@
     ctx.fillStyle = '#fff'; ctx.fillText(dashCD > 0 ? 'ダッシュ準備中…' : 'ダッシュOK!', 10, 62);
     if (buff > 0) { ctx.fillStyle = '#bfe6ff'; ctx.fillText('大皿！あと' + Math.ceil(buff) + '秒', 10, 80); ctx.fillStyle = '#fff'; }
 
-    if (!running) {
-      ctx.fillStyle = 'rgba(0,0,0,0.45)'; ctx.fillRect(0, 0, W, H);
-      ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
-      ctx.font = 'bold 26px ' + FONT;
-      if (cleared) {
-        ctx.fillText('ステージクリア！', W / 2, H / 2 - 30);
-        ctx.font = '18px ' + FONT; ctx.fillText('川の主をたおした！ ボーナス +200', W / 2, H / 2 + 2);
-        ctx.fillText('スコア ' + score, W / 2, H / 2 + 30);
-        ctx.fillText('「つぎのステージへ」を押してね', W / 2, H / 2 + 58);
-      } else if (over) {
-        ctx.fillText(reason === 'tsuri' ? 'つられた〜！' : (reason === 'boss' ? '川の主にやられた〜！' : '皿がカラカラ…！'), W / 2, H / 2 - 20);
-        ctx.font = '18px ' + FONT; ctx.fillText('スコア ' + score + '　ベスト ' + best, W / 2, H / 2 + 12);
-        ctx.fillText('「もう一回」を押してね', W / 2, H / 2 + 42);
-      } else {
-        ctx.fillText('カッパの川泳ぎ', W / 2, H / 2 - 20);
-        ctx.font = '16px ' + FONT; ctx.fillText('きゅうりを集めて、皿の水を守れ！', W / 2, H / 2 + 12);
-        ctx.fillText('「スタート」を押してね', W / 2, H / 2 + 40);
+    if (!running) drawOverlay();
+  }
+
+
+  function tickFloaters(dt) {
+    for (var f = floaters.length - 1; f >= 0; f--) {
+      floaters[f].y -= 30 * dt; floaters[f].l -= dt;
+      if (floaters[f].l <= 0) floaters.splice(f, 1);
+    }
+  }
+  function drawFloatersOutlined() {
+    ctx.font = 'bold 15px ' + FONT; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.lineJoin = 'round';
+    floaters.forEach(function (f) {
+      ctx.globalAlpha = Math.max(0, Math.min(1, f.l * 1.5));
+      ctx.strokeStyle = 'rgba(0,30,60,0.7)'; ctx.strokeText(f.t, f.x, f.y);
+      ctx.fillStyle = f.c; ctx.fillText(f.t, f.x, f.y);
+    });
+    ctx.globalAlpha = 1;
+  }
+  function waterBar(x, y, w) {
+    ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.fillRect(x, y, w, 10);
+    ctx.fillStyle = water > 30 ? '#4cb8ff' : '#ff7a59'; ctx.fillRect(x, y, w * Math.max(0, water) / 100, 10);
+  }
+
+  // ================= きゅうりキャッチ =================
+  function catchHalf() { return dashT > 0 ? 62 : 32; }
+
+  function spawnCatch() {
+    if (boss2) { var tt = Math.random(), ty = tt < 0.65 ? 'sdish' : (tt < 0.82 ? 'cuc' : 'drop'), bx = 30 + Math.random() * (W - 60); objs.push({ type: ty, x: bx, x0: bx, y: -24, r: 13, vy: 140, ph: 0, amp: 0 }); return; }
+    var t = Math.random(), type;
+    if (t < 0.58) type = 'cuc';
+    else if (t < 0.62) type = 'gold';
+    else if (t < 0.70) type = 'sdish';
+    else if (t < 0.78) type = 'drop';
+    else if (t < 0.92) type = 'rock';
+    else type = time > 8 ? 'bait' : 'cuc';
+    if (type === 'cuc' && Math.random() < Math.min(0.3, 0.14 + 0.02 * fallLv)) type = 'fake';
+    var x = 30 + Math.random() * (W - 60);
+    objs.push({ type: type, sub: Math.random() < 0.5 ? 'zuc' : 'goya', x: x, x0: x, y: -24, r: type === 'rock' ? 18 : 13, vy: 120 + Math.random() * 50 + catchCaught * 3 + 12 * fallLv, ph: Math.random() * 6, amp: (type === 'cuc' && Math.random() < 0.4) ? 16 : 0 });
+  }
+
+  function updateCatch(dt) {
+    time += dt;
+    var ms = 270;
+    if (keys['ArrowLeft'] || keys['a']) kappa.x -= ms * dt;
+    if (keys['ArrowRight'] || keys['d']) kappa.x += ms * dt;
+    if (targetX !== null) kappa.x += Math.max(-ms * dt, Math.min(ms * dt, targetX - kappa.x));
+    kappa.x = Math.max(36, Math.min(W - 36, kappa.x));
+    if (dashT > 0) dashT -= dt;
+    if (dashCD > 0) dashCD -= dt;
+    spawnT -= dt;
+    if (spawnT <= 0) { spawnCatch(); spawnT = boss2 ? 0.8 : Math.max(0.3, 0.8 - 0.04 * fallLv - catchCaught * 0.012); }
+    var plateY = kappa.y - 48, half = catchHalf(), pcx = kappa.x + 4;
+    for (var i = objs.length - 1; i >= 0; i--) {
+      var o = objs[i];
+      o.y += o.vy * dt;
+      o.x = o.x0 + Math.sin(time * 3 + o.ph) * o.amp;
+      if (Math.abs(o.x - pcx) < half + o.r * 0.5 && o.y > plateY - 12 && o.y < plateY + 14) {
+        if (o.type === 'cuc') { score += 10; catchCaught += 1; water = Math.min(100, water + 3); pop(o.x, plateY - 14, '+10', '#fff'); }
+        else if (o.type === 'gold') { score += 50; catchCaught += 2; water = Math.min(100, water + 8); pop(o.x, plateY - 14, '+50!', '#ffe14d'); }
+        else if (o.type === 'sdish') { ammo = Math.min(9, ammo + 1); pop(o.x, plateY - 14, '皿+1', '#fff3d6'); }
+        else if (o.type === 'drop') { water = Math.min(100, water + 20); pop(o.x, plateY - 14, '水+', '#bfe6ff'); }
+        else if (o.type === 'rock') { water -= 22; pop(o.x, plateY - 14, 'ゴツン！', '#ff9a85'); }
+        else if (o.type === 'fake') { water -= 15; catchCaught = Math.max(0, catchCaught - 1); pop(o.x, plateY - 14, o.sub === 'zuc' ? 'ズッキーニだった！' : 'ゴーヤだった！', '#ff9a85'); }
+        else if (o.type === 'bait') { pop(o.x, plateY - 14, 'ガブッ！', '#ff9a85'); endGame('tsuri'); return; }
+        objs.splice(i, 1); continue;
+      }
+      if (o.y > H + 30) {
+        if ((o.type === 'cuc' || o.type === 'gold') && !boss2) { water -= 6; pop(o.x, H - 40, 'おっと！', '#fff'); }
+        objs.splice(i, 1);
       }
     }
+    tickFloaters(dt);
+    if (boss2) { updateBoss2(dt); if (cleared || over) return; }
+    else if (catchCaught >= catchGoal) { startBoss2('crow'); }
+    if (water <= 0) { water = 0; endGame('dry'); }
+  }
+
+  function drawCatch() {
+    var g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, '#bfe8ff'); g.addColorStop(1, '#eaf7d9');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    for (var c = 0; c < 4; c++) {
+      var cx = ((time * 8 + c * 110) % (W + 120)) - 60, cyy = 130 + c * 70;
+      ctx.beginPath(); ctx.ellipse(cx, cyy, 34, 11, 0, 0, 7); ctx.ellipse(cx + 18, cyy - 7, 22, 10, 0, 0, 7); ctx.fill();
+    }
+    ctx.fillStyle = '#6cbf6a'; ctx.fillRect(0, H - 32, W, 32);
+    ctx.fillStyle = '#58a85a'; ctx.fillRect(0, H - 32, W, 4);
+    var plateY = kappa.y - 48, half = catchHalf(), pcx = kappa.x + 4;
+    ctx.strokeStyle = '#3c9d4e'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(kappa.x + 10, kappa.y); ctx.lineTo(pcx + 6, plateY + 5); ctx.stroke();
+    drawKappa();
+    ctx.fillStyle = '#e8f4ff'; ctx.beginPath(); ctx.ellipse(pcx, plateY, half, 7, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#4aa8ff'; ctx.beginPath(); ctx.ellipse(pcx, plateY - 1, half * 0.78, 4, 0, 0, 7); ctx.fill();
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(pcx, plateY, half, 7, 0, 0, 7); ctx.stroke();
+    objs.forEach(drawObj);
+    objs.forEach(function (o) { if (o.type === 'bait') drawFisher(o); });
+    drawBoss2();
+    drawShots2();
+    drawShots();
+    drawFloatersOutlined();
+    ctx.fillStyle = '#0b3550'; ctx.font = 'bold 15px ' + FONT; ctx.textAlign = 'left';
+    ctx.fillText('キャッチ ' + catchCaught + ' / ' + catchGoal, 18, 24);
+    ctx.textAlign = 'right'; ctx.fillText('ベスト ' + best, W - 18, 24);
+    ctx.font = '12px ' + FONT; ctx.textAlign = 'left'; ctx.fillText('皿の水', 18, 44);
+    waterBar(58, 35, 110);
+    ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.fillRect(18, 54, W - 36, 8);
+    ctx.fillStyle = '#f2b705'; ctx.fillRect(18, 54, (W - 36) * Math.min(1, catchCaught / catchGoal), 8);
+    ctx.fillStyle = '#0b3550'; ctx.textAlign = 'center';
+    ctx.fillText('ステージ ' + stageNo + ' きゅうりキャッチ' + (boss2 ? '　ボス戦！' : ''), W / 2, 80);
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'right';
+    ctx.fillText(boss2 ? '皿を投げろ！' : (dashCD > 0 ? (dashT > 0 ? 'ひろげ中！' : 'ひろげ準備中…') : 'ひろげOK!'), W - 18, H - 12);
+    if (!running) drawOverlay();
+  }
+
+  // ================= 積み皿バランス =================
+  function newCur() {
+    var prev = stk[stk.length - 1];
+    var cnt = stk.length - 1;
+    var left = Math.random() < 0.5;
+    curP = { w: prev.w, x: left ? 12 + prev.w / 2 : W - 12 - prev.w / 2, dir: left ? 1 : -1, spd: Math.min(320, 110 + cnt * 12 + 18 * fallLv) };
+  }
+
+  function placePlate() {
+    if (!running || mode !== 'stack' || boss2 || placeCD > 0 || !curP) return;
+    placeCD = 0.15;
+    var baseY = H - 130;
+    var prev = stk[stk.length - 1], c = curP;
+    var topY = baseY - stk.length * PH;
+    var pl = prev.x - prev.w / 2, pr = prev.x + prev.w / 2, cl = c.x - c.w / 2, cr = c.x + c.w / 2;
+    var l = Math.max(pl, cl), r = Math.min(pr, cr), ov = r - l;
+    if (ov <= 2) {
+      pieces.push({ x: c.x, w: c.w, y: topY, vy: 0, rot: 0, vr: (Math.random() < 0.5 ? -1 : 1) * 2 });
+      pop(c.x, topY + camOff - 20, 'ハズレ！', '#ff9a85');
+      endGame('stack'); return;
+    }
+    var nx, nw;
+    if (Math.abs(c.x - prev.x) < 5) {
+      nx = prev.x; nw = Math.min(130, prev.w + 6);
+      score += 20; pop(nx, topY + camOff - 20, 'ぴったり！', '#ffe14d');
+    } else {
+      nx = (l + r) / 2; nw = ov;
+      if (cl < pl) pieces.push({ x: (cl + l) / 2, w: l - cl, y: topY, vy: 0, rot: 0, vr: -2 });
+      if (cr > pr) pieces.push({ x: (r + cr) / 2, w: cr - r, y: topY, vy: 0, rot: 0, vr: 2 });
+    }
+    stk.push({ x: nx, w: nw });
+    score += 10;
+    if ((stk.length - 1) % 3 === 0) { ammo = Math.min(9, ammo + 1); pop(nx, topY + camOff - 38, '皿+1', '#fff3d6'); }
+    if (stk.length - 1 >= stackGoal) { startBoss2('ghost'); return; }
+    newCur();
+  }
+
+  function updateStack(dt) {
+    if (boss2) { updateStackBoss(dt); return; }
+    time += dt;
+    if (placeCD > 0) placeCD -= dt;
+    curP.x += curP.dir * curP.spd * dt;
+    var lo = 12 + curP.w / 2, hi = W - 12 - curP.w / 2;
+    if (curP.x < lo) { curP.x = lo; curP.dir = 1; }
+    if (curP.x > hi) { curP.x = hi; curP.dir = -1; }
+    var target = Math.max(0, stk.length * PH - 160);
+    camOff += (target - camOff) * Math.min(1, 4 * dt);
+    for (var i = pieces.length - 1; i >= 0; i--) {
+      var p = pieces[i];
+      p.vy += 900 * dt; p.y += p.vy * dt; p.rot += p.vr * dt;
+      if (p.y + camOff > H + 80) pieces.splice(i, 1);
+    }
+    tickFloaters(dt);
+  }
+
+  var DISHC = ['#fff3d6', '#e8f4ff', '#ffe0e0', '#e3f7e6'];
+  function dishShape(x, y, w, i) {
+    ctx.fillStyle = DISHC[i % 4];
+    ctx.beginPath(); ctx.moveTo(x - w / 2, y); ctx.lineTo(x + w / 2, y); ctx.lineTo(x + w / 2 - 4, y + PH - 1); ctx.lineTo(x - w / 2 + 4, y + PH - 1); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#9fd0f5'; ctx.fillRect(x - w / 2 + 3, y + 1, w - 6, 3);
+    ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x - w / 2, y); ctx.lineTo(x + w / 2, y); ctx.stroke();
+  }
+
+  function drawStack() {
+    if (boss2) { drawStackBoss(); return; }
+    var baseY = H - 130;
+    var g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, '#1f2a55'); g.addColorStop(1, '#6f7fc4');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    for (var s = 0; s < 26; s++) {
+      var sx = (s * 53) % W, sy = ((s * 97) % (H - 100)) + ((camOff * 0.25) % 40);
+      ctx.globalAlpha = 0.4 + 0.4 * Math.abs(Math.sin(time * 1.5 + s));
+      ctx.fillRect(sx, sy, 2, 2);
+    }
+    ctx.globalAlpha = 1;
+    ctx.save(); ctx.translate(0, camOff);
+    ctx.fillStyle = '#2f6a45'; ctx.fillRect(0, baseY + PH + 52, W, 400);
+    kappa.x = W / 2; kappa.y = baseY + PH + 22;
+    drawKappa();
+    // 置く位置のガイド
+    var curY = baseY - stk.length * PH - 64;
+    ctx.fillStyle = 'rgba(255,255,255,0.10)'; ctx.fillRect(curP.x - curP.w / 2, curY + PH, curP.w, (baseY - (stk.length - 1) * PH) - curY - PH);
+    stk.forEach(function (p, i) { dishShape(p.x, baseY - i * PH, p.w, i); });
+    dishShape(curP.x, curY, curP.w, stk.length);
+    pieces.forEach(function (p) {
+      ctx.save(); ctx.translate(p.x, p.y + PH / 2); ctx.rotate(p.rot); ctx.translate(-p.x, -(p.y + PH / 2));
+      dishShape(p.x, p.y, p.w, 1); ctx.restore();
+    });
+    ctx.restore();
+    drawShots();
+    drawFloatersOutlined();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 15px ' + FONT; ctx.textAlign = 'left';
+    ctx.fillText('つみあげ ' + (stk.length - 1) + ' / ' + stackGoal, 18, 24);
+    ctx.textAlign = 'right'; ctx.fillText('ベスト ' + best, W - 18, 24);
+    ctx.font = '12px ' + FONT; ctx.textAlign = 'center';
+    ctx.fillText('ステージ ' + stageNo + ' 積み皿バランス　スコア ' + score, W / 2, 48);
+    ctx.fillStyle = 'rgba(255,255,255,0.25)'; ctx.fillRect(18, 56, W - 36, 8);
+    ctx.fillStyle = '#ffd34d'; ctx.fillRect(18, 56, (W - 36) * Math.min(1, (stk.length - 1) / stackGoal), 8);
+    if (!running) drawOverlay();
+  }
+
+  // ================= 進化ゲーム =================
+  function spawnEvo() {
+    if (boss2) {
+      var br = Math.random(), bx = 24 + Math.random() * (W - 48), bt = br < 0.4;
+      if (br > 0.78) { objs.push({ type: br > 0.9 ? 'bub' : 'shl', x: bx, x0: bx, y: -24, r: 13, vy: 120, ph: 0, amp: 0 }); return; }
+      objs.push({ type: bt ? 'sdish' : 'nut', col: evoEnv.good, x: bx, x0: bx, y: -24, r: bt ? 13 : 11, vy: 120, ph: 0, amp: 0 }); return;
+    }
+    var t = Math.random(), x = 24 + Math.random() * (W - 48);
+    var vy = 105 + 14 * fallLv + evoTier * 10 + Math.random() * 40;
+    var toxP = Math.min(0.4, 0.22 + 0.03 * fallLv), type, col = 0, r = 11;
+    var ir = Math.random();
+    if (evoTier >= 1 && ir < 0.045) { type = 'bub'; r = 13; }
+    else if (evoTier >= 2 && ir > 0.955) { type = 'shl'; r = 13; }
+    else if (t < 0.05) { type = 'gold'; r = 13; }
+    else if (t < 0.05 + toxP) { type = 'tox'; r = 14; }
+    else { type = 'nut'; col = Math.random() < 0.5 ? evoEnv.good : Math.floor(Math.random() * 3); }
+    objs.push({ type: type, col: col, x: x, x0: x, y: -24, r: r, vy: vy, ph: Math.random() * 6, amp: Math.random() < 0.3 ? 14 : 0 });
+  }
+
+  function updateEvo(dt) {
+    time += dt;
+    var ms = 210 + evoTier * 10;
+    if (keys['ArrowLeft'] || keys['a']) kappa.x -= ms * dt;
+    if (keys['ArrowRight'] || keys['d']) kappa.x += ms * dt;
+    if (keys['ArrowUp'] || keys['w']) kappa.y -= ms * dt;
+    if (keys['ArrowDown'] || keys['s']) kappa.y += ms * dt;
+    if (targetX !== null && targetY !== null) {
+      var tx = targetX - kappa.x, ty = targetY - kappa.y, d = Math.sqrt(tx * tx + ty * ty) || 1, step = Math.min(ms * dt, d);
+      kappa.x += tx / d * step; kappa.y += ty / d * step;
+    }
+    kappa.r = [12, 15, 18, 20, 24][evoTier];
+    if (evoShell > 0) evoShell -= dt;
+    if (evoBub > 0) {
+      evoBub -= dt; evoBubT -= dt;
+      if (evoBubT <= 0) {
+        evoBubT = evoTier >= 3 ? 0.3 : 0.45;
+        evoB.push({ x: kappa.x, y: kappa.y - kappa.r, vx: 0, vy: -330 });
+        if (evoTier >= 3) { evoB.push({ x: kappa.x - 8, y: kappa.y - kappa.r, vx: -110, vy: -310 }); evoB.push({ x: kappa.x + 8, y: kappa.y - kappa.r, vx: 110, vy: -310 }); }
+      }
+    }
+    for (var bi = evoB.length - 1; bi >= 0; bi--) {
+      var bb = evoB[bi], near = null, nd = 160;
+      objs.forEach(function (q) { if (q.type === 'tox') { var dd = Math.sqrt((q.x - bb.x) * (q.x - bb.x) + (q.y - bb.y) * (q.y - bb.y)); if (dd < nd) { nd = dd; near = q; } } });
+      if (near) bb.vx += Math.max(-1, Math.min(1, (near.x - bb.x) / 30)) * 600 * dt;
+      bb.x += bb.vx * dt; bb.y += bb.vy * dt;
+      var hitTox = false;
+      for (var oi = objs.length - 1; oi >= 0; oi--) { var q2 = objs[oi]; if (q2.type === 'tox' && Math.abs(q2.x - bb.x) < q2.r + 8 && Math.abs(q2.y - bb.y) < q2.r + 8) { objs.splice(oi, 1); score += 5; pop(q2.x, q2.y, 'ぱちん！', '#bfe6ff'); hitTox = true; break; } }
+      if (hitTox || bb.y < -20 || bb.x < -20 || bb.x > W + 20) evoB.splice(bi, 1);
+    }
+    kappa.x = Math.max(kappa.r + 14, Math.min(W - kappa.r - 14, kappa.x));
+    kappa.y = Math.max(140, Math.min(H - kappa.r - 20, kappa.y));
+    if (dashT > 0) dashT -= dt;
+    if (dashCD > 0) dashCD -= dt;
+    if (evoFlash > 0) evoFlash -= dt;
+    // 環境の変化
+    if (evoPending) {
+      evoWarn -= dt;
+      if (evoWarn <= 0) { evoEnv = evoPending; evoPending = null; evoT = 9 + Math.random() * 4; pop(W / 2, 150, evoEnv.name + '！', '#fff'); }
+    } else {
+      evoT -= dt;
+      if (evoT <= 0) { var c; do { c = ENVS[Math.floor(Math.random() * ENVS.length)]; } while (c === evoEnv); evoPending = c; evoWarn = 1.2; }
+    }
+    spawnT -= dt;
+    if (spawnT <= 0) { spawnEvo(); spawnT = boss2 ? 0.9 : Math.max(0.3, 0.5 - 0.02 * fallLv); }
+    water -= dt * (2.4 + 0.2 * fallLv);
+    for (var i = objs.length - 1; i >= 0; i--) {
+      var o = objs[i];
+      o.y += o.vy * dt;
+      if (o.vx) o.x += o.vx * dt; else o.x = o.x0 + Math.sin(time * 3 + o.ph) * o.amp;
+      var dx = o.x - kappa.x, dy = o.y - kappa.y;
+      if (Math.sqrt(dx * dx + dy * dy) < o.r + kappa.r - 2) {
+        if (o.type === 'nut') {
+          var good = o.col === evoEnv.good;
+          evoExp += good ? 5 : 1.2; water = Math.min(100, water + (good ? 7 : 2)); score += good ? 10 : 2;
+          pop(o.x, o.y, good ? '+5' : '+1', good ? '#ffe14d' : '#fff');
+        } else if (o.type === 'gold') {
+          evoExp += 10; score += 50; water = Math.min(100, water + 15); pop(o.x, o.y, 'レア！ +10', '#ffe14d');
+        } else if (o.type === 'sdish') {
+          ammo = Math.min(9, ammo + 1); pop(o.x, o.y, '皿+1', '#fff3d6');
+        } else if (o.type === 'bub') {
+          evoBub = 9; evoBubT = 0; pop(o.x, o.y, 'あわ弾 じどう発射！', '#bfe6ff'); score += 10;
+        } else if (o.type === 'shl') {
+          evoShell = 6; pop(o.x, o.y, '甲羅バリア！ 無敵', '#ffe9b0'); score += 10;
+        } else if (o.type === 'tox') {
+          if (evoShell > 0) pop(o.x, o.y, 'ばりあ！', '#d6fff0');
+          else if (dashT > 0) pop(o.x, o.y, 'ガード！', '#bfe6ff');
+          else { water -= 22; pop(o.x, o.y, '汚染！', '#ff9a85'); }
+        }
+        objs.splice(i, 1); continue;
+      }
+      if (o.y > H + 30 || o.y < -80 || o.x < -50 || o.x > W + 50) objs.splice(i, 1);
+    }
+    var nt = evoExp >= EVO_TH[3] ? 4 : (evoExp >= EVO_TH[2] ? 3 : (evoExp >= EVO_TH[1] ? 2 : (evoExp >= EVO_TH[0] ? 1 : 0)));
+    if (nt > evoTier) {
+      var oldPh = evoPhase(); evoTier = nt; evoFlash = 0.8;
+      if (nt === 4 && Math.random() < 0.1) { evoCute = true; score += 300; evoShell = 8; pop(W / 2, 150, 'レア進化！めっちゃかわいいカッパ！ +300', '#ffb3d9'); pop(W / 2, 172, 'かわいさで 8秒むてき♡', '#fff'); }
+      else pop(W / 2, 170, '進化！ ' + TIERN[nt], '#ffe14d');
+      if (evoPhase() > oldPh) pop(W / 2, 194, 'ステージ ' + evoPhase() + '/3 ' + PHN[evoPhase() - 1] + 'へ！', '#fff');
+    }
+    tickFloaters(dt);
+    if (boss2) { updateBoss2(dt); if (cleared || over) return; }
+    else if (evoExp >= 100) { evoExp = 100; startBoss2('virus'); }
+    if (water <= 0) { water = 0; endGame('dry'); }
+  }
+
+  function drawCell() {
+    var x = kappa.x, y = kappa.y, r = kappa.r, w = Math.sin(time * 8);
+    if (evoTier === 0) {
+      ctx.fillStyle = 'rgba(190,255,225,0.55)'; ctx.strokeStyle = '#d6fff0'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#6fdc7a'; ctx.beginPath(); ctx.arc(x + 2, y + 1, r * 0.42, 0, 7); ctx.fill();
+      ctx.strokeStyle = 'rgba(214,255,240,0.8)'; ctx.lineWidth = 1.5;
+      for (var k = 0; k < 8; k++) { var a = k * Math.PI / 4 + time; ctx.beginPath(); ctx.moveTo(x + Math.cos(a) * r, y + Math.sin(a) * r); ctx.lineTo(x + Math.cos(a) * (r + 4 + w), y + Math.sin(a) * (r + 4 + w)); ctx.stroke(); }
+    } else if (evoTier === 1) {
+      ctx.strokeStyle = '#9fe8c0'; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+      for (var l = -1; l <= 1; l += 2) { ctx.beginPath(); ctx.moveTo(x + l * 6, y + 8); ctx.lineTo(x + l * (14 + w * 3), y + 16 + w * 2); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x + l * 4, y - 12); ctx.lineTo(x + l * 10, y - 24); ctx.stroke(); }
+      ctx.fillStyle = '#9fe8c0'; ctx.beginPath(); ctx.ellipse(x, y, r * 0.9, r * 1.1, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x - 4, y - 5, 3.4, 0, 7); ctx.arc(x + 4, y - 5, 3.4, 0, 7); ctx.fill();
+      ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(x - 4, y - 5, 1.5, 0, 7); ctx.arc(x + 4, y - 5, 1.5, 0, 7); ctx.fill();
+    } else if (evoTier === 2) {
+      ctx.strokeStyle = '#3c9d4e'; ctx.lineWidth = 7; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(x, y + 6); ctx.quadraticCurveTo(x + w * 9, y + 22, x - w * 5, y + 38); ctx.stroke();
+      ctx.fillStyle = '#5fcf70'; ctx.beginPath(); ctx.ellipse(x, y, r, r * 1.05, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x - 6, y - 5, 4, 0, 7); ctx.arc(x + 6, y - 5, 4, 0, 7); ctx.fill();
+      ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(x - 6, y - 5, 1.8, 0, 7); ctx.arc(x + 6, y - 5, 1.8, 0, 7); ctx.fill();
+    } else if (evoTier === 3) {
+      kscale = 0.85; drawKappa(); kscale = 1;
+    } else if (evoCute) {
+      drawCuteKappa(x, y);
+    } else {
+      drawMushaKappa(x, y);
+    }
+    if (evoShell > 0) {
+      var fl = evoShell < 1.5 && Math.floor(time * 10) % 2 === 0;
+      if (!fl) {
+        ctx.fillStyle = 'rgba(160,120,60,0.28)'; ctx.strokeStyle = 'rgba(235,200,120,0.95)'; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.arc(x, y, r + 12, 0, 7); ctx.fill(); ctx.stroke();
+        ctx.lineWidth = 1.5; ctx.strokeStyle = 'rgba(235,200,120,0.7)';
+        for (var hx = 0; hx < 6; hx++) { var ha = hx * Math.PI / 3 + time * 0.8; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + Math.cos(ha) * (r + 12), y + Math.sin(ha) * (r + 12)); ctx.stroke(); }
+      }
+    }
+  }
+
+  function drawHeroKappa(x, y, sc) {
+    var w = Math.sin(time * 5);
+    ctx.save(); ctx.translate(x, y + w * 3); ctx.scale(sc, sc);
+    // 光
+    ctx.fillStyle = 'rgba(255,240,150,0.18)'; ctx.beginPath(); ctx.arc(0, 0, 40 + w * 2, 0, 7); ctx.fill();
+    // マント
+    ctx.fillStyle = '#d6322e'; ctx.beginPath(); ctx.moveTo(-6, -8); ctx.quadraticCurveTo(-30 - w * 3, -2, -38 - w * 4, 20 + w * 3); ctx.quadraticCurveTo(-20, 16, -4, 16); ctx.fill();
+    ctx.fillStyle = '#f2c230'; ctx.beginPath(); ctx.moveTo(-6, -8); ctx.lineTo(-38 - w * 4, 20 + w * 3); ctx.lineTo(-33 - w * 4, 12 + w * 3); ctx.lineTo(-10, -6); ctx.fill();
+    // 足
+    ctx.fillStyle = '#3a7fd6'; ctx.fillRect(-8, 14, 6, 11); ctx.fillRect(3, 14, 6, 11);
+    ctx.fillStyle = '#d6322e'; ctx.fillRect(-10, 23, 10, 5); ctx.fillRect(2, 23, 10, 5);
+    // 胴（スーツ）
+    ctx.fillStyle = '#3a7fd6'; ctx.beginPath(); ctx.ellipse(0, 4, 13, 15, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#f2c230'; ctx.fillRect(-13, 11, 26, 4);
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.moveTo(0, -4); ctx.lineTo(4, 3); ctx.lineTo(-4, 3); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#d6322e'; ctx.font = 'bold 9px ' + FONT; ctx.textAlign = 'center'; ctx.fillText('牛', 0, 2.5);
+    // 腕（天にこぶし）
+    ctx.strokeStyle = '#5fcf70'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(10, -2); ctx.lineTo(18, -16); ctx.stroke(); ctx.beginPath(); ctx.moveTo(-10, 0); ctx.lineTo(-17, 8); ctx.stroke();
+    ctx.fillStyle = '#d6322e'; ctx.beginPath(); ctx.arc(19, -18, 4, 0, 7); ctx.fill();
+    // 頭
+    ctx.fillStyle = '#6fd27c'; ctx.beginPath(); ctx.ellipse(1, -15, 11, 10, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#e8f4ff'; ctx.beginPath(); ctx.ellipse(1, -25, 8, 3, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#4aa8ff'; ctx.beginPath(); ctx.ellipse(1, -25.4, 6.3, 2, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#d6322e'; ctx.fillRect(-9, -19, 21, 6);
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.ellipse(-3, -16, 3.2, 2.2, 0, 0, 7); ctx.ellipse(6, -16, 3.2, 2.2, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(-2.4, -16, 1.1, 0, 7); ctx.arc(6.6, -16, 1.1, 0, 7); ctx.fill();
+    ctx.fillStyle = '#f5c542'; ctx.beginPath(); ctx.ellipse(10, -9, 5, 2.6, 0, 0, 7); ctx.fill();
+    ctx.strokeStyle = '#d6322e'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(-9, -15); ctx.lineTo(-17, -12 + w * 2); ctx.stroke();
+    // キラキラ
+    ctx.fillStyle = '#fff3a0';
+    for (var q = 0; q < 5; q++) { var qa = time * 1.5 + q * 1.26, qr = 34 + (q % 2) * 8, qs = 1.5 + Math.abs(Math.sin(time * 4 + q)) * 1.5; ctx.beginPath(); ctx.arc(Math.cos(qa) * qr, Math.sin(qa) * qr * 0.9, qs, 0, 7); ctx.fill(); }
+    ctx.restore();
+  }
+
+  function drawMushaKappa(x, y) {
+    var w = Math.sin(time * 6), s = 1.05;
+    ctx.save(); ctx.translate(x, y + w * 1.5); ctx.scale(s, s);
+    // 水の羽
+    ctx.fillStyle = 'rgba(120,240,255,' + (0.35 + 0.15 * Math.sin(time * 5)) + ')';
+    ctx.beginPath(); ctx.moveTo(-4, -4); ctx.quadraticCurveTo(-30, -34 - w * 4, -14, -52); ctx.quadraticCurveTo(-14, -26, 4, -10); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-4, -2); ctx.quadraticCurveTo(-36, -14 + w * 4, -34, -34); ctx.quadraticCurveTo(-18, -18, 2, -6); ctx.fill();
+    // 尾びれ
+    ctx.fillStyle = '#3fa7a0'; ctx.beginPath(); ctx.moveTo(-6, 14); ctx.quadraticCurveTo(-26, 22 + w * 3, -30, 40); ctx.quadraticCurveTo(-14, 34, -4, 22); ctx.fill();
+    ctx.fillStyle = '#e8c76a'; ctx.beginPath(); ctx.moveTo(-26, 30); ctx.lineTo(-34, 44); ctx.lineTo(-18, 38); ctx.fill();
+    // 足
+    ctx.fillStyle = '#1f7f78'; ctx.fillRect(-9, 16, 7, 12); ctx.fillRect(3, 16, 7, 12);
+    ctx.fillStyle = '#e8c76a'; ctx.fillRect(-12, 27, 11, 3); ctx.fillRect(1, 27, 11, 3);
+    // 胴
+    ctx.fillStyle = '#1f8a82'; ctx.beginPath(); ctx.ellipse(0, 4, 14, 17, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#d8b95a'; ctx.beginPath(); ctx.ellipse(1, 0, 8, 11, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#1b2748'; ctx.fillRect(-14, 10, 28, 7);
+    ctx.fillStyle = '#e8c76a'; ctx.beginPath(); ctx.arc(0, 13.5, 2.4, 0, 7); ctx.fill();
+    // 肩のよろい
+    ctx.fillStyle = '#1b3a55'; ctx.beginPath(); ctx.ellipse(-12, -5, 6, 5, 0.4, 0, 7); ctx.ellipse(12, -5, 6, 5, -0.4, 0, 7); ctx.fill();
+    // 杖
+    ctx.strokeStyle = '#5ee6e0'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(14, 6); ctx.lineTo(28, -26); ctx.stroke();
+    ctx.fillStyle = 'rgba(120,255,255,' + (0.6 + 0.3 * Math.sin(time * 8)) + ')'; ctx.beginPath(); ctx.arc(29, -29, 5.5, 0, 7); ctx.fill();
+    // 頭
+    ctx.fillStyle = '#2aa59a'; ctx.beginPath(); ctx.ellipse(1, -17, 11, 10, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#e8c76a'; ctx.beginPath(); ctx.moveTo(-8, -24); ctx.lineTo(-14, -36); ctx.lineTo(-3, -27); ctx.fill(); ctx.beginPath(); ctx.moveTo(10, -24); ctx.lineTo(16, -36); ctx.lineTo(5, -27); ctx.fill();
+    ctx.fillStyle = 'rgba(120,255,240,0.95)'; ctx.beginPath(); ctx.ellipse(1, -28, 6, 3.4, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = 'rgba(160,255,255,0.35)'; ctx.beginPath(); ctx.arc(1, -29, 10 + Math.sin(time * 4) * 1.5, 0, 7); ctx.fill();
+    ctx.fillStyle = '#ffe14d'; ctx.beginPath(); ctx.arc(-3, -18, 2.6, 0, 7); ctx.arc(6, -18, 2.6, 0, 7); ctx.fill();
+    ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(-2.4, -18, 1.1, 0, 7); ctx.arc(6.6, -18, 1.1, 0, 7); ctx.fill();
+    ctx.fillStyle = '#e8c76a'; ctx.beginPath(); ctx.ellipse(9, -12, 5, 2.6, 0, 0, 7); ctx.fill();
+    ctx.restore();
+  }
+
+  function drawCuteKappa(x, y) {
+    var w = Math.sin(time * 4), s = 1.35;
+    ctx.save(); ctx.translate(x, y + w * 1.5); ctx.scale(s, s);
+    ctx.fillStyle = '#7ccc86'; ctx.beginPath(); ctx.ellipse(-6, 6, 9, 9, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#9ad99a'; ctx.beginPath(); ctx.ellipse(0, 8, 9, 8, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#f7b6c8'; ctx.beginPath(); ctx.arc(-6, 6, 2.8, 0, 7); ctx.fill();
+    ctx.fillStyle = '#f9c8bd'; ctx.beginPath(); ctx.ellipse(-5, 15, 3.6, 2.2, 0, 0, 7); ctx.ellipse(5, 15, 3.6, 2.2, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#a6e3a6'; ctx.beginPath(); ctx.arc(0, -4, 13, 0, 7); ctx.fill();
+    ctx.fillStyle = '#c4efc4'; ctx.beginPath(); ctx.ellipse(-12, -5, 3, 4, 0, 0, 7); ctx.ellipse(12, -5, 3, 4, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#bfe9c4'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 1; ctx.beginPath(); ctx.ellipse(0, -16, 12, 4, 0, 0, 7); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#9fd8ff'; ctx.beginPath(); ctx.ellipse(0, -16.6, 9.5, 2.5, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#e6f6ff'; ctx.beginPath(); ctx.arc(-1, -18, 2.2, 0, 7); ctx.fill();
+    ctx.fillStyle = '#6fbf6a'; ctx.beginPath(); ctx.ellipse(6, -18, 4, 2, -0.3, 0, 7); ctx.fill();
+    ctx.fillStyle = '#1c1c28'; ctx.beginPath(); ctx.arc(-5, -4, 4.2, 0, 7); ctx.arc(5, -4, 4.2, 0, 7); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-6.2, -5.4, 1.5, 0, 7); ctx.arc(3.8, -5.4, 1.5, 0, 7); ctx.arc(-4, -2.6, 0.8, 0, 7); ctx.arc(6, -2.6, 0.8, 0, 7); ctx.fill();
+    ctx.fillStyle = 'rgba(255,150,170,0.65)'; ctx.beginPath(); ctx.ellipse(-9, 1, 3, 2, 0, 0, 7); ctx.ellipse(9, 1, 3, 2, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#f3dfae'; ctx.beginPath(); ctx.ellipse(0, 1.5, 3, 1.8, 0, 0, 7); ctx.fill();
+    ctx.strokeStyle = '#d08a8a'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(0, 2.5, 3.5, 0.2, Math.PI - 0.2); ctx.stroke();
+    // ハート
+    for (var hh = 0; hh < 3; hh++) {
+      var ht = (time * 0.8 + hh / 3) % 1, hx = Math.sin(hh * 2.1 + time) * 12, hy = -22 - ht * 22;
+      ctx.globalAlpha = 1 - ht; ctx.fillStyle = '#ff7aa8';
+      ctx.beginPath(); ctx.arc(hx - 2, hy, 2.4, 0, 7); ctx.arc(hx + 2, hy, 2.4, 0, 7); ctx.moveTo(hx - 4.4, hy + 0.8); ctx.lineTo(hx, hy + 5.5); ctx.lineTo(hx + 4.4, hy + 0.8); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+
+  function drawEvo() {
+    var g = ctx.createLinearGradient(0, 0, 0, H);
+    var pb = PHBG[evoPhase() - 1]; g.addColorStop(0, pb[0]); g.addColorStop(1, pb[1]);
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = 'rgba(255,255,255,0.18)';
+    for (var s = 0; s < 26; s++) {
+      var sx = (s * 37) % W, sy = ((time * 20 * (0.5 + (s % 3) * 0.3) + s * 53) % (H + 20)) - 10;
+      ctx.beginPath(); ctx.arc(sx, sy, 1.5 + (s % 3), 0, 7); ctx.fill();
+    }
+    ctx.fillStyle = evoEnv.tint; ctx.fillRect(0, 0, W, H);
+    objs.forEach(drawObj);
+    drawBoss2();
+    drawShots2();
+    if (evoFlash > 0) {
+      ctx.strokeStyle = 'rgba(255,225,80,' + evoFlash + ')'; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.arc(kappa.x, kappa.y, kappa.r + (0.8 - evoFlash) * 120, 0, 7); ctx.stroke();
+    }
+    evoB.forEach(function (b) { ctx.fillStyle = 'rgba(190,240,255,0.6)'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(b.x, b.y, 6, 0, 7); ctx.fill(); ctx.stroke(); });
+    drawCell();
+    if (evoBub > 0) { ctx.fillStyle = 'rgba(190,240,255,0.9)'; ctx.font = '10px ' + FONT; ctx.textAlign = 'center'; ctx.fillText('あわ弾 ' + Math.ceil(evoBub) + 's', kappa.x, kappa.y + kappa.r + 16); }
+    if (dashT > 0) {
+      ctx.fillStyle = 'rgba(255,255,255,0.18)'; ctx.strokeStyle = 'rgba(255,255,255,0.85)'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(kappa.x, kappa.y, kappa.r + 10, 0, 7); ctx.fill(); ctx.stroke();
+    }
+    drawFloatersOutlined();
+    var bw = W - 36;
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 14px ' + FONT; ctx.textAlign = 'left';
+    ctx.font = 'bold 12px ' + FONT; ctx.fillText('ステージ' + evoPhase() + '/3 ' + PHN[evoPhase() - 1] + (evoCute && evoTier === 4 ? '　♡' : ''), 18, 22); ctx.font = 'bold 14px ' + FONT;
+    ctx.textAlign = 'right'; ctx.fillText('ベスト ' + best, W - 18, 22);
+    ctx.fillStyle = 'rgba(0,0,0,0.35)'; ctx.fillRect(18, 30, bw, 10);
+    ctx.fillStyle = '#ffd34d'; ctx.fillRect(18, 30, bw * Math.min(1, evoExp / 100), 10);
+    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    for (var tk = 1; tk < 5; tk++) ctx.fillRect(18 + bw * tk / 5 - 1, 28, 2, 14);
+    ctx.font = '10px ' + FONT; ctx.textAlign = 'center';
+    var labels = ['さいぼう', 'ミジンコ', 'おたま', 'カッパ', '武者'];
+    for (var lb = 0; lb < 5; lb++) { ctx.fillStyle = lb === evoTier ? '#ffe14d' : 'rgba(255,255,255,0.7)'; ctx.fillText(labels[lb], 18 + bw * (lb + 0.5) / 5, 54); }
+    ctx.fillStyle = '#fff'; ctx.font = '12px ' + FONT; ctx.textAlign = 'left'; ctx.fillText('元気', 18, 76);
+    waterBar(48, 67, 110);
+    ctx.textAlign = 'right'; ctx.fillText('スコア ' + score, W - 18, 76);
+    var show = evoPending ? (Math.floor(time * 6) % 2 === 0 ? null : '環境がかわるぞ！') : evoEnv.msg;
+    if (show) {
+      ctx.textAlign = 'center'; ctx.font = 'bold 12px ' + FONT;
+      var tw = ctx.measureText(show).width + 20;
+      ctx.fillStyle = 'rgba(0,0,0,0.45)'; ctx.fillRect(W / 2 - tw / 2, 88, tw, 22);
+      ctx.fillStyle = evoPending ? '#ffe14d' : '#fff'; ctx.fillText(show, W / 2, 104);
+    }
+    ctx.fillStyle = '#fff'; ctx.font = '12px ' + FONT; ctx.textAlign = 'right';
+    ctx.fillText(boss2 ? '皿を投げろ！' : (dashCD > 0 ? (dashT > 0 ? 'ガード中！' : 'ガード準備中…') : 'ガードOK!'), W - 18, H - 12);
+    if (!running) drawOverlay();
+  }
+
+  // ================= ボス戦（滝・キャッチ・積み皿・進化） =================
+  var BOSS = {
+    crab: { name: '滝の主 大ガニ', hp: 4 },
+    crow: { name: 'きゅうり泥棒 大ガラス', hp: 4 },
+    ghost: { name: '皿割りオバケ', hp: 5 },
+    virus: { name: '環境の主 ゴミの山の大怪獣', hp: 5 }
+  };
+
+  function startBoss2(kind) {
+    var d = BOSS[kind], hp = kind === 'crow' ? 3 + Math.ceil(fallLv / 2) : d.hp + fallLv;
+    boss2 = { kind: kind, name: d.name, hp: hp, maxhp: hp, x: W / 2, y: -70, state: 'enter', t: 0, hitT: 0, atkT: 1.2, fireT: 1, dropT: 1, rushT: 4, side: 1, lockX: W / 2, lx: W / 2, ly: H / 2, vx: 0, vy: 0 };
+    objs = []; shots2 = []; spawnT = 0.6; throwCD = 0; hurtT = 0; dashT = 0;
+    climb = fallGoal; catchCaught = catchGoal;
+    if (kind === 'virus') { evoExp = 100; evoTier = 4; kappa.r = 24; }
+    if (kind === 'ghost') {
+      var conv = Math.floor((stk.length - 1) / 2);
+      ammo = Math.min(9, ammo + conv);
+      stk = [{ x: W / 2, w: 130 }]; pieces = []; camOff = 0; newCur(); kappa.x = W / 2; kappa.y = H - 100;
+      if (conv > 0) pop(W / 2, H - 190, '積んだ皿が武器に！ 皿+' + conv, '#fff3d6');
+    }
+    pop(W / 2, H / 2 - 60, d.name + 'があらわれた！', '#ffe14d');
+    pop(W / 2, H / 2 - 36, ammo > 0 ? 'お皿を投げて倒せ！' : '皿がない！お皿を拾え！', '#fff');
+    bossCP = { kind: kind, ammo: ammo, score: score };
+  }
+
+  function throwPlate2() {
+    if (!running || !boss2 || throwCD > 0) return;
+    if (ammo <= 0) { pop(kappa.x, kappa.y - 44, '皿がない！', '#ff9a85'); throwCD = 0.4; return; }
+    ammo -= 1; throwCD = 0.25;
+    var sx = kappa.x, sy = kappa.y - 24, vx = 0, vy = -520;
+    if (boss2.kind === 'virus' || (boss2.kind === 'crow' && boss2.state === 'land')) {
+      var dx = boss2.x - sx, dy = boss2.y - sy, d = Math.sqrt(dx * dx + dy * dy) || 1;
+      vx = dx / d * 440; vy = dy / d * 440;
+    }
+    shots2.push({ x: sx, y: sy, vx: vx, vy: vy, rot: 0 });
+  }
+
+  function hurtKappa(dmg, label) {
+    if (hurtT > 0) return;
+    if (mode === 'evo' && evoShell > 0) { hurtT = 0.3; pop(kappa.x, kappa.y - 34, 'ばりあ！', '#d6fff0'); return; }
+    water -= dmg; hurtT = 1;
+    pop(kappa.x, kappa.y - 34, label || 'いたっ！', '#ff9a85');
+  }
+
+  function bossCrab(b, dt, lv) {
+    if (b.state === 'enter') { b.y += 110 * dt; if (b.y >= 150) { b.y = 150; b.state = 'idle'; b.t = 0; b.atkT = 1.2; } return; }
+    if (b.state === 'stun') { if (b.t > 0.9) { b.state = 'idle'; b.t = 0; b.atkT = 1.0; } return; }
+    var tx = W / 2 + Math.sin(b.t * (0.9 + 0.1 * lv)) * (W / 2 - 64);
+    b.x += Math.max(-140 * dt, Math.min(140 * dt, tx - b.x));
+    if (b.state === 'idle') {
+      b.atkT -= dt;
+      if (b.atkT <= 0) {
+        if (Math.random() < 0.5) { b.state = 'warn'; b.t = 0; b.side = Math.random() < 0.5 ? -1 : 1; }
+        else {
+          for (var k = -1; k <= 1; k++) objs.push({ type: 'rock', x: b.x, x0: b.x, y: b.y + 30, r: 14, vy: 190, vx: k * (70 + 10 * lv) });
+          b.atkT = Math.max(1.0, 2.2 - 0.15 * lv);
+        }
+      }
+    } else if (b.state === 'warn') {
+      if (b.t > 1.0) {
+        b.state = 'smash'; b.t = 0;
+        if ((kappa.x < W / 2) === (b.side < 0)) hurtKappa(35, 'どーん！');
+      }
+    } else if (b.state === 'smash') {
+      if (b.t > 0.4) { b.state = 'idle'; b.t = 0; b.atkT = 1.4; }
+    }
+  }
+
+  function bossCrow(b, dt, lv) {
+    var ground = H - 84;
+    if (b.state === 'enter') { b.y += 120 * dt; if (b.y >= 110) { b.y = 110; b.state = 'idle'; b.t = 0; b.atkT = 3.2; b.dropT = 1.2; } return; }
+    if (b.state === 'idle') {
+      b.x = W / 2 + Math.sin(b.t * (1.0 + 0.08 * lv)) * (W / 2 - 54); b.y = 110 + Math.sin(b.t * 2.3) * 10;
+      b.dropT -= dt;
+      if (b.dropT <= 0) { objs.push({ type: 'rock', x: b.x, x0: b.x, y: b.y + 20, r: 16, vy: 200 + 15 * lv, ph: 0, amp: 0 }); b.dropT = Math.max(0.8, 1.6 - 0.1 * lv); }
+      b.atkT -= dt;
+      if (b.atkT <= 0) { b.state = 'warn'; b.t = 0; b.lockX = kappa.x; }
+    } else if (b.state === 'warn') {
+      b.x += Math.max(-300 * dt, Math.min(300 * dt, b.lockX - b.x)); b.y = 110 + Math.sin(b.t * 30) * 3;
+      if (b.t > 1.0) { b.state = 'dive'; b.t = 0; }
+    } else if (b.state === 'dive') {
+      b.y += 760 * dt;
+      if (Math.abs(b.x - kappa.x) < 40 && b.y > kappa.y - 60) hurtKappa(30, 'ガブッ！');
+      if (b.y >= ground) { b.y = ground; b.state = 'land'; b.t = 0; pop(b.x, b.y - 52, 'いまだ！お皿を投げろ！', '#ffe14d'); }
+    } else if (b.state === 'land') {
+      if (b.t > 3.0) { b.state = 'return'; b.t = 0; }
+    } else if (b.state === 'return') {
+      b.y -= 380 * dt;
+      if (b.y <= 110) { b.y = 110; b.state = 'idle'; b.t = 0; b.atkT = Math.max(2.2, 3.4 - 0.2 * lv); b.dropT = 1.0; }
+    }
+  }
+
+  function bossGhost(b, dt, lv) {
+    if (b.state === 'enter') { b.y += 100 * dt; if (b.y >= 140) { b.y = 140; b.state = 'closed'; b.t = 0; b.fireT = 0.8; } return; }
+    b.x = W / 2 + Math.sin(time * (0.8 + 0.08 * lv)) * (W / 2 - 60);
+    if (b.state === 'closed') {
+      b.fireT -= dt;
+      if (b.fireT <= 0) {
+        var dx = kappa.x - b.x, dy = kappa.y - b.y, d = Math.sqrt(dx * dx + dy * dy) || 1, sp = 150 + 12 * lv;
+        objs.push({ type: 'rock', x: b.x, x0: b.x, y: b.y + 30, r: 12, vx: dx / d * sp, vy: dy / d * sp });
+        b.fireT = Math.max(0.7, 1.2 - 0.08 * lv);
+      }
+      if (b.t > 2.4) { b.state = 'open'; b.t = 0; pop(b.x, b.y - 56, 'いまだ！', '#ffe14d'); }
+    } else if (b.state === 'open') {
+      if (b.t > 1.5) { b.state = 'closed'; b.t = 0; b.fireT = 0.5; }
+    }
+  }
+
+  function bossVirus(b, dt, lv) {
+    if (b.state === 'enter') { b.y += 110 * dt; if (b.y >= 190) { b.y = 190; b.state = 'chase'; b.t = 0; b.fireT = 1.5; b.rushT = 4; } return; }
+    var dx = kappa.x - b.x, dy = kappa.y - b.y, d = Math.sqrt(dx * dx + dy * dy) || 1;
+    if (b.state === 'chase') {
+      var sp = 55 + 8 * lv; b.x += dx / d * sp * dt; b.y += dy / d * sp * dt;
+      b.fireT -= dt;
+      if (b.fireT <= 0) {
+        for (var k = -1; k <= 1; k++) { var a = Math.atan2(dy, dx) + k * 0.35; objs.push({ type: 'tox', col: 0, ph: k + 1, x: b.x, x0: b.x, y: b.y, r: 12, vx: Math.cos(a) * 130, vy: Math.sin(a) * 130 }); }
+        b.fireT = Math.max(1.6, 2.6 - 0.15 * lv);
+      }
+      b.rushT -= dt;
+      if (b.rushT <= 0) { b.state = 'warn'; b.t = 0; b.lx = kappa.x; b.ly = kappa.y; }
+    } else if (b.state === 'warn') {
+      if (b.t > 0.9) {
+        b.state = 'rush'; b.t = 0;
+        var rx = b.lx - b.x, ry = b.ly - b.y, rd = Math.sqrt(rx * rx + ry * ry) || 1, rs = 360 + 20 * lv;
+        b.vx = rx / rd * rs; b.vy = ry / rd * rs;
+      }
+    } else if (b.state === 'rush') {
+      b.x += b.vx * dt; b.y += b.vy * dt;
+      if (b.t > 0.8) { b.state = 'chase'; b.t = 0; b.rushT = Math.max(3, 5 - 0.3 * lv); }
+    } else if (b.state === 'stun') {
+      if (b.t > 1.0) { b.state = 'chase'; b.t = 0; b.rushT = 4; }
+    }
+    b.x = Math.max(40, Math.min(W - 40, b.x)); b.y = Math.max(130, Math.min(H - 40, b.y));
+    var tx = kappa.x - b.x, ty = kappa.y - b.y;
+    if (b.state !== 'stun' && Math.sqrt(tx * tx + ty * ty) < 34 + kappa.r - 4) hurtKappa(25, 'うわっ！');
+  }
+
+  function boss2Hit(b, s) {
+    var rx = 36, ry = 36;
+    if (b.kind === 'crab') { rx = 52; ry = 32; }
+    else if (b.kind === 'crow') { rx = 44; ry = 34; }
+    else if (b.kind === 'ghost') { rx = 38; ry = 44; }
+    var ex = (s.x - b.x) / rx, ey = (s.y - b.y) / ry;
+    if (ex * ex + ey * ey >= 1) return false;
+    var vul = b.state !== 'enter';
+    if (b.kind === 'ghost') vul = b.state === 'open';
+    if (vul) {
+      var dmg = (b.kind === 'crow' && b.state === 'land') ? 2 : 1;
+      b.hp -= dmg; b.hitT = 0.5; pop(b.x, b.y - 44, dmg > 1 ? 'クリーンヒット！！' : 'ヒット！', '#ffe14d');
+      if (b.kind === 'crab' || b.kind === 'virus') { b.state = 'stun'; b.t = 0; }
+      else if (b.kind === 'crow') { if (b.state === 'land' || b.state === 'dive') { b.state = 'return'; b.t = 0; } }
+      else if (b.kind === 'ghost') { b.state = 'closed'; b.t = 0; b.fireT = 0.6; }
+    } else {
+      pop(b.x, b.y - 44, b.kind === 'ghost' ? 'はじかれた！' : 'ひらり！', '#fff');
+    }
+    return true;
+  }
+
+  function updateBoss2(dt) {
+    var b = boss2, lv = fallLv;
+    if (throwCD > 0) throwCD -= dt;
+    if (mode !== 'fall' && hurtT > 0) hurtT -= dt;
+    b.t += dt;
+    if (b.hitT > 0) b.hitT -= dt;
+    if (b.kind === 'crab') bossCrab(b, dt, lv);
+    else if (b.kind === 'crow') bossCrow(b, dt, lv);
+    else if (b.kind === 'ghost') bossGhost(b, dt, lv);
+    else bossVirus(b, dt, lv);
+    for (var i = shots2.length - 1; i >= 0; i--) {
+      var s = shots2[i];
+      s.x += s.vx * dt; s.y += s.vy * dt; s.rot += 12 * dt;
+      var used = false;
+      if (b.kind === 'ghost') {
+        for (var j = objs.length - 1; j >= 0; j--) {
+          var ob = objs[j];
+          if (ob.type === 'rock' && Math.abs(ob.x - s.x) < ob.r + 10 && Math.abs(ob.y - s.y) < ob.r + 10) { pop(ob.x, ob.y, 'パリィ！', '#bfe6ff'); objs.splice(j, 1); used = true; break; }
+        }
+      }
+      if (!used && boss2Hit(b, s)) used = true;
+      if (used || s.y < -40 || s.y > H + 40 || s.x < -40 || s.x > W + 40) shots2.splice(i, 1);
+      if (b.hp <= 0) { clearStage(); return; }
+    }
+  }
+
+  // 積み皿ボス戦（オバケ）：カッパは地面で左右に動く
+  function updateStackBoss(dt) {
+    time += dt;
+    var ms = 250;
+    if (keys['ArrowLeft'] || keys['a']) kappa.x -= ms * dt;
+    if (keys['ArrowRight'] || keys['d']) kappa.x += ms * dt;
+    if (targetX !== null) kappa.x += Math.max(-ms * dt, Math.min(ms * dt, targetX - kappa.x));
+    kappa.x = Math.max(34, Math.min(W - 34, kappa.x));
+    spawnT -= dt;
+    if (spawnT <= 0) { var sx = 30 + Math.random() * (W - 60); objs.push({ type: 'sdish', x: sx, x0: sx, y: -20, r: 13, vy: 130 }); spawnT = 1.4; }
+    for (var i = objs.length - 1; i >= 0; i--) {
+      var o = objs[i];
+      o.x += (o.vx || 0) * dt; o.y += (o.vy || 0) * dt;
+      var dx = o.x - kappa.x, dy = o.y - kappa.y;
+      if (Math.sqrt(dx * dx + dy * dy) < o.r + kappa.r - 2) {
+        if (o.type === 'sdish') { ammo = Math.min(9, ammo + 1); pop(o.x, o.y, '皿+1', '#fff3d6'); objs.splice(i, 1); continue; }
+        if (o.type === 'rock') { hurtKappa(20, 'ゴツン！'); objs.splice(i, 1); continue; }
+      }
+      if (o.y > H + 40 || o.y < -80 || o.x < -50 || o.x > W + 50) objs.splice(i, 1);
+    }
+    updateBoss2(dt);
+    if (cleared) return;
+    tickFloaters(dt);
+    if (water <= 0) { water = 0; endGame('dry'); }
+  }
+
+  function drawStars(n, d) {
+    ctx.fillStyle = 'rgba(255,225,80,0.95)';
+    for (var k = 0; k < n; k++) { var an = time * 5 + k * 6.28 / n; ctx.beginPath(); ctx.arc(Math.cos(an) * 22, d + Math.sin(an) * 5, 3.5, 0, 7); ctx.fill(); }
+  }
+
+  function drawBoss2() {
+    var b = boss2; if (!b) return;
+    // 攻撃の予告
+    if (b.kind === 'crab' && (b.state === 'warn' || b.state === 'smash')) {
+      ctx.fillStyle = 'rgba(255,60,60,' + (b.state === 'smash' ? 0.5 : 0.14 + 0.12 * Math.sin(time * 20)) + ')';
+      ctx.fillRect(b.side < 0 ? 0 : W / 2, 190, W / 2, H - 190);
+    }
+    if (b.kind === 'crow' && b.state === 'warn') {
+      ctx.fillStyle = 'rgba(255,60,60,' + (0.16 + 0.12 * Math.sin(time * 20)) + ')';
+      ctx.fillRect(b.x - 22, 130, 44, H - 200);
+    }
+    if (b.kind === 'virus' && b.state === 'warn') {
+      ctx.strokeStyle = 'rgba(255,70,70,0.65)'; ctx.lineWidth = 4; ctx.setLineDash([8, 6]);
+      ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.lineTo(b.lx, b.ly); ctx.stroke(); ctx.setLineDash([]);
+    }
+    ctx.save(); ctx.translate(b.x, b.y);
+    if (b.hitT > 0 && Math.floor(time * 20) % 2 === 0) ctx.globalAlpha = 0.5;
+    if (b.kind === 'crab') {
+      var cw = Math.sin(time * 5) * 4;
+      ctx.strokeStyle = '#a63a28'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+      for (var s1 = -1; s1 <= 1; s1 += 2) {
+        for (var l = 0; l < 3; l++) { ctx.beginPath(); ctx.moveTo(s1 * 20, 8 + l * 6); ctx.lineTo(s1 * (38 + l * 3), 18 + l * 7 + cw * s1 * 0.3); ctx.stroke(); }
+        ctx.beginPath(); ctx.moveTo(s1 * 30, -4); ctx.lineTo(s1 * 50, -18 + cw * s1); ctx.stroke();
+        ctx.fillStyle = '#e0553c'; ctx.beginPath(); ctx.arc(s1 * 54, -24 + cw * s1, 12, 0, 7); ctx.fill();
+        ctx.fillStyle = 'rgba(0,0,0,0.28)'; ctx.beginPath(); ctx.moveTo(s1 * 54, -24 + cw * s1); ctx.lineTo(s1 * 48, -37 + cw * s1); ctx.lineTo(s1 * 60, -37 + cw * s1); ctx.closePath(); ctx.fill();
+      }
+      ctx.fillStyle = '#e0553c'; ctx.beginPath(); ctx.ellipse(0, 0, 44, 28, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = '#f29a80'; ctx.beginPath(); ctx.ellipse(0, -9, 30, 11, 0, 0, 7); ctx.fill();
+      ctx.strokeStyle = '#a63a28'; ctx.lineWidth = 3;
+      for (var s2 = -1; s2 <= 1; s2 += 2) { ctx.beginPath(); ctx.moveTo(s2 * 12, -22); ctx.lineTo(s2 * 14, -34); ctx.stroke(); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(s2 * 14, -37, 5, 0, 7); ctx.fill(); ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(s2 * 14, -36, 2, 0, 7); ctx.fill(); }
+      ctx.strokeStyle = '#5a1a10'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(0, 8, 9, 0.2, Math.PI - 0.2); ctx.stroke();
+      if (b.state === 'stun') drawStars(3, -52);
+    } else if (b.kind === 'crow') {
+      var fl = Math.sin(time * (b.state === 'idle' ? 14 : 6)) * 14;
+      ctx.fillStyle = '#2a2a33';
+      ctx.beginPath(); ctx.moveTo(-8, -4); ctx.lineTo(-48, -14 + fl); ctx.lineTo(-30, 10); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(8, -4); ctx.lineTo(48, -14 + fl); ctx.lineTo(30, 10); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#34343f'; ctx.beginPath(); ctx.ellipse(0, 2, 22, 18, 0, 0, 7); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(-8, 16); ctx.lineTo(0, 34); ctx.lineTo(8, 16); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.arc(0, -16, 11, 0, 7); ctx.fill();
+      ctx.fillStyle = '#f5a742'; ctx.beginPath(); ctx.moveTo(-4, -12); ctx.lineTo(0, -2); ctx.lineTo(4, -12); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-5, -19, 3.4, 0, 7); ctx.arc(5, -19, 3.4, 0, 7); ctx.fill();
+      ctx.fillStyle = (b.state === 'warn' || b.state === 'dive') ? '#e33' : '#000'; ctx.beginPath(); ctx.arc(-5, -19, 1.6, 0, 7); ctx.arc(5, -19, 1.6, 0, 7); ctx.fill();
+      if (b.state === 'land') drawStars(3, -40);
+    } else if (b.kind === 'ghost') {
+      var open = b.state === 'open';
+      if (!open) {
+        ctx.strokeStyle = 'rgba(120,180,255,' + (0.5 + 0.3 * Math.sin(time * 6)) + ')'; ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.ellipse(0, 0, 46, 54, 0, 0, 7); ctx.stroke();
+      }
+      ctx.fillStyle = '#ece7ff';
+      ctx.beginPath(); ctx.moveTo(-34, 38); ctx.lineTo(-34, -8); ctx.quadraticCurveTo(-34, -46, 0, -46); ctx.quadraticCurveTo(34, -46, 34, -8); ctx.lineTo(34, 38);
+      for (var wv = 0; wv < 4; wv++) { ctx.quadraticCurveTo(34 - (wv + 0.5) * 17, 38 + (wv % 2 === 0 ? 14 : -4), 34 - (wv + 1) * 17, 38); }
+      ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#2a2145'; ctx.beginPath(); ctx.ellipse(-12, -14, 5, 8, 0, 0, 7); ctx.ellipse(12, -14, 5, 8, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = 'rgba(255,150,170,0.6)'; ctx.beginPath(); ctx.ellipse(-22, -2, 6, 3.5, 0, 0, 7); ctx.ellipse(22, -2, 6, 3.5, 0, 0, 7); ctx.fill();
+      if (open) {
+        ctx.fillStyle = '#7a1f3a'; ctx.beginPath(); ctx.ellipse(0, 14, 13, 15, 0, 0, 7); ctx.fill();
+        ctx.fillStyle = '#ff8aa0'; ctx.beginPath(); ctx.ellipse(0, 22, 8, 6, 0, 0, 7); ctx.fill();
+      } else {
+        ctx.strokeStyle = '#2a2145'; ctx.lineWidth = 2.5; ctx.lineJoin = 'round'; ctx.beginPath(); ctx.moveTo(-12, 14);
+        for (var zg = 1; zg <= 6; zg++) ctx.lineTo(-12 + zg * 4, 14 + (zg % 2 ? 5 : 0));
+        ctx.stroke();
+      }
+    } else {
+      var ang = (b.state === 'warn' || b.state === 'rush'), wob = Math.sin(time * 5) * 2;
+      // 悪臭
+      ctx.strokeStyle = 'rgba(140,170,90,0.6)'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+      for (var sk = -1; sk <= 1; sk++) { ctx.beginPath(); ctx.moveTo(sk * 20, -34); ctx.quadraticCurveTo(sk * 20 + 7, -44 + wob, sk * 20, -54); ctx.stroke(); }
+      // ごみの山
+      ctx.fillStyle = '#4a4540'; ctx.beginPath(); ctx.ellipse(0, 6 + wob * 0.3, 40, 30, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = '#625b54'; ctx.beginPath(); ctx.ellipse(-6, -2, 30, 18, 0, 0, 7); ctx.fill();
+      ctx.save(); ctx.rotate(-0.5); ctx.fillStyle = 'rgba(170,220,240,0.95)'; ctx.fillRect(-36, -14, 9, 22); ctx.fillStyle = '#3b7fa6'; ctx.fillRect(-34, -19, 5, 5); ctx.restore();
+      ctx.save(); ctx.rotate(0.6); ctx.fillStyle = '#b9c0c8'; ctx.fillRect(24, -24, 12, 18); ctx.fillStyle = '#d6453a'; ctx.fillRect(24, -18, 12, 6); ctx.restore();
+      ctx.fillStyle = '#e9e9e2'; ctx.beginPath(); ctx.ellipse(10, 18, 17, 11, 0.3, 0, 7); ctx.fill();
+      ctx.fillStyle = '#222'; ctx.beginPath(); ctx.ellipse(-22, 20, 12, 8, -0.3, 0, 7); ctx.fill();
+      ctx.fillStyle = '#2b2430'; ctx.beginPath(); ctx.ellipse(0, 34, 26, 7, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = 'rgba(120,255,200,0.45)'; ctx.beginPath(); ctx.ellipse(-8, 33, 8, 2.5, 0, 0, 7); ctx.fill(); ctx.fillStyle = 'rgba(255,120,220,0.4)'; ctx.beginPath(); ctx.ellipse(8, 35, 7, 2, 0, 0, 7); ctx.fill();
+      // 顔
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-10, -2, 8, 0, 7); ctx.arc(10, -2, 8, 0, 7); ctx.fill();
+      ctx.fillStyle = ang ? '#e33' : '#2a2a2a';
+      var px = Math.max(-3, Math.min(3, (kappa.x - b.x) * 0.04)), py = Math.max(-3, Math.min(3, (kappa.y - b.y) * 0.04));
+      ctx.beginPath(); ctx.arc(-10 + px, -2 + py, 4, 0, 7); ctx.arc(10 + px, -2 + py, 4, 0, 7); ctx.fill();
+      ctx.strokeStyle = '#2a1a10'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(-19, -12); ctx.lineTo(-4, -7); ctx.moveTo(19, -12); ctx.lineTo(4, -7); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, 12, 8, Math.PI + 0.3, -0.3); ctx.stroke();
+      if (b.state === 'stun') drawStars(3, -54);
+    }
+    ctx.restore();
+    // ボスの体力
+    var by = mode === 'evo' ? 126 : 100;
+    ctx.font = 'bold 12px ' + FONT; ctx.textAlign = 'center'; ctx.fillStyle = '#fff';
+    ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,30,60,0.6)'; ctx.strokeText(b.name, W / 2, by); ctx.fillText(b.name, W / 2, by);
+    ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.fillRect(W / 2 - 70, by + 5, 140, 9);
+    ctx.fillStyle = '#ff6b5a'; ctx.fillRect(W / 2 - 70, by + 5, 140 * Math.max(0, b.hp) / b.maxhp, 9);
+  }
+
+  function drawShots2() {
+    for (var i = 0; i < shots2.length; i++) {
+      var s = shots2[i];
+      ctx.save(); ctx.translate(s.x, s.y); ctx.rotate(s.rot);
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.ellipse(0, 0, 13, 5, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = '#9fd0f5'; ctx.beginPath(); ctx.ellipse(0, 0, 8, 2.6, 0, 0, 7); ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  function drawStackBoss() {
+    var g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, '#1f2a55'); g.addColorStop(1, '#6f7fc4');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    for (var s = 0; s < 26; s++) {
+      ctx.globalAlpha = 0.4 + 0.4 * Math.abs(Math.sin(time * 1.5 + s));
+      ctx.fillRect((s * 53) % W, (s * 97) % (H - 100), 2, 2);
+    }
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = '#2f6a45'; ctx.fillRect(0, H - 60, W, 60);
+    objs.forEach(drawObj);
+    drawBoss2();
+    drawShots2();
+    kappa.y = H - 100;
+    drawKappa();
+    drawShots();
+    drawFloatersOutlined();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 15px ' + FONT; ctx.textAlign = 'left';
+    ctx.fillText('ボス戦！', 18, 24);
+    ctx.textAlign = 'right'; ctx.fillText('ベスト ' + best, W - 18, 24);
+    ctx.font = '12px ' + FONT; ctx.textAlign = 'left'; ctx.fillText('皿の水', 18, 44);
+    waterBar(58, 35, 110);
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText('ステージ ' + stageNo + ' 積み皿バランス　スコア ' + score, W / 2, 70);
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'right'; ctx.fillText('皿を投げろ！', W - 18, H - 12);
+    if (!running) drawOverlay();
+  }
+
+  function say(text, y, size, bold) {
+    ctx.font = (bold ? 'bold ' : '') + size + 'px ' + FONT;
+    ctx.fillText(text, W / 2, y);
+  }
+
+  var NAMES = { river: 'カッパの川泳ぎ', fall: 'カッパの滝のぼり', catch: 'きゅうりキャッチ', stack: '積み皿バランス', evo: '進化ゲーム' };
+  var HINTS = {
+    river: ['きゅうりを集めて、川の主に挑め！', '道中のお皿を拾っておこう'],
+    fall: ['左右になぞって、岩や流木をよけながら', '滝のてっぺんをめざせ！', '下からコイがのぼってくる！ぶつかるな！', 'てっぺんには大ガニが待っている…！'],
+    catch: ['落ちてくるきゅうりをお皿で受けとめろ！', '針つきはゲームオーバー、岩は水が減るよ', 'にせきゅうりに注意！取ると水が減る', '最後に大ガラスが現れる…！'],
+    stack: ['動くお皿をタップで置いて積み上げろ！', 'はみ出した分は切れて細くなる！', '積んだ皿は、ボス戦の武器になるよ'],
+    evo: ['ごはんを食べて、カッパに進化しよう！', '環境が変わると、効く色も変わるよ', 'あわ弾・甲羅は取ると自動で発動！', 'たまにレアなカッパになるかも…？', '進化したら、ゴミの山の大怪獣が現れる！']
+  };
+  var CLEAR = { river: '川の主をたおした！', fall: '滝の主 大ガニをたおした！', catch: '大ガラスをたおした！', stack: '皿割りオバケをたおした！', evo: 'ゴミの山の大怪獣をたおした！' };
+
+  function drawOverlay() {
+    var cy = H / 2;
+    ctx.fillStyle = 'rgba(0,0,0,0.45)'; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
+    if (cleared) {
+      if (mode === 'evo') { drawHeroKappa(W / 2, cy - 130, 2.3); }
+      say('ステージクリア！', cy - 44, 26, true);
+      say(CLEAR[mode], cy - 12, 16);
+      if (mode === 'evo') { say('牛久沼のスーパーヒーロー誕生！', cy + 10, 13); }
+      say('ボーナス +200　スコア ' + score, cy + (mode === 'evo' ? 32 : 14), 15);
+      say('「つぎのステージへ」を押してね', cy + (mode === 'evo' ? 60 : 44), 15);
+    } else if (intro) {
+      var hs = HINTS[mode];
+      say('ステージ ' + stageNo + (mode === 'river' && stage > 1 ? '（川泳ぎ Lv.' + stage + '）' : ''), cy - 52 - (hs.length - 2) * 8, 16);
+      say(NAMES[mode], cy - 18 - (hs.length - 2) * 8, 26, true);
+      for (var i = 0; i < hs.length; i++) say(hs[i], cy + 14 - (hs.length - 2) * 8 + i * 20, 14);
+      say('「スタート」を押してね', cy + 14 - (hs.length - 2) * 8 + hs.length * 20 + 14, 16);
+    } else if (over) {
+      var txt = reason === 'tsuri' ? 'つられた〜！' : (reason === 'boss' ? '川の主にやられた〜！' : (reason === 'stack' ? 'お皿がくずれた〜！' : (mode === 'evo' ? '元気がなくなった…' : '皿がカラカラ…！')));
+      say(txt, cy - 20, 26, true);
+      say('スコア ' + score + '　ベスト ' + best, cy + 12, 18);
+      if (lives > 0) { say('かっぱ のこり' + lives + '人！「もう一回」でつづき', cy + 42, 14); }
+      else { say('かっぱが全員いなくなった…', cy + 42, 15); say('「はじめから」を押してね', cy + 66, 16); }
+    } else {
+      say('カッパの川泳ぎ', cy - 20, 26, true);
+      say('きゅうりを集めて、皿の水を守れ！', cy + 12, 16);
+      say('「スタート」を押してね', cy + 40, 16);
+    }
+  }
+
+  function drawFall() {
+    var g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, '#cdeefc'); g.addColorStop(1, '#3f95cc');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(255,255,255,0.5)'; ctx.lineWidth = 2; ctx.lineCap = 'round';
+    for (var i = 0; i < 28; i++) {
+      var sx = 18 + ((i * 47) % (W - 36));
+      var sy = ((scrollY * (0.7 + (i % 3) * 0.25) + i * 83) % (H + 80)) - 40;
+      ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx, sy + 16 + (i % 4) * 8); ctx.stroke();
+    }
+    ctx.fillStyle = '#56626d'; ctx.fillRect(0, 0, 12, H); ctx.fillRect(W - 12, 0, 12, H);
+    ctx.fillStyle = '#6b7884';
+    for (var j = 0; j < 9; j++) {
+      var wy = ((scrollY + j * 64) % (H + 64)) - 32;
+      var wy2 = ((scrollY + j * 64 + 32) % (H + 64)) - 32;
+      ctx.beginPath(); ctx.ellipse(5, wy, 8, 15, 0, 0, 7); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(W - 5, wy2, 8, 15, 0, 0, 7); ctx.fill();
+    }
+    if (gust) {
+      var on = gust.warn <= 0;
+      if (on) {
+        ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = 3;
+        for (var m = 0; m < 8; m++) {
+          var gy = (m * 61 + 20) % H;
+          var gx = (((time * 520 * gust.dir + m * 97) % (W + 120)) + (W + 120)) % (W + 120) - 60;
+          ctx.beginPath(); ctx.moveTo(gx, gy); ctx.lineTo(gx - gust.dir * 50, gy); ctx.stroke();
+        }
+      }
+      if (on || Math.floor(time * 6) % 2 === 0) {
+        ctx.textAlign = 'center'; ctx.font = 'bold 16px ' + FONT;
+        var arrow = gust.dir < 0 ? '◀◀ ' : '';
+        var arrow2 = gust.dir > 0 ? ' ▶▶' : '';
+        var gt = arrow + (on ? '横から水流！' : '水流がくるぞ！') + arrow2;
+        var gw = ctx.measureText(gt).width + 20;
+        ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.fillRect(W / 2 - gw / 2, 102, gw, 26);
+        ctx.fillStyle = '#fff'; ctx.fillText(gt, W / 2, 121);
+      }
+    }
+    objs.forEach(drawObj);
+    drawBoss2();
+    drawShots2();
+    drawShots();
+    drawKappa();
+
+    ctx.font = 'bold 15px ' + FONT; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.lineJoin = 'round';
+    floaters.forEach(function (f) {
+      ctx.globalAlpha = Math.max(0, Math.min(1, f.l * 1.5));
+      ctx.strokeStyle = 'rgba(0,40,70,0.65)'; ctx.strokeText(f.t, f.x, f.y);
+      ctx.fillStyle = f.c; ctx.fillText(f.t, f.x, f.y);
+    });
+    ctx.globalAlpha = 1;
+
+    ctx.fillStyle = '#0b3550'; ctx.font = 'bold 15px ' + FONT; ctx.textAlign = 'left';
+    ctx.fillText('きゅうり ' + score + '点', 18, 24);
+    ctx.textAlign = 'right'; ctx.fillText('ベスト ' + best, W - 18, 24);
+    ctx.font = '12px ' + FONT; ctx.textAlign = 'left'; ctx.fillText('皿の水', 18, 44);
+    ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.fillRect(58, 35, 110, 10);
+    ctx.fillStyle = water > 30 ? '#1e8fe0' : '#e8553a'; ctx.fillRect(58, 35, 110 * water / 100, 10);
+    ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.fillRect(18, 54, W - 36, 8);
+    ctx.fillStyle = '#f2b705'; ctx.fillRect(18, 54, (W - 36) * Math.min(1, climb / fallGoal), 8);
+    ctx.fillStyle = '#0b3550'; ctx.textAlign = 'center';
+    ctx.fillText(boss2 ? 'ステージ ' + stageNo + ' 滝のぼり　ボス戦！' : 'ステージ ' + stageNo + ' 滝のぼり　あと ' + Math.max(0, Math.ceil(fallGoal - climb)) + 'm', W / 2, 80);
+    if (buff > 0) { ctx.textAlign = 'left'; ctx.fillText('大皿！あと' + Math.ceil(buff) + '秒', 18, 98); }
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'right';
+    ctx.fillText(boss2 ? '皿を投げろ！' : (dashCD > 0 ? 'ジャンプ準備中…' : 'ジャンプOK!'), W - 18, H - 24);
+
+    if (!running) drawOverlay();
   }
 
   function syncLoopBtn() { syncBtn(); }
   var last = performance.now();
   function loop(now) {
     var dt = Math.min(0.05, (now - last) / 1000); last = now;
-    if (running) update(dt); else time += dt;
-    syncLoopBtn();
-    draw();
+    try {
+      if (land) { land.t += dt; time += dt; if (land.t >= 3.7) { land = null; nextStage(); } }
+      else if (running) update(dt); else time += dt;
+      syncLoopBtn();
+      if (!over && !land && !bonusUsed && score >= 1000 && running) { bonusUsed = true; lives = Math.min(3, lives + 1); pop(W / 2, H / 2 - 20, 'ボーナス！ かっぱが1人ふえた！', '#ffe14d'); }
+      draw(); drawLives();
+    } catch (err) {
+      if (window.console) console.error(err);
+    }
     requestAnimationFrame(loop);
   }
   requestAnimationFrame(loop);
 })();
 </script>
-<script data-goatcounter="https://ushiku-honmachi.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<!-- ここまで -->
+
+</main>
+<footer>牛久市 本町行政区</footer>
 </body>
 </html>
