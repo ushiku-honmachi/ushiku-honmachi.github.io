@@ -10,7 +10,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="本町行政区">
-<meta name="build" content="20261030a">
+<meta name="build" content="20261030b">
 <script>
 /* 古いページが残っていたら、自動で最新に読み込み直す(開いた時と、アプリに戻った時) */
 (function () {
@@ -247,6 +247,11 @@
   .cal-grid .d.sel { background:var(--yellow); box-shadow:0 2px 0 var(--yellow-d); }
   .cal-day { margin-top:12px; }
   .cal-day .list { margin-top:4px; }
+  .steps { list-style:none; margin-top:10px; }
+  .steps li { display:flex; gap:12px; align-items:flex-start; padding:10px 0; border-bottom:1px dotted #b9b27a; }
+  .steps li:last-child { border-bottom:none; }
+  .steps .ic { flex:0 0 46px; height:46px; border-radius:50%; background:var(--yellow); display:flex; align-items:center; justify-content:center; font-size:1.4rem; font-weight:bold; box-shadow:0 2px 0 var(--yellow-d); }
+  .steps small { display:block; color:var(--text-dim); font-size:.88rem; line-height:1.5; }
 </style>
 </head>
 <body>
@@ -390,7 +395,33 @@
     </div>
   </section>
 
+  <section id="app">
+    <h2 data-i="h_app">スマホにアイコンを置く</h2>
+    <div class="card pad">
+      <p data-i="app_lead">ホーム画面にアイコンを置くと、アプリのように、1回さわるだけで開けます。</p>
+      <details class="lyrics-box" open>
+        <summary data-i="app_ios">iPhone(Safari)の場合</summary>
+        <ol class="steps">
+          <li><span class="ic">🧭</span><div><b>Safari</b>で、このページを開きます。<small>(LINEやメールの中ではなく、Safariで開いてください)</small></div></li>
+          <li><span class="ic"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1d6fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg></span><div>画面の下にある、<b>共有マーク</b>(四角から、上に矢印が出ているもの)を押します。</div></li>
+          <li><span class="ic">➕</span><div>出てきた一覧を、上にずらして、<b>「ホーム画面に追加」</b>を押します。</div></li>
+          <li><span class="ic">✅</span><div>右上の<b>「追加」</b>を押します。ホーム画面に、アイコンができます。</div></li>
+        </ol>
+      </details>
+      <details class="lyrics-box">
+        <summary data-i="app_and">Androidの場合(Chrome)</summary>
+        <ol class="steps">
+          <li><span class="ic">🧭</span><div><b>Chrome</b>で、このページを開きます。</div></li>
+          <li><span class="ic">⋮</span><div>右上の<b>「︙」</b>(点が3つ)を押します。</div></li>
+          <li><span class="ic">➕</span><div><b>「ホーム画面に追加」</b>を押して、そのあと<b>「追加」</b>を押します。</div></li>
+        </ol>
+      </details>
+      <p class="note" data-i="app_ref">見た目が古いときは、ページの一番下の、黄色い「最新の情報に更新する」ボタンを押してください。</p>
+    </div>
+  </section>
+
 </main>
+
 
 <footer>
   <button class="refresh-btn" type="button" onclick="location.replace(location.pathname+'?r='+Date.now())">🔄 最新の情報に更新する / Refresh</button>
@@ -409,6 +440,7 @@
 
   // ---- 言語 (日本語 / English) ----
   var T = {
+    h_app:['スマホにアイコンを置く','Use it like an app on your phone'], app_lead:['ホーム画面にアイコンを置くと、アプリのように、1回さわるだけで開けます。','Put an icon on your home screen and open this site with one tap, like an app.'], app_ios:['iPhone(Safari)の場合','iPhone (Safari)'], app_and:['Androidの場合(Chrome)','Android (Chrome)'], app_ref:['見た目が古いときは、ページの一番下の、黄色い「最新の情報に更新する」ボタンを押してください。','If the page looks out of date, press the yellow "Refresh" button at the bottom of the page.'],
     area:['茨城県 牛久市','Ushiku City, Ibaraki'],
     h1:['本町行政区 ホームページ','Honmachi District Website'],
     sub:['地域のお知らせ・行事・暮らしの情報','Local news, events and daily-life information'],
