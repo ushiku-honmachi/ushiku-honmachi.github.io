@@ -171,6 +171,35 @@
   .hall-photos { display: grid; gap: 14px; margin-bottom: 14px; }
   .mapwrap iframe { display: block; width: 100%; height: 320px; border: 0; border-radius: 8px; }
   .intro p { text-indent: 0; }
+
+  /* ---- やさしい見た目(松ケ丘風) ---- */
+  :root { --bg:#fffdf3; --main:#3f8f5a; --main-dark:#2b6b42; --yellow:#ffe35a; --yellow-d:#e0b800; --border:#e6dfb8; --sky:#e8f6ff; }
+  body { background: var(--bg); }
+  header { background: linear-gradient(#d9f0ff 0%, #f1fbff 70%, #fffdf3 100%); color:#1d4e7a; padding:22px 16px 6px; border-bottom:none; }
+  header .area { color:#2b6b42; opacity:1; }
+  header h1 { color:#1d4e7a; font-size:2rem; letter-spacing:.06em; text-shadow:2px 2px 0 #fff, 0 0 8px #fff; }
+  header .sub { color:#2b6b42; opacity:1; font-weight:bold; }
+  header .trial { color:#7a5a00; border-color:#e0b800; background:#fff6c4; }
+  header .lang-btn { color:#1d4e7a; background:#fff; border-color:#7bb6e0; }
+  .hero { display:block; margin:8px auto 0; width:min(420px,92%); height:auto; }
+  nav { background:#fff; border-top:3px solid var(--yellow); border-bottom:3px solid var(--yellow); box-shadow:0 2px 6px rgba(0,0,0,.08); }
+  nav a { color:#5a4600; background:var(--yellow); box-shadow:0 2px 0 var(--yellow-d); padding:5px 12px; font-size:.95rem; }
+  nav a:hover, nav a:focus { background:#fff08a; }
+  h2 { border-left:none; text-align:center; background:var(--yellow); color:#5a4600; border-radius:10px; padding:8px 14px; box-shadow:0 3px 0 var(--yellow-d); font-size:1.35rem; }
+  h2::before { content:"🐸 "; }
+  .card { background:#fff; border:2px solid var(--border); border-radius:14px; box-shadow:0 3px 8px rgba(120,100,0,.07); }
+  .intro { color:#2f6b2f; }
+  .intro strong { color:#1d4e7a; }
+  .list li { border-bottom:1px dotted #b9b27a; }
+  .list .date { color:#d2461e; }
+  .btn { background:var(--main); border-radius:999px; box-shadow:0 3px 0 var(--main-dark); }
+  .btn.alt { background:#fff; border:2px solid var(--main); box-shadow:0 3px 0 var(--main-dark); }
+  .more { border-radius:999px; border-color:var(--main); }
+  .group-title { background:#eaf7ee; border-radius:6px; padding:3px 10px; }
+  .gallery img, .hall-photos img { border:3px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,.18); }
+  .lyrics { background:#fff9d8; }
+  footer { background:#3f8f5a; }
+  @media (max-width:600px){ header h1{font-size:1.55rem;letter-spacing:.02em;} nav{position:static;} section{scroll-margin-top:12px;} }
 </style>
 </head>
 <body>
@@ -181,6 +210,14 @@
   <h1 data-i="h1">本町行政区 ホームページ</h1>
   <div class="sub" data-i="sub">地域のお知らせ・行事・暮らしの情報</div>
   <div class="trial" data-i="trial">(実験的な運用です)</div>
+  <svg class="hero" viewBox="0 0 420 150" role="img" aria-label="かっぱのなかま">
+    <ellipse cx="210" cy="140" rx="200" ry="8" fill="#bfe3a8"/>
+    <g transform="translate(70 80)"><ellipse cy="26" rx="26" ry="30" fill="#6cc070"/><circle cy="-8" r="26" fill="#7fd083"/><ellipse cy="-30" rx="14" ry="5" fill="#e9f7ff" stroke="#9cc" /><circle cx="-9" cy="-8" r="6" fill="#fff"/><circle cx="9" cy="-8" r="6" fill="#fff"/><circle cx="-9" cy="-8" r="2.5" fill="#222"/><circle cx="9" cy="-8" r="2.5" fill="#222"/><path d="M-12 5 Q0 22 12 5 L12 9 Q0 15 -12 9Z" fill="#ffd45a"/></g>
+    <g transform="translate(150 90)"><ellipse cy="22" rx="22" ry="26" fill="#6cc070"/><circle cy="-6" r="22" fill="#8ad98e"/><ellipse cy="-26" rx="12" ry="4" fill="#fff0f0" stroke="#e99"/><circle cx="-8" cy="-7" r="5" fill="#fff"/><circle cx="8" cy="-7" r="5" fill="#fff"/><circle cx="-8" cy="-7" r="2" fill="#222"/><circle cx="8" cy="-7" r="2" fill="#222"/><path d="M-9 4 Q0 14 9 4" stroke="#c0562b" stroke-width="2.5" fill="none"/></g>
+    <g transform="translate(240 84)"><ellipse cy="26" rx="26" ry="30" fill="#6cc070"/><circle cy="-8" r="26" fill="#7fd083"/><ellipse cy="-30" rx="14" ry="5" fill="#fff6c4" stroke="#dc6"/><circle cx="-9" cy="-8" r="6" fill="#fff"/><circle cx="9" cy="-8" r="6" fill="#fff"/><circle cx="-9" cy="-8" r="2.5" fill="#222"/><circle cx="9" cy="-8" r="2.5" fill="#222"/><path d="M-10 5 Q0 18 10 5" stroke="#c0562b" stroke-width="2.5" fill="none"/><rect x="-5" y="38" width="10" height="26" rx="5" fill="#3b9a3b" transform="translate(34 -10) rotate(-20)"/></g>
+    <g transform="translate(330 92)"><ellipse cy="22" rx="22" ry="26" fill="#6cc070"/><circle cy="-6" r="22" fill="#8ad98e"/><ellipse cy="-26" rx="12" ry="4" fill="#e8ffe8" stroke="#8c8"/><circle cx="-8" cy="-7" r="5" fill="#fff"/><circle cx="8" cy="-7" r="5" fill="#fff"/><circle cx="-8" cy="-7" r="2" fill="#222"/><circle cx="8" cy="-7" r="2" fill="#222"/><path d="M-9 4 Q0 14 9 4" stroke="#c0562b" stroke-width="2.5" fill="none"/></g>
+    <text x="210" y="22" text-anchor="middle" font-size="16" fill="#2b6b42" font-weight="bold">みんなでつくる 住みよいまち ♪</text>
+  </svg>
 </header>
 
 <nav aria-label="ページ内の移動">
