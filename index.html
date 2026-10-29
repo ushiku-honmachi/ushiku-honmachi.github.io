@@ -10,7 +10,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="本町行政区">
-<meta name="build" content="20261029c">
+<meta name="build" content="20261029d">
 <script>
 /* 古いページが残っていたら、自動で最新に読み込み直す(開いた時と、アプリに戻った時) */
 (function () {
@@ -227,6 +227,7 @@
   .hero-dots { position:absolute; left:0; right:0; bottom:8px; text-align:center; }
   .hero-dots i { display:inline-block; width:9px; height:9px; margin:0 3px; border-radius:50%; background:rgba(255,255,255,.6); }
   .hero-dots i.on { background:#ffe35a; }
+  .refresh-btn { display:block; margin:0 auto 14px; background:#ffe35a; color:#5a4600; border:0; border-radius:999px; padding:12px 28px; font-size:1.05rem; font-weight:bold; box-shadow:0 3px 0 #e0b800; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -365,6 +366,7 @@
 </main>
 
 <footer>
+  <button class="refresh-btn" type="button" onclick="location.replace(location.pathname+'?r='+Date.now())">🔄 最新の情報に更新する / Refresh</button>
   <div data-i="footer1">牛久市 本町行政区</div>
   <div class="updated" id="updated"></div>
   <div class="updated" id="counter" hidden></div>
