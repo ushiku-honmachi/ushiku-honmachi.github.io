@@ -10,7 +10,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="本町行政区">
-<meta name="build" content="20261029d">
+<meta name="build" content="20261029e">
 <script>
 /* 古いページが残っていたら、自動で最新に読み込み直す(開いた時と、アプリに戻った時) */
 (function () {
@@ -228,6 +228,8 @@
   .hero-dots i { display:inline-block; width:9px; height:9px; margin:0 3px; border-radius:50%; background:rgba(255,255,255,.6); }
   .hero-dots i.on { background:#ffe35a; }
   .refresh-btn { display:block; margin:0 auto 14px; background:#ffe35a; color:#5a4600; border:0; border-radius:999px; padding:12px 28px; font-size:1.05rem; font-weight:bold; box-shadow:0 3px 0 #e0b800; cursor:pointer; }
+  .song-btn { display:block; margin:12px auto 14px; background:#ff8a3d; color:#fff; border:0; border-radius:999px; padding:16px 34px; font-size:1.3rem; font-weight:bold; box-shadow:0 4px 0 #c9591a; cursor:pointer; line-height:1.3; }
+  .song-btn.playing { background:#3f8f5a; box-shadow:0 4px 0 #2b6b42; }
 </style>
 </head>
 <body>
@@ -247,6 +249,7 @@
     <g transform="translate(330 92)"><ellipse cy="22" rx="22" ry="26" fill="#6cc070"/><circle cy="-6" r="22" fill="#8ad98e"/><ellipse cy="-26" rx="12" ry="4" fill="#e8ffe8" stroke="#8c8"/><circle cx="-8" cy="-7" r="5" fill="#fff"/><circle cx="8" cy="-7" r="5" fill="#fff"/><circle cx="-8" cy="-7" r="2" fill="#222"/><circle cx="8" cy="-7" r="2" fill="#222"/><path d="M-9 4 Q0 14 9 4" stroke="#c0562b" stroke-width="2.5" fill="none"/></g>
     <text x="210" y="22" text-anchor="middle" font-size="16" fill="#2b6b42" font-weight="bold">みんなでつくる 住みよいまち ♪</text>
   </svg>
+  <button class="song-btn" id="song-btn" type="button">♪ 本町の歌を流す</button>
 </header>
 
 <nav aria-label="ページ内の移動">
@@ -715,6 +718,26 @@
     });
   }
 
+
+  var topAudio = null;
+  function songLabel() {
+    var on = topAudio && !topAudio.paused;
+    var b = document.getElementById('song-btn');
+    b.className = 'song-btn' + (on ? ' playing' : '');
+    b.textContent = lang === 'en' ? (on ? '■ Stop the song' : '♪ Play the Honmachi song') : (on ? '■ 曲を止める' : '♪ 本町の歌を流す');
+  }
+  document.getElementById('song-btn').addEventListener('click', function () {
+    if (!topAudio) {
+      topAudio = new Audio('honmachi-uta.mp3');
+      topAudio.addEventListener('ended', songLabel);
+      topAudio.addEventListener('pause', songLabel);
+      topAudio.addEventListener('play', songLabel);
+    }
+    if (topAudio.paused) { var pr = topAudio.play(); if (pr && pr.catch) pr.catch(function () {}); }
+    else topAudio.pause();
+    songLabel();
+  });
+
   function renderRankMini() {
     var box = document.getElementById('rank-mini'), ol = document.getElementById('rank-mini-list');
     if (!data.ranks || !data.ranks.length) { box.hidden = true; return; }
@@ -743,6 +766,7 @@
     if (data.linksDone) renderLinks();
     renderPhotos();
     buildHero();
+    songLabel();
     renderRankMini();
     if (data.visits) { var c = document.getElementById('counter'); c.textContent = tx(T.visits) + data.visits; c.hidden = false; }
   }
