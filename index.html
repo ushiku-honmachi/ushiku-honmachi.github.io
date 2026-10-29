@@ -10,6 +10,27 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="本町行政区">
+<meta name="build" content="20261029c">
+<script>
+/* 古いページが残っていたら、自動で最新に読み込み直す(開いた時と、アプリに戻った時) */
+(function () {
+  var me = (document.querySelector('meta[name="build"]') || {}).content;
+  if (!me || !window.fetch) return;
+  function check() {
+    try {
+      fetch(location.pathname + '?chk=' + Date.now(), { cache: 'no-store' })
+        .then(function (r) { return r.text(); })
+        .then(function (t) {
+          var m = t.match(/<meta name="build" content="([^"]+)"/);
+          if (m && m[1] !== me) location.replace(location.pathname + '?v=' + m[1]);
+        }).catch(function () {});
+    } catch (e) {}
+  }
+  check();
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) check(); });
+  window.addEventListener('pageshow', function (e) { if (e.persisted) check(); });
+})();
+</script>
 <style>
   :root {
     --bg: #f6f4ee;
@@ -200,6 +221,12 @@
   .lyrics { background:#fff9d8; }
   footer { background:#3f8f5a; }
   @media (max-width:600px){ header h1{font-size:1.55rem;letter-spacing:.02em;} nav{position:static;} section{scroll-margin-top:12px;} }
+  .hero-show { position:relative; width:100%; max-width:820px; margin:10px auto 0; aspect-ratio:16/9; overflow:hidden; border-radius:14px; border:3px solid #fff; box-shadow:0 3px 10px rgba(0,0,0,.2); background:#dfeeff; }
+  .hero-show img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1.2s ease; }
+  .hero-show img.on { opacity:1; }
+  .hero-dots { position:absolute; left:0; right:0; bottom:8px; text-align:center; }
+  .hero-dots i { display:inline-block; width:9px; height:9px; margin:0 3px; border-radius:50%; background:rgba(255,255,255,.6); }
+  .hero-dots i.on { background:#ffe35a; }
 </style>
 </head>
 <body>
@@ -210,7 +237,8 @@
   <h1 data-i="h1">本町行政区 ホームページ</h1>
   <div class="sub" data-i="sub">地域のお知らせ・行事・暮らしの情報</div>
   <div class="trial" data-i="trial">(実験的な運用です)</div>
-  <svg class="hero" viewBox="0 0 420 150" role="img" aria-label="かっぱのなかま">
+  <div class="hero-show" id="hero-show" hidden></div>
+  <svg class="hero" id="hero-svg" viewBox="0 0 420 150" role="img" aria-label="かっぱのなかま">
     <ellipse cx="210" cy="140" rx="200" ry="8" fill="#bfe3a8"/>
     <g transform="translate(70 80)"><ellipse cy="26" rx="26" ry="30" fill="#6cc070"/><circle cy="-8" r="26" fill="#7fd083"/><ellipse cy="-30" rx="14" ry="5" fill="#e9f7ff" stroke="#9cc" /><circle cx="-9" cy="-8" r="6" fill="#fff"/><circle cx="9" cy="-8" r="6" fill="#fff"/><circle cx="-9" cy="-8" r="2.5" fill="#222"/><circle cx="9" cy="-8" r="2.5" fill="#222"/><path d="M-12 5 Q0 22 12 5 L12 9 Q0 15 -12 9Z" fill="#ffd45a"/></g>
     <g transform="translate(150 90)"><ellipse cy="22" rx="22" ry="26" fill="#6cc070"/><circle cy="-6" r="22" fill="#8ad98e"/><ellipse cy="-26" rx="12" ry="4" fill="#fff0f0" stroke="#e99"/><circle cx="-8" cy="-7" r="5" fill="#fff"/><circle cx="8" cy="-7" r="5" fill="#fff"/><circle cx="-8" cy="-7" r="2" fill="#222"/><circle cx="8" cy="-7" r="2" fill="#222"/><path d="M-9 4 Q0 14 9 4" stroke="#c0562b" stroke-width="2.5" fill="none"/></g>
@@ -659,6 +687,32 @@
     renderPhotoNotes();
   }
 
+
+  var heroBuilt = false;
+  function buildHero() {
+    if (heroBuilt || !data.photos) return;
+    heroBuilt = true;
+    var box = document.getElementById('hero-show'), dots = document.createElement('div'), imgs = [], idx = 0, timer = null;
+    dots.className = 'hero-dots';
+    function show(n) {
+      idx = n;
+      imgs.forEach(function (im, k) { im.className = k === n ? 'on' : ''; });
+      var d = dots.children; for (var k = 0; k < d.length; k++) d[k].className = k === n ? 'on' : '';
+    }
+    function start() { if (timer) clearInterval(timer); if (imgs.length > 1) timer = setInterval(function () { show((idx + 1) % imgs.length); }, 4000); }
+    data.photos.forEach(function (p) {
+      if (p.group !== 'トップ') return;
+      var im = new Image();
+      im.alt = p.cap; im.src = p.file;
+      im.onload = function () {
+        box.appendChild(im); imgs.push(im); dots.appendChild(document.createElement('i'));
+        if (imgs.length === 1) { box.hidden = false; box.appendChild(dots); document.getElementById('hero-svg').style.display = 'none'; show(0); }
+        else { dots.parentNode || box.appendChild(dots); show(idx); }
+        start();
+      };
+    });
+  }
+
   function renderRankMini() {
     var box = document.getElementById('rank-mini'), ol = document.getElementById('rank-mini-list');
     if (!data.ranks || !data.ranks.length) { box.hidden = true; return; }
@@ -686,6 +740,7 @@
       document.getElementById('updated').textContent = tx(X.updated) + data.news[0].date;
     if (data.linksDone) renderLinks();
     renderPhotos();
+    buildHero();
     renderRankMini();
     if (data.visits) { var c = document.getElementById('counter'); c.textContent = tx(T.visits) + data.visits; c.hidden = false; }
   }

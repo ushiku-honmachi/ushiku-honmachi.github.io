@@ -5,6 +5,9 @@
 # 写真を1枚ずつ小さく(横1200ピクセルほど)しておくと、スマホでも速く開きます。
 # 行の先頭の # を付けると、表示されなくなります。
 #
+# グループに「トップ」を選ぶと、ホームページの一番上で、写真が4秒ごとに入れ替わります(2〜4枚がおすすめ。横長の写真がきれいです)。
+#   トップ | top1.jpg | 説明(なくてもOK)
+#
 # 例(使うときは、行の先頭の # を消します):
 # 区民会館 | kumin-kaikan.jpg | 本町区民会館 | Honmachi Community Hall
 # 行事 | bbq-2025.jpg | バーベキュー大会 | Barbecue party
@@ -12,3 +15,8 @@
 
 行事 | undokai-2026-tent.jpg | 牛久地区市民体育祭（令和8年10月11日） 本町のテントで昼食 | Ushiku district sports festival - lunch at the Honmachi tent
 行事 | undokai-2026-shojo.jpg | 行政区親善リレーの部 第3位の賞状 | Third place in the district friendship relay
+行事 | undokai-2026-back.jpg | 運動会 本町のゼッケンの後ろ姿 | Honmachi bib at the sports festival
+トップ | undokai-2026-tent.jpg | 運動会
+トップ | top-shojo.jpg | 親善リレー 第3位
+トップ | top-asahi.jpg | 朝焼け
+トップ | top-undokai-back.jpg | 運動会
