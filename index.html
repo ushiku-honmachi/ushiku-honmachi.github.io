@@ -161,6 +161,16 @@
   .lang-btn { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.7); border-radius: 999px; padding: 6px 14px; font-size: 0.9rem; font-family: inherit; cursor: pointer; }
   .lang-btn:hover { background: rgba(255,255,255,0.28); }
   .jaonly { color: var(--text-dim); font-size: 0.85rem; }
+  .list .date small { display: block; font-weight: normal; color: var(--text-dim); font-size: 0.9rem; line-height: 1.4; }
+  .list .place { display: block; margin-top: 2px; color: var(--text-dim); font-size: 0.95rem; }
+  .list li.past .place { color: var(--text-dim); }
+  .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+  .gallery figure, .hall-photos figure { margin: 0; }
+  .gallery img, .hall-photos img { display: block; width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--border); }
+  .gallery figcaption, .hall-photos figcaption { font-size: 0.9rem; color: var(--text-dim); margin-top: 4px; line-height: 1.5; }
+  .hall-photos { display: grid; gap: 14px; margin-bottom: 14px; }
+  .mapwrap iframe { display: block; width: 100%; height: 320px; border: 0; border-radius: 8px; }
+  .intro p { text-indent: 0; }
 </style>
 </head>
 <body>
@@ -174,55 +184,50 @@
 </header>
 
 <nav aria-label="ページ内の移動">
-  <a href="#news" data-i="nav_news">お知らせ</a>
-  <a href="#events" data-i="nav_events">行事予定</a>
-  <a href="#life" id="nav-life" data-i="nav_life">ごみ・防災・防犯</a>
+  <a href="#about" data-i="nav_about">本町行政区の紹介</a>
+  <a href="#hall" data-i="nav_hall">区民会館・地図</a>
   <a href="#song" data-i="nav_song">本町の歌</a>
-  <a href="#about" data-i="nav_about">本町行政区について</a>
+  <a href="#photos" data-i="nav_photos">行事の写真</a>
+  <a href="#events" data-i="nav_circ">回覧版</a>
+  <a href="#life" id="nav-life" data-i="nav_life">ごみ・防災・防犯</a>
+  <a href="#game" data-i="nav_game">ゲーム</a>
 </nav>
 
 <main>
 
-  <section id="news">
-    <h2 data-i="h_news">お知らせ・回覧板</h2>
-    <div class="card"><ul class="list" id="news-list"><li class="empty" data-i="loading">読み込み中です…</li></ul></div>
-    <button class="more" id="news-more" type="button" hidden>もっと見る</button>
+  <section id="about">
+    <h2 data-i="h_about">本町行政区の紹介</h2>
+    <div class="card pad intro">
+      <p data-i="intro1">「本町行政区」は茨城県牛久市の行政区（町会）のひとつで、ＪＲ常磐線牛久駅の西口付近の約1キロメートル四方の地域にあり、約４５０世帯で構成されています。</p>
+      <p data-i="intro2">地域環境は駅近くにマンションと商業施設、その周りに戸建て住宅が密集する落ち着いた街です。</p>
+      <p data-i="intro3">本町行政区は区内の「防犯パトロール」「街頭清掃活動」「防災訓練」など地域安全活動の他、親睦活動として「夏休みこども祭り」「地域合同体育祭」「バーベキュー大会」「餅つき大会」などを実施しています。</p>
+      <p data-i="intro4">また区民会館においてサークル活動「吹き矢」「卓球」「麻雀」「ダンス」「ヨガ」「大正琴」「太極拳」「詩吟」「短歌」「日本舞踊」「バンド」など２０余のサークル団体が年間を通じて活動しています。</p>
+      <p data-i="about3"><strong>新しくお引越しされた方へ</strong><br>
+      区の活動や、加入のことなど、分からないことは、お気軽にお問い合わせください。</p>
+      <div id="contact-body" style="margin-top:14px;"></div>
+    </div>
   </section>
 
-  <section id="events">
-    <h2 data-i="h_events">行事予定</h2>
-    <div class="card"><ul class="list" id="events-list"><li class="empty" data-i="loading">読み込み中です…</li></ul></div>
-    <p class="note" data-i="events_note">日付の早い順に並んでいます。灰色の文字は、終わった行事です。</p>
-  </section>
-
-  <section id="life" hidden>
-    <h2 data-i="h_life">ごみ出し・防災・防犯情報</h2>
-    <div class="card pad" id="life-body"></div>
-    <p class="note" data-i="life_note">最新の情報は、牛久市・茨城県警察の公式ホームページをご確認ください。</p>
+  <section id="hall">
+    <h2 data-i="h_hall">区民会館の写真・地図</h2>
+    <div class="card pad">
+      <div class="hall-photos" id="hall-photos"></div>
+      <p class="note" id="hall-note" hidden data-i="hall_note">区民会館の写真は、準備中です。</p>
+      <div class="mapwrap" style="margin-top:12px;">
+        <iframe title="本町区民会館の地図" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=%E6%9C%AC%E7%94%BA%E5%8C%BA%E6%B0%91%E4%BC%9A%E9%A4%A8%20%E7%89%9B%E4%B9%85%E5%B8%82&amp;output=embed"></iframe>
+      </div>
+      <div id="place-body" style="margin-top:12px;"></div>
+    </div>
   </section>
 
   <section id="song">
     <h2 data-i="h_song">本町の歌</h2>
     <div class="card pad">
       <div class="song-item">
-        <p data-i="song_v26"></p>
-        <audio controls preload="none" src="honmachi-uta-2026.mp3" style="width:100%;margin-top:6px;"></audio>
-        <div class="btns" style="margin-top:10px;"><a class="btn alt" href="honmachi-uta-2026.mp3" download data-i="dl">曲をダウンロード</a></div>
-      </div>
-      <div class="song-item" style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
         <p data-i="song_v25"></p>
         <audio controls preload="none" src="honmachi-uta.mp3" style="width:100%;margin-top:6px;"></audio>
         <div class="btns" style="margin-top:10px;"><a class="btn alt" href="honmachi-uta.mp3" download data-i="dl">曲をダウンロード</a></div>
-      </div>
-      <div class="song-item" style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
-        <p data-i="song_m1"></p>
-        <audio controls preload="none" src="honmachi-uta-march.mp3" style="width:100%;margin-top:6px;"></audio>
-        <div class="btns" style="margin-top:10px;"><a class="btn alt" href="honmachi-uta-march.mp3" download data-i="dl">曲をダウンロード</a></div>
-      </div>
-      <div class="song-item" style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
-        <p data-i="song_m2"></p>
-        <audio controls preload="none" src="honmachi-uta-march2.mp3" style="width:100%;margin-top:6px;"></audio>
-        <div class="btns" style="margin-top:10px;"><a class="btn alt" href="honmachi-uta-march2.mp3" download data-i="dl">曲をダウンロード</a></div>
       </div>
       <p class="note" data-i="song_note">作詞・作曲: 不明<br>AIを使って作った曲です。</p>
       <details class="lyrics-box">
@@ -236,11 +241,52 @@
         <p>ホンマチ ホンマチ ワクワクの日<br>心ひとつに踊りましょう<br>みんなの笑顔が宝石みたい<br>きらり輝くホンマチの街</p>
         </div>
       </details>
+      <details class="lyrics-box" style="margin-top:14px;">
+        <summary data-i="song_more">ほかのバージョンも聞く(2026年版・行進曲)</summary>
+        <div class="song-item" style="margin-top:12px;">
+          <p data-i="song_v26"></p>
+          <audio controls preload="none" src="honmachi-uta-2026.mp3" style="width:100%;margin-top:6px;"></audio>
+          <div class="btns" style="margin-top:10px;"><a class="btn alt" href="honmachi-uta-2026.mp3" download data-i="dl">曲をダウンロード</a></div>
+        </div>
+        <div class="song-item" style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
+          <p data-i="song_m1"></p>
+          <audio controls preload="none" src="honmachi-uta-march.mp3" style="width:100%;margin-top:6px;"></audio>
+          <div class="btns" style="margin-top:10px;"><a class="btn alt" href="honmachi-uta-march.mp3" download data-i="dl">曲をダウンロード</a></div>
+        </div>
+        <div class="song-item" style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
+          <p data-i="song_m2"></p>
+          <audio controls preload="none" src="honmachi-uta-march2.mp3" style="width:100%;margin-top:6px;"></audio>
+          <div class="btns" style="margin-top:10px;"><a class="btn alt" href="honmachi-uta-march2.mp3" download data-i="dl">曲をダウンロード</a></div>
+        </div>
+      </details>
     </div>
   </section>
 
+  <section id="photos">
+    <h2 data-i="h_photos">行事の写真</h2>
+    <div class="card pad">
+      <div class="gallery" id="photos-body"></div>
+      <p class="note" id="photos-note" hidden data-i="photos_note">行事の写真は、準備中です。</p>
+    </div>
+  </section>
+
+  <section id="events">
+    <h2 data-i="h_circ">回覧版（主な行事の予定）</h2>
+    <div class="card"><ul class="list" id="events-list"><li class="empty" data-i="loading">読み込み中です…</li></ul></div>
+    <p class="note" data-i="events_note">これから約2か月の、主な行事です(日時・場所・行事名称)。</p>
+    <div class="group-title" style="margin-top:26px;" data-i="h_news">お知らせ</div>
+    <div class="card"><ul class="list" id="news-list"><li class="empty" data-i="loading">読み込み中です…</li></ul></div>
+    <button class="more" id="news-more" type="button" hidden>もっと見る</button>
+  </section>
+
+  <section id="life" hidden>
+    <h2 data-i="h_life">ごみ出し・防災・防犯・AED設置場所</h2>
+    <div class="card pad" id="life-body"></div>
+    <p class="note" data-i="life_note">最新の情報は、牛久市・茨城県警察の公式ホームページをご確認ください。</p>
+  </section>
+
   <section id="game">
-    <h2 data-i="h_game">あそび</h2>
+    <h2 data-i="h_game">牛久の里のカッパ遊び</h2>
     <div class="card pad">
       <p data-i="game_text">ひと休みに、カッパのゲームで遊べます。きゅうりを集めて、頭のお皿の水を守ろう!</p>
       <div id="rank-mini" hidden>
@@ -248,18 +294,6 @@
         <ol id="rank-mini-list" style="margin:0 0 12px;padding-left:1.6em;"></ol>
       </div>
       <div class="btns"><a class="btn" id="game-link" href="game.html" data-i="game_btn">カッパの川泳ぎをあそぶ</a></div>
-    </div>
-  </section>
-
-  <section id="about">
-    <h2 data-i="h_about">本町行政区について</h2>
-    <div class="card pad">
-      <p data-i="about1">このホームページは、牛久市 本町行政区が、地域のみなさまにお知らせや行事の情報をお届けするためのものです。</p>
-      <p data-i="about2">本町行政区では、区民会館の清掃や環境整備、防犯パトロール、募金活動、バーベキュー大会などの地域の行事を、区民の協力で行っています。</p>
-      <p data-i="about3"><strong>新しくお引越しされた方へ</strong><br>
-      区の活動や、加入のことなど、分からないことは、お気軽にお問い合わせください。</p>
-      <div id="place-body" style="margin-top:14px;"></div>
-      <div id="contact-body" style="margin-top:14px;"></div>
     </div>
   </section>
 
@@ -285,13 +319,19 @@
     h1:['本町行政区 ホームページ','Honmachi District Website'],
     sub:['地域のお知らせ・行事・暮らしの情報','Local news, events and daily-life information'],
     trial:['(実験的な運用です)','(Trial operation)'],
-    nav_news:['お知らせ','News'], nav_events:['行事予定','Events'], nav_life:['ごみ・防災・防犯','Garbage & Safety'],
-    nav_song:['本町の歌','Our song'], nav_about:['本町行政区について','About us'],
-    h_news:['お知らせ・回覧板','News & circulars'], h_events:['行事予定','Event schedule'],
-    h_life:['ごみ出し・防災・防犯情報','Garbage, disaster & crime prevention'], h_song:['本町の歌','The Honmachi song'],
-    h_about:['本町行政区について','About Honmachi District'],
-    h_game:['あそび','Play'], game_text:['ひと休みに、カッパのゲームで遊べます。きゅうりを集めて、頭のお皿の水を守ろう!','Take a break with a little kappa game. Collect cucumbers and keep the dish on its head full of water!'], game_btn:['カッパの川泳ぎをあそぶ','Play Kappa River Swim'], rank_t:['みんなのベスト3','Top 3 players'], pts:['点',' pts'],
-    events_note:['日付の早い順に並んでいます。灰色の文字は、終わった行事です。','Sorted by date. Gray text means the event is over.'],
+    nav_about:['本町行政区の紹介','About us'], nav_hall:['区民会館・地図','Hall & map'], nav_song:['本町の歌','Our song'],
+    nav_photos:['行事の写真','Photos'], nav_circ:['回覧版','Circulars'], nav_life:['ごみ・防災・防犯','Garbage & Safety'], nav_game:['ゲーム','Game'],
+    h_news:['お知らせ','News'], h_circ:['回覧版（主な行事の予定）','Circulars (main upcoming events)'],
+    h_life:['ごみ出し・防災・防犯・AED設置場所','Garbage, disaster, crime prevention & AED locations'], h_song:['本町の歌','The Honmachi song'],
+    h_about:['本町行政区の紹介','About Honmachi District'], h_hall:['区民会館の写真・地図','Community hall: photos & map'], h_photos:['行事の写真','Event photos'],
+    hall_note:['区民会館の写真は、準備中です。','Photos of the community hall are coming soon.'], photos_note:['行事の写真は、準備中です。','Event photos are coming soon.'],
+    intro1:['「本町行政区」は茨城県牛久市の行政区（町会）のひとつで、ＪＲ常磐線牛久駅の西口付近の約1キロメートル四方の地域にあり、約４５０世帯で構成されています。','Honmachi District is one of the districts (neighborhood associations) of Ushiku City, Ibaraki. It covers an area of about one square kilometer near the west exit of JR Joban Line Ushiku Station, and is made up of about 450 households.'],
+    intro2:['地域環境は駅近くにマンションと商業施設、その周りに戸建て住宅が密集する落ち着いた街です。','Near the station are apartment buildings and commercial facilities, and around them stand many detached houses. It is a calm town.'],
+    intro3:['本町行政区は区内の「防犯パトロール」「街頭清掃活動」「防災訓練」など地域安全活動の他、親睦活動として「夏休みこども祭り」「地域合同体育祭」「バーベキュー大会」「餅つき大会」などを実施しています。','Besides community safety activities such as crime-prevention patrols, street cleaning and disaster drills, the district holds social events such as the summer-vacation children\'s festival, the joint sports festival, a barbecue party and a rice-cake pounding event.'],
+    intro4:['また区民会館においてサークル活動「吹き矢」「卓球」「麻雀」「ダンス」「ヨガ」「大正琴」「太極拳」「詩吟」「短歌」「日本舞踊」「バンド」など２０余のサークル団体が年間を通じて活動しています。','At the community hall, more than twenty circles are active all year round, including blowgun, table tennis, mahjong, dance, yoga, taishogoto, tai chi, shigin poetry chanting, tanka, Japanese dance and bands.'],
+    song_more:['ほかのバージョンも聞く(2026年版・行進曲)','Listen to other versions (2026 version, marching versions)'],
+    h_game:['牛久の里のカッパ遊び','Kappa Fun in Ushiku Village'], game_text:['ひと休みに、カッパのゲームで遊べます。きゅうりを集めて、頭のお皿の水を守ろう!','Take a break with a little kappa game. Collect cucumbers and keep the dish on its head full of water!'], game_btn:['カッパの川泳ぎをあそぶ','Play Kappa River Swim'], rank_t:['みんなのベスト3','Top 3 players'], pts:['点',' pts'],
+    events_note:['これから約2か月の、主な行事です(日時・場所・行事名称)。','Main events for the next two months or so (date and time, place, event).'],
     life_note:['最新の情報は、牛久市・茨城県警察の公式ホームページをご確認ください。犯罪情報マップは、スマホでは見られないことがあります(スマホは、県警の防犯アプリ「いばらきポリス」をお使いください)。','Please check the official websites of Ushiku City and Ibaraki Prefectural Police for the latest information. The linked pages are in Japanese. The crime map may not open on smartphones; on a phone, use the police app "Ibaraki Police".'],
     song_v26:['<strong>「本町のワクワク日和」</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(2026年バージョン)</span>',
       '<strong>"Honmachi no Wakuwaku Biyori"</strong> <span style="color:var(--text-dim);font-size:0.95rem;">(2026 version)</span>'],
@@ -314,7 +354,8 @@
   };
   var X = { // JSで作る文字
     noNews:['お知らせは、まだありません。','No news yet.'],
-    noEvents:['行事の予定は、まだ決まっていません。','No events are scheduled yet.'],
+    noEvents:['これから2か月の行事は、まだ決まっていません。','No events are scheduled for the next two months yet.'],
+    placeLbl:['場所: ','Place: '],
     newsFail:['お知らせを読み込めませんでした。しばらくしてからもう一度お試しください。','Could not load the news. Please try again later.'],
     eventsFail:['行事予定を読み込めませんでした。','Could not load the events.'],
     more:['もっと見る(あと %n件)','Show more (%n more)'],
@@ -322,6 +363,7 @@
     contactNone:['お問い合わせ先は、準備中です。','Contact information is being prepared.'],
     mail:['メールを送る','Send email'], map:['【地図を開く】','[Open map]'], link:['詳しくはこちら','More info'],
     g_gomi:['ごみ出し','Garbage disposal'], g_bosai:['防災・安全','Disaster prevention & safety'], g_bouhan:['防犯(犯罪・不審者の情報)','Crime prevention (crime and suspicious-person info)'],
+    g_aed:['AED設置場所','AED locations'],
     jaOnly:['(日本語のみ)','(Japanese only)']
   };
   var lang = 'ja';
@@ -393,6 +435,50 @@
     if (lang === 'en') return WEN[d.getDay()] + ', ' + MON[+m[2] - 1] + ' ' + (+m[3]) + (otherYear ? ', ' + m[1] : '');
     var w = '日月火水木金土'.charAt(d.getDay());
     return (otherYear ? m[1] + '年' : '') + (+m[2]) + '月' + (+m[3]) + '日(' + w + ')';
+  }
+  // 行事: 日付 | 時間 | 場所 | 行事名称(内容) | English | English place  (4つ以上あれば新形式、それ未満は昔の形式)
+  function parseEvents(text) {
+    return lines(text).map(function (l) {
+      var p = l.split('|').map(function (x) { return x.trim(); });
+      if (p.length >= 4) return { date: p[0], time: p[1], place: p[2], text: p[3], en: p[4] || '', placeEn: p[5] || '' };
+      if (p.length === 1) return { date: '', time: '', place: '', text: p[0], en: '', placeEn: '' };
+      return { date: p[0], time: '', place: '', text: p[1], en: p.slice(2).join(' | '), placeEn: '' };
+    });
+  }
+  function dayNum(date) {
+    var m = /^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(date);
+    return m ? Math.round(Date.UTC(+m[1], +m[2] - 1, +m[3]) / 86400000) : null;
+  }
+  function todayNum() { var d = new Date(); return Math.round(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000); }
+  var CIRC_DAYS = 62;   // 回覧版に出す期間(約2か月)
+  function circEvents(items) {
+    var t0 = todayNum();
+    var list = items.filter(function (it) { var n = dayNum(it.date); return n !== null && n >= t0 && n <= t0 + CIRC_DAYS; });
+    list.sort(function (a, b) { var x = dayNum(a.date), y = dayNum(b.date); return x !== y ? x - y : (a.time < b.time ? -1 : a.time > b.time ? 1 : 0); });
+    return list;
+  }
+  function renderEvents(listEl, items, emptyText) {
+    listEl.innerHTML = '';
+    if (!items.length) {
+      var e = document.createElement('li'); e.className = 'empty'; e.textContent = emptyText; listEl.appendChild(e); return;
+    }
+    items.forEach(function (it) {
+      var li = document.createElement('li');
+      var d = document.createElement('span'); d.className = 'date';
+      d.appendChild(document.createTextNode(fmtDate(it.date)));
+      if (it.time) { var sm = document.createElement('small'); sm.textContent = it.time; d.appendChild(sm); }
+      li.appendChild(d);
+      var t = document.createElement('span'); t.className = 'text';
+      var s = document.createElement('strong');
+      var useEn = (lang === 'en' && it.en);
+      addLinkedText(s, useEn ? it.en : it.text);
+      t.appendChild(s);
+      if (lang === 'en' && !it.en) { var j = document.createElement('span'); j.className = 'jaonly'; j.textContent = ' ' + tx(X.jaOnly); t.appendChild(j); }
+      var pl = (lang === 'en' && it.placeEn) ? it.placeEn : it.place;
+      if (pl) { var ps = document.createElement('span'); ps.className = 'place'; ps.appendChild(document.createTextNode(tx(X.placeLbl))); addLinkedText(ps, pl); t.appendChild(ps); }
+      li.appendChild(t);
+      listEl.appendChild(li);
+    });
   }
   function sortEvents(items) {
     function key(date) {
@@ -477,7 +563,7 @@
       return;
     }
     var groups = data.links, lifeCount = 0;
-    [['ごみ', X.g_gomi], ['防災', X.g_bosai], ['防犯', X.g_bouhan]].forEach(function (g) {
+    [['ごみ', X.g_gomi], ['防災', X.g_bosai], ['防犯', X.g_bouhan], ['AED', X.g_aed]].forEach(function (g) {
       var arr = groups[g[0]];
       if (!arr || !arr.length) return;
       var h = document.createElement('div');
@@ -512,6 +598,30 @@
     }
   }
 
+  function makeFigure(p) {
+    var f = document.createElement('figure');
+    var img = document.createElement('img');
+    img.loading = 'lazy'; img.alt = (lang === 'en' && p.en) ? p.en : p.cap; img.src = p.file;
+    img.onerror = function () { if (f.parentNode) f.parentNode.removeChild(f); renderPhotoNotes(); };
+    f.appendChild(img);
+    var cap = (lang === 'en' && p.en) ? p.en : p.cap;
+    if (cap) { var c = document.createElement('figcaption'); c.textContent = cap; f.appendChild(c); }
+    return f;
+  }
+  function renderPhotoNotes() {
+    document.getElementById('hall-note').hidden = !!document.querySelectorAll('#hall-photos figure').length;
+    document.getElementById('photos-note').hidden = !!document.querySelectorAll('#photos-body figure').length;
+  }
+  function renderPhotos() {
+    var hp = document.getElementById('hall-photos'), pb = document.getElementById('photos-body');
+    hp.innerHTML = ''; pb.innerHTML = '';
+    (data.photos || []).forEach(function (p) {
+      if (p.group === '区民会館') hp.appendChild(makeFigure(p));
+      else if (p.group === '行事') pb.appendChild(makeFigure(p));
+    });
+    renderPhotoNotes();
+  }
+
   function renderRankMini() {
     var box = document.getElementById('rank-mini'), ol = document.getElementById('rank-mini-list');
     if (!data.ranks || !data.ranks.length) { box.hidden = true; return; }
@@ -534,10 +644,11 @@
     if (data.newsErr) nl.innerHTML = '<li class="empty"></li>', nl.firstChild.textContent = tx(X.newsFail);
     else if (data.news) renderList(nl, (data.pNews || []).concat(data.news), tx(X.noNews), LIMIT, document.getElementById('news-more'), false);
     if (data.eventsErr) el.innerHTML = '<li class="empty"></li>', el.firstChild.textContent = tx(X.eventsFail);
-    else if (data.events) renderList(el, sortEvents((data.pEvents || []).concat(data.events)), tx(X.noEvents), 0, null, true);
+    else if (data.events) renderEvents(el, circEvents((data.pEvents || []).map(function (x) { return { date: x.date, time: '', place: '', text: x.text, en: x.en, placeEn: '' }; }).concat(data.events)), tx(X.noEvents));
     if (data.news && data.news.length && /^\d{4}-\d{1,2}-\d{1,2}/.test(data.news[0].date))
       document.getElementById('updated').textContent = tx(X.updated) + data.news[0].date;
     if (data.linksDone) renderLinks();
+    renderPhotos();
     renderRankMini();
     if (data.visits) { var c = document.getElementById('counter'); c.textContent = tx(T.visits) + data.visits; c.hidden = false; }
   }
@@ -589,8 +700,15 @@
       .catch(function () {});
   } catch (e) {}
 
+  // 写真: グループ(区民会館 / 行事) | ファイル名 | 説明 | English(なくてもOK)
+  load('photos.txt').then(function (text) {
+    data.photos = lines(text).map(function (l) {
+      var p = l.split('|').map(function (x) { return x.trim(); });
+      return { group: p[0], file: p[1] || '', cap: p[2] || '', en: p[3] || '' };
+    }).filter(function (x) { return x.file && /^[A-Za-z0-9_\-\/.]+$/.test(x.file); });
+  }).catch(function () { data.photos = []; }).then(render);
   load('news.txt').then(function (t) { data.news = parseItems(t); }).catch(function () { data.newsErr = true; }).then(render);
-  load('events.txt').then(function (t) { data.events = parseItems(t); }).catch(function () { data.eventsErr = true; }).then(render);
+  load('events.txt').then(function (t) { data.events = parseEvents(t); }).catch(function () { data.eventsErr = true; }).then(render);
   load('links.txt').then(function (text) {
     var groups = {};
     lines(text).forEach(function (l) {
