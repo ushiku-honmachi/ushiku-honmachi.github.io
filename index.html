@@ -10,7 +10,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="本町行政区">
-<meta name="build" content="20261031c">
+<meta name="build" content="20261031d">
 <script>
 /* 古いページが残っていたら、自動で最新に読み込み直す(開いた時と、アプリに戻った時) */
 (function () {
@@ -659,7 +659,7 @@
       var t = document.createElement('span');
       t.className = 'text';
       var dn = dayNum(it.date), tn = todayNum();
-      if (dn !== null && dn <= tn && tn - dn <= 14 && listEl.id === 'news-list') {
+      if (dn !== null && dn - tn <= 1 && tn - dn <= 14 && listEl.id === 'news-list') {
         var nw = document.createElement('span'); nw.className = 'new'; nw.textContent = 'NEW'; t.appendChild(nw);
       }
       if (lang === 'en' && it.en) {
