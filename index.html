@@ -10,7 +10,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="本町行政区">
-<meta name="build" content="20261031a">
+<meta name="build" content="20261031c">
 <script>
 /* 古いページが残っていたら、自動で最新に読み込み直す(開いた時と、アプリに戻った時) */
 (function () {
@@ -207,7 +207,15 @@
   nav a { color:#5a4600; background:var(--yellow); box-shadow:0 2px 0 var(--yellow-d); padding:5px 12px; font-size:.95rem; }
   nav a:hover, nav a:focus { background:#fff08a; }
   h2 { border-left:none; text-align:center; background:var(--yellow); color:#5a4600; border-radius:10px; padding:8px 14px; box-shadow:0 3px 0 var(--yellow-d); font-size:1.35rem; }
-  h2::before { content:"🐸 "; }
+  h2::before { content:""; display:inline-block; width:1.5em; height:1.5em; vertical-align:-0.38em; margin-right:.35em; background:center/contain no-repeat; }
+  #about h2::before { background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 32'><circle cx='12' cy='7' r='6.200' fill='%23fffbe6' opacity='.9'/><path d='M3 31 Q4 28.500 7 29.200 Q9 27.500 12 28.500 Q15 27.500 17 29.200 Q20 28.500 21 31 Z' fill='%23e58fb0'/><path d='M8.800 10.500 Q12 9.300 15.200 10.500 L18 28.800 Q12 30 6 28.800 Z' fill='%237a5a2b'/><path d='M12 12 V29 M10.200 12.800 L8.600 28.800 M13.800 12.800 L15.400 28.800' stroke='%234d3818' stroke-width='.6' fill='none'/><path d='M9.200 11.500 Q6 12 5.800 14.500' stroke='%237a5a2b' stroke-width='1.800' fill='none' stroke-linecap='round'/><circle cx='5.800' cy='15' r='1.600' fill='%239a7a42'/><path d='M14.800 11.500 Q18.500 14 17.800 19' stroke='%237a5a2b' stroke-width='1.800' fill='none' stroke-linecap='round'/><circle cx='17.800' cy='19.500' r='1.600' fill='%239a7a42'/><ellipse cx='9.500' cy='7' rx='.7' ry='1.800' fill='%238c6a35'/><ellipse cx='14.500' cy='7' rx='.7' ry='1.800' fill='%238c6a35'/><circle cx='12' cy='6.600' r='3' fill='%238c6a35'/><circle cx='12' cy='3.400' r='1.300' fill='%238c6a35'/><path d='M10.900 6.800 Q11.500 7.300 12 6.800 M12.100 6.800 Q12.600 7.300 13.200 6.800' stroke='%233b2a10' stroke-width='.5' fill='none'/></svg>"); }
+  #hall h2::before { background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='18' r='12' fill='%237fd083' stroke='%233f8f5a' stroke-width='1.2'/><ellipse cx='16' cy='7' rx='6' ry='2.6' fill='%23e9f7ff' stroke='%237bb6e0'/><circle cx='11' cy='16' r='3' fill='%23fff'/><circle cx='21' cy='16' r='3' fill='%23fff'/><circle cx='11' cy='16' r='1.3' fill='%23222'/><circle cx='21' cy='16' r='1.3' fill='%23222'/><ellipse cx='16' cy='23' rx='5' ry='2.6' fill='%23ffd45a'/></svg>"); }
+  #song h2::before { background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 9 Q22 4 27 6 Q24 12 16 9Z' fill='%234caf50'/><path d='M16 9 V3' stroke='%236b4a2b' stroke-width='1.6'/><g fill='%237b3fa0'><circle cx='10' cy='14' r='3.6'/><circle cx='17' cy='13' r='3.6'/><circle cx='23' cy='15' r='3.6'/><circle cx='13' cy='20' r='3.6'/><circle cx='20' cy='21' r='3.6'/><circle cx='16' cy='27' r='3.6'/></g><g fill='%23fff' opacity='.35'><circle cx='9' cy='13' r='1'/><circle cx='16' cy='12' r='1'/><circle cx='12' cy='19' r='1'/></g></svg>"); }
+  #photos h2::before { background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M5 14 H27 Q26 27 16 27 Q6 27 5 14Z' fill='%23c0392b'/><ellipse cx='16' cy='14' rx='11' ry='3' fill='%23fff8e0'/><path d='M7 13 Q13 9 18 12 T26 12 L26 15 Q18 17 7 15Z' fill='%237a3b12'/><path d='M12 9 Q10 6 12 3 M17 9 Q15 6 17 3 M22 9 Q20 6 22 3' stroke='%23bbb' stroke-width='1.2' fill='none' stroke-linecap='round'/></svg>"); }
+  #events h2::before { background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 32'><circle cx='12' cy='7' r='6.200' fill='%23fffbe6' opacity='.9'/><path d='M3 31 Q4 28.500 7 29.200 Q9 27.500 12 28.500 Q15 27.500 17 29.200 Q20 28.500 21 31 Z' fill='%23e58fb0'/><path d='M8.800 10.500 Q12 9.300 15.200 10.500 L18 28.800 Q12 30 6 28.800 Z' fill='%237a5a2b'/><path d='M12 12 V29 M10.200 12.800 L8.600 28.800 M13.800 12.800 L15.400 28.800' stroke='%234d3818' stroke-width='.6' fill='none'/><path d='M9.200 11.500 Q6 12 5.800 14.500' stroke='%237a5a2b' stroke-width='1.800' fill='none' stroke-linecap='round'/><circle cx='5.800' cy='15' r='1.600' fill='%239a7a42'/><path d='M14.800 11.500 Q18.500 14 17.800 19' stroke='%237a5a2b' stroke-width='1.800' fill='none' stroke-linecap='round'/><circle cx='17.800' cy='19.500' r='1.600' fill='%239a7a42'/><ellipse cx='9.500' cy='7' rx='.7' ry='1.800' fill='%238c6a35'/><ellipse cx='14.500' cy='7' rx='.7' ry='1.800' fill='%238c6a35'/><circle cx='12' cy='6.600' r='3' fill='%238c6a35'/><circle cx='12' cy='3.400' r='1.300' fill='%238c6a35'/><path d='M10.900 6.800 Q11.500 7.300 12 6.800 M12.100 6.800 Q12.600 7.300 13.200 6.800' stroke='%233b2a10' stroke-width='.5' fill='none'/></svg>"); }
+  #life h2::before { background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='18' r='12' fill='%237fd083' stroke='%233f8f5a' stroke-width='1.2'/><ellipse cx='16' cy='7' rx='6' ry='2.6' fill='%23e9f7ff' stroke='%237bb6e0'/><circle cx='11' cy='16' r='3' fill='%23fff'/><circle cx='21' cy='16' r='3' fill='%23fff'/><circle cx='11' cy='16' r='1.3' fill='%23222'/><circle cx='21' cy='16' r='1.3' fill='%23222'/><ellipse cx='16' cy='23' rx='5' ry='2.6' fill='%23ffd45a'/></svg>"); }
+  #game h2::before { background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='18' r='12' fill='%237fd083' stroke='%233f8f5a' stroke-width='1.2'/><ellipse cx='16' cy='7' rx='6' ry='2.6' fill='%23e9f7ff' stroke='%237bb6e0'/><circle cx='11' cy='16' r='3' fill='%23fff'/><circle cx='21' cy='16' r='3' fill='%23fff'/><circle cx='11' cy='16' r='1.3' fill='%23222'/><circle cx='21' cy='16' r='1.3' fill='%23222'/><ellipse cx='16' cy='23' rx='5' ry='2.6' fill='%23ffd45a'/></svg>"); }
+  #app h2::before { background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 9 Q22 4 27 6 Q24 12 16 9Z' fill='%234caf50'/><path d='M16 9 V3' stroke='%236b4a2b' stroke-width='1.6'/><g fill='%237b3fa0'><circle cx='10' cy='14' r='3.6'/><circle cx='17' cy='13' r='3.6'/><circle cx='23' cy='15' r='3.6'/><circle cx='13' cy='20' r='3.6'/><circle cx='20' cy='21' r='3.6'/><circle cx='16' cy='27' r='3.6'/></g><g fill='%23fff' opacity='.35'><circle cx='9' cy='13' r='1'/><circle cx='16' cy='12' r='1'/><circle cx='12' cy='19' r='1'/></g></svg>"); }
   .card { background:#fff; border:2px solid var(--border); border-radius:14px; box-shadow:0 3px 8px rgba(120,100,0,.07); }
   .intro { color:#2f6b2f; }
   .intro strong { color:#1d4e7a; }
@@ -253,6 +261,7 @@
   .steps .ic { flex:0 0 46px; height:46px; border-radius:50%; background:var(--yellow); display:flex; align-items:center; justify-content:center; font-size:1.4rem; font-weight:bold; box-shadow:0 2px 0 var(--yellow-d); }
   .steps small { display:block; color:var(--text-dim); font-size:.88rem; line-height:1.5; }
   .app-btn { display:block; width:max-content; max-width:92%; margin:0 auto 14px; background:#fff; color:#2b6b42; border:2px solid #3f8f5a; border-radius:999px; padding:10px 24px; font-size:1.05rem; font-weight:bold; text-decoration:none; box-shadow:0 3px 0 #2b6b42; text-align:center; }
+  .ushiku-tag { font-weight:bold; letter-spacing:.05em; margin-bottom:6px; color:#ffe35a; }
 </style>
 </head>
 <body>
@@ -427,6 +436,7 @@
 
 <footer>
   <button class="refresh-btn" type="button" onclick="location.replace(location.pathname+'?r='+Date.now())">🔄 最新の情報に更新する / Refresh</button>
+  <div class="ushiku-tag" id="ushiku-tag" data-i="tag">牛久大仏・かっぱ・うな丼・ワインのまち 牛久</div>
   <div data-i="footer1">牛久市 本町行政区</div>
   <div class="updated" id="updated"></div>
   <div class="updated" id="counter" hidden></div>
@@ -442,6 +452,7 @@
 
   // ---- 言語 (日本語 / English) ----
   var T = {
+    tag:['牛久大仏・かっぱ・うな丼・ワインのまち 牛久','Ushiku: home of the Great Buddha, kappa, unadon and wine'],
     app_btn:['📱 スマホにアイコンを置く方法','📱 Add to your phone'],
     h_app:['スマホにアイコンを置く','Use it like an app on your phone'], app_lead:['ホーム画面にアイコンを置くと、アプリのように、1回さわるだけで開けます。','Put an icon on your home screen and open this site with one tap, like an app.'], app_ios:['iPhone(Safari)の場合','iPhone (Safari)'], app_and:['Androidの場合(Chrome)','Android (Chrome)'], app_ref:['見た目が古いときは、ページの一番下の、黄色い「最新の情報に更新する」ボタンを押してください。','If the page looks out of date, press the yellow "Refresh" button at the bottom of the page.'],
     area:['茨城県 牛久市','Ushiku City, Ibaraki'],
