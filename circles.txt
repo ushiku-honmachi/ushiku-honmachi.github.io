@@ -1,0 +1,16 @@
+# サークルの書き方: 「サークル名 | 活動日時 | 場所 | ひとこと説明 | English name | English説明」を1行ずつ。
+#   日時・場所・説明・Englishは、なければ空のままでOKです(例: 卓球 | 毎週火曜 10:00〜 | | | Table tennis)。
+#   行の先頭に # を付けると、表示されなくなります。
+吹き矢 | | | | Fukiya (blowgun)
+卓球 | | | | Table tennis
+麻雀 | | | | Mahjong
+ダンス | | | | Dance
+ヨガ | | | | Yoga
+大正琴 | | | | Taishogoto
+太極拳 | | | | Tai chi
+詩吟 | | | | Shigin poetry chanting
+短歌 | | | | Tanka
+日本舞踊 | | | | Japanese dance
+バンド | | | | Band
+ニチレクボール | | | | Nichireku ball
+輪投げクラブ | | | | Ring toss club

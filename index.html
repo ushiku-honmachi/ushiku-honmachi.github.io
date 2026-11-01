@@ -10,7 +10,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="本町行政区">
-<meta name="build" content="20261031d">
+<meta name="build" content="20261101a">
 <script>
 /* 古いページが残っていたら、自動で最新に読み込み直す(開いた時と、アプリに戻った時) */
 (function () {
@@ -262,6 +262,11 @@
   .steps small { display:block; color:var(--text-dim); font-size:.88rem; line-height:1.5; }
   .app-btn { display:block; width:max-content; max-width:92%; margin:0 auto 14px; background:#fff; color:#2b6b42; border:2px solid #3f8f5a; border-radius:999px; padding:10px 24px; font-size:1.05rem; font-weight:bold; text-decoration:none; box-shadow:0 3px 0 #2b6b42; text-align:center; }
   .ushiku-tag { font-weight:bold; letter-spacing:.05em; margin-bottom:6px; color:#ffe35a; }
+  #hall h2::before, #circles h2::before { background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='18' r='12' fill='%237fd083' stroke='%233f8f5a' stroke-width='1.2'/><ellipse cx='16' cy='7' rx='6' ry='2.6' fill='%23e9f7ff' stroke='%237bb6e0'/><circle cx='11' cy='16' r='3' fill='%23fff'/><circle cx='21' cy='16' r='3' fill='%23fff'/><circle cx='11' cy='16' r='1.3' fill='%23222'/><circle cx='21' cy='16' r='1.3' fill='%23222'/><ellipse cx='16' cy='23' rx='5' ry='2.6' fill='%23ffd45a'/></svg>"); }
+  .circle-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-top:12px; }
+  .circle { background:#fffbe0; border:2px solid var(--border); border-radius:12px; padding:10px 12px; box-shadow:0 2px 0 var(--yellow-d); }
+  .circle b { display:block; font-size:1.1rem; color:var(--main-dark); line-height:1.4; }
+  .circle span { display:block; font-size:.9rem; color:var(--text-dim); line-height:1.5; margin-top:2px; }
 </style>
 </head>
 <body>
@@ -288,6 +293,7 @@
 <nav aria-label="ページ内の移動">
   <a href="#about" data-i="nav_about">本町行政区の紹介</a>
   <a href="#hall" data-i="nav_hall">区民会館・地図</a>
+  <a href="#circles" data-i="nav_circles">サークル</a>
   <a href="#song" data-i="nav_song">本町の歌</a>
   <a href="#photos" data-i="nav_photos">行事の写真</a>
   <a href="#events" data-i="nav_circ">回覧版</a>
@@ -320,6 +326,15 @@
           src="https://www.google.com/maps?q=%E6%9C%AC%E7%94%BA%E5%8C%BA%E6%B0%91%E4%BC%9A%E9%A4%A8%20%E7%89%9B%E4%B9%85%E5%B8%82&amp;output=embed"></iframe>
       </div>
       <div id="place-body" style="margin-top:12px;"></div>
+    </div>
+  </section>
+
+  <section id="circles">
+    <h2 data-i="h_circles">区民会館のサークル</h2>
+    <div class="card pad">
+      <p data-i="circles_lead">区民会館では、たくさんのサークルが、年間を通じて活動しています。新しい仲間も大歓迎です。見学・体験は、お気軽にどうぞ。</p>
+      <div class="circle-grid" id="circle-grid"></div>
+      <p class="note" data-i="circles_note">日時や、参加のしかたの詳しいことは、区のLINEか、区民会館でお問い合わせください。</p>
     </div>
   </section>
 
@@ -452,6 +467,7 @@
 
   // ---- 言語 (日本語 / English) ----
   var T = {
+    nav_circles:['サークル','Circles'], h_circles:['区民会館のサークル','Circles at the community hall'], circles_lead:['区民会館では、たくさんのサークルが、年間を通じて活動しています。新しい仲間も大歓迎です。見学・体験は、お気軽にどうぞ。','Many circles are active at the community hall all year round. New members are always welcome. Feel free to drop by and try.'], circles_note:['日時や、参加のしかたの詳しいことは、区のLINEか、区民会館でお問い合わせください。','For details on times and how to join, please ask through the district LINE or at the community hall.'],
     tag:['牛久大仏・かっぱ・うな丼・ワインのまち 牛久','Ushiku: home of the Great Buddha, kappa, unadon and wine'],
     app_btn:['📱 スマホにアイコンを置く方法','📱 Add to your phone'],
     h_app:['スマホにアイコンを置く','Use it like an app on your phone'], app_lead:['ホーム画面にアイコンを置くと、アプリのように、1回さわるだけで開けます。','Put an icon on your home screen and open this site with one tap, like an app.'], app_ios:['iPhone(Safari)の場合','iPhone (Safari)'], app_and:['Androidの場合(Chrome)','Android (Chrome)'], app_ref:['見た目が古いときは、ページの一番下の、黄色い「最新の情報に更新する」ボタンを押してください。','If the page looks out of date, press the yellow "Refresh" button at the bottom of the page.'],
@@ -855,6 +871,22 @@
   document.getElementById('cal-prev').addEventListener('click', function () { calM--; if (calM < 0) { calM = 11; calY--; } calSel = null; renderCal(); });
   document.getElementById('cal-next').addEventListener('click', function () { calM++; if (calM > 11) { calM = 0; calY++; } calSel = null; renderCal(); });
 
+
+  function renderCircles() {
+    var g = document.getElementById('circle-grid');
+    if (!g || !data.circles) return;
+    g.innerHTML = '';
+    data.circles.forEach(function (c) {
+      var d = document.createElement('div'); d.className = 'circle';
+      var b = document.createElement('b'); b.textContent = (lang === 'en' && c.en) ? c.en : c.name; d.appendChild(b);
+      [c.when, c.where, (lang === 'en' && c.descEn) ? c.descEn : c.desc].forEach(function (t) {
+        if (!t) return; var sp = document.createElement('span'); sp.textContent = t; d.appendChild(sp);
+      });
+      g.appendChild(d);
+    });
+    document.getElementById('circles').hidden = !data.circles.length;
+  }
+
   function renderRankMini() {
     var box = document.getElementById('rank-mini'), ol = document.getElementById('rank-mini-list');
     if (!data.ranks || !data.ranks.length) { box.hidden = true; return; }
@@ -885,6 +917,7 @@
     buildHero();
     songLabel();
     renderCal();
+    renderCircles();
     renderRankMini();
     if (data.visits) { var c = document.getElementById('counter'); c.textContent = tx(T.visits) + data.visits; c.hidden = false; }
   }
@@ -943,6 +976,12 @@
       return { group: p[0], file: p[1] || '', cap: p[2] || '', en: p[3] || '' };
     }).filter(function (x) { return x.file && /^[A-Za-z0-9_\-\/.]+$/.test(x.file); });
   }).catch(function () { data.photos = []; }).then(render);
+  load('circles.txt').then(function (text) {
+    data.circles = lines(text).map(function (l) {
+      var p = l.split('|').map(function (x) { return x.trim(); });
+      return { name: p[0], when: p[1] || '', where: p[2] || '', desc: p[3] || '', en: p[4] || '', descEn: p[5] || '' };
+    }).filter(function (x) { return x.name; });
+  }).catch(function () { data.circles = []; }).then(render);
   load('news.txt').then(function (t) { data.news = parseItems(t); }).catch(function () { data.newsErr = true; }).then(render);
   load('events.txt').then(function (t) { data.events = parseEvents(t); }).catch(function () { data.eventsErr = true; }).then(render);
   load('links.txt').then(function (text) {
