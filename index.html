@@ -10,7 +10,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="本町行政区">
-<meta name="build" content="20261101b">
+<meta name="build" content="20261101c">
 <script>
 /* 古いページが残っていたら、自動で最新に読み込み直す(開いた時と、アプリに戻った時) */
 (function () {
@@ -267,6 +267,8 @@
   .circle { background:#fffbe0; border:2px solid var(--border); border-radius:12px; padding:10px 12px; box-shadow:0 2px 0 var(--yellow-d); }
   .circle b { display:block; font-size:1.1rem; color:var(--main-dark); line-height:1.4; }
   .circle span { display:block; font-size:.9rem; color:var(--text-dim); line-height:1.5; margin-top:2px; }
+  .tab-off { display:none !important; }
+  nav a.active { background:#fff08a; outline:3px solid var(--main); box-shadow:0 2px 0 var(--yellow-d); }
 </style>
 </head>
 <body>
@@ -998,6 +1000,31 @@
 })();
 </script>
 
+<script>
+/* 上のボタンを押すと、そのコーナーだけが開く */
+(function () {
+  var secs = Array.prototype.slice.call(document.querySelectorAll('main > section'));
+  var ids = secs.map(function (x) { return x.id; });
+  var navs = Array.prototype.slice.call(document.querySelectorAll('nav a'));
+  function showTab(id, scroll) {
+    if (ids.indexOf(id) < 0) id = ids[0];
+    secs.forEach(function (x) { x.classList.toggle('tab-off', x.id !== id); });
+    navs.forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + id); });
+    if (scroll) { var n = document.querySelector('nav'); window.scrollTo(0, n ? n.offsetTop : 0); }
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var id = a.getAttribute('href').slice(1);
+    if (ids.indexOf(id) < 0) return;
+    e.preventDefault();
+    try { history.pushState(null, '', '#' + id); } catch (x) {}
+    showTab(id, true);
+  });
+  window.addEventListener('popstate', function () { showTab(location.hash.slice(1), false); });
+  showTab(location.hash.slice(1), false);
+})();
+</script>
 <script data-goatcounter="https://ushiku-honmachi.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>
