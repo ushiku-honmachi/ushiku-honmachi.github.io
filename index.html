@@ -5,12 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>牛久市 本町行政区ホームページ(実験的な運用)</title>
 <meta name="description" content="牛久市 本町行政区のホームページです。お知らせ、行事予定、ごみ出し・防災情報などを掲載しています。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="本町行政区ホームページ">
+<meta property="og:title" content="本町行政区 ホームページ">
+<meta property="og:description" content="牛久市 本町行政区の、お知らせ・行事予定・ごみ出し・防災の情報です。">
+<meta property="og:url" content="https://ushiku-honmachi.github.io/">
+<meta property="og:image" content="https://ushiku-honmachi.github.io/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#2f5d50">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="本町行政区">
-<meta name="build" content="20261101d">
+<meta name="build" content="20261101f">
 <script>
 /* 古いページが残っていたら、自動で最新に読み込み直す(開いた時と、アプリに戻った時) */
 (function () {
@@ -269,6 +276,9 @@
   .circle span { display:block; font-size:.9rem; color:var(--text-dim); line-height:1.5; margin-top:2px; }
   .tab-off { display:none !important; }
   nav a.active { background:#fff08a; outline:3px solid var(--main); box-shadow:0 2px 0 var(--yellow-d); }
+  .line-banner { background:#fff3cd; border:3px solid #e5322d; border-radius:12px; margin:10px 12px; padding:12px 14px; font-size:1rem; line-height:1.7; color:#5a1a00; }
+  .line-banner b { color:#c0170f; }
+  .line-banner .chrome-btn { display:inline-block; margin-top:8px; background:#e5322d; color:#fff; text-decoration:none; font-weight:bold; border-radius:999px; padding:10px 22px; }
 </style>
 </head>
 <body>
@@ -292,6 +302,13 @@
   <a class="app-btn" href="#app" data-i="app_btn">📱 スマホにアイコンを置く方法</a>
 </header>
 
+<div class="line-banner" id="line-banner" hidden>
+  <b>📣 いま、LINEの中で開いています。</b><br>
+  このままだと、ホーム画面にアイコンを置けません。ふつうのブラウザで開き直してください。<br>
+  <span id="line-and">【Android】右上の「︙」(点が3つ)を押して、<b>「他のアプリで開く」</b>か<b>「ブラウザで開く」</b>などを選びます。</span>
+  <span id="line-ios">【iPhone】右下の「…」か共有マークを押して、<b>「Safariで開く」</b>を選びます。</span>
+  <a class="chrome-btn" id="chrome-btn" href="intent://ushiku-honmachi.github.io/#Intent;scheme=https;package=com.android.chrome;end" hidden>Chromeで開く</a>
+</div>
 <nav aria-label="ページ内の移動">
   <a href="#about" data-i="nav_about">本町行政区の紹介</a>
   <a href="#hall" data-i="nav_hall">区民会館・地図</a>
@@ -439,7 +456,7 @@
       <details class="lyrics-box">
         <summary data-i="app_and">Androidの場合(Chrome)</summary>
         <ol class="steps">
-          <li><span class="ic">🧭</span><div><b>Chrome</b>で、このページを開きます。</div></li>
+          <li><span class="ic">🧭</span><div><b>Chrome</b>で、このページを開きます。<small>LINEのリンクから開いたときは、画面の右上の「︙」を押して、「他のアプリで開く」か「ブラウザで開く」を選びます。(上に、赤い枠の案内も出ます)</small></div></li>
           <li><span class="ic">⋮</span><div>右上の<b>「︙」</b>(点が3つ)を押します。</div></li>
           <li><span class="ic">➕</span><div><b>「ホーム画面に追加」</b>を押して、そのあと<b>「追加」</b>を押します。</div></li>
         </ol>
@@ -1023,6 +1040,18 @@
   });
   window.addEventListener('popstate', function () { showTab(location.hash.slice(1), false); });
   showTab(location.hash.slice(1), false);
+})();
+</script>
+<script>
+/* LINEの中で開いたときの案内 */
+(function () {
+  var ua = navigator.userAgent || '';
+  if (!/Line\//i.test(ua)) return;
+  var and = /Android/i.test(ua);
+  document.getElementById('line-banner').hidden = false;
+  document.getElementById('line-and').style.display = and ? '' : 'none';
+  document.getElementById('line-ios').style.display = and ? 'none' : '';
+  document.getElementById('chrome-btn').hidden = !and;
 })();
 </script>
 <script data-goatcounter="https://ushiku-honmachi.goatcounter.com/count"
