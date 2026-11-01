@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="本町行政区">
-<meta name="build" content="20261101f">
+<meta name="build" content="20261101g">
 <script>
 /* 古いページが残っていたら、自動で最新に読み込み直す(開いた時と、アプリに戻った時) */
 (function () {
@@ -279,6 +279,9 @@
   .line-banner { background:#fff3cd; border:3px solid #e5322d; border-radius:12px; margin:10px 12px; padding:12px 14px; font-size:1rem; line-height:1.7; color:#5a1a00; }
   .line-banner b { color:#c0170f; }
   .line-banner .chrome-btn { display:inline-block; margin-top:8px; background:#e5322d; color:#fff; text-decoration:none; font-weight:bold; border-radius:999px; padding:10px 22px; }
+  .tap-hint { text-align:center; font-size:1.05rem; font-weight:bold; color:#c0170f; background:#fff; margin:0; padding:10px 8px 6px; border-top:3px solid var(--yellow); }
+  .tap-hint span { display:inline-block; animation:tapbounce 1.4s ease-in-out infinite; }
+  @keyframes tapbounce { 50% { transform:translateY(4px); } }
 </style>
 </head>
 <body>
@@ -309,6 +312,7 @@
   <span id="line-ios">【iPhone】右下の「…」か共有マークを押して、<b>「Safariで開く」</b>を選びます。</span>
   <a class="chrome-btn" id="chrome-btn" href="intent://ushiku-honmachi.github.io/#Intent;scheme=https;package=com.android.chrome;end" hidden>Chromeで開く</a>
 </div>
+<p class="tap-hint"><span data-i="tap_hint">👇 見たい情報の、ボタンを押してください</span></p>
 <nav aria-label="ページ内の移動">
   <a href="#about" data-i="nav_about">本町行政区の紹介</a>
   <a href="#hall" data-i="nav_hall">区民会館・地図</a>
@@ -486,6 +490,7 @@
 
   // ---- 言語 (日本語 / English) ----
   var T = {
+    tap_hint:['👇 見たい情報の、ボタンを押してください','👇 Tap a button to see what you need'],
     nav_circles:['サークル','Circles'], h_circles:['区民会館のサークル','Circles at the community hall'], circles_lead:['区民会館では、たくさんのサークルが、年間を通じて活動しています。新しい仲間も大歓迎です。見学・体験は、お気軽にどうぞ。','Many circles are active at the community hall all year round. New members are always welcome. Feel free to drop by and try.'], circles_note:['日時や、参加のしかたの詳しいことは、区のLINEか、区民会館でお問い合わせください。','For details on times and how to join, please ask through the district LINE or at the community hall.'],
     tag:['牛久大仏・かっぱ・うな丼・ワインのまち 牛久','Ushiku: home of the Great Buddha, kappa, unadon and wine'],
     app_btn:['📱 スマホにアイコンを置く方法','📱 Add to your phone'],
