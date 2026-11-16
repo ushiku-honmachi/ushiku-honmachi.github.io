@@ -576,8 +576,9 @@
   function parseItems(text) {
     return lines(text).map(function (l) {
       var p = l.split('|').map(function (x) { return x.trim(); });
-      if (p.length === 1) return { date: '', text: p[0], en: '' };
-      return { date: p[0], text: p[1], en: p.slice(2).join(' | ') };
+      if (p.length === 1) return { date: '', text: p[0], en: '', until: '' };
+      var dm = p[0].split(/[~〜～]/);
+      return { date: dm[0].trim(), until: (dm[1] || '').trim(), text: p[1], en: p.slice(2).join(' | ') };
     });
   }
   function addLinkedText(el, text) {
@@ -1006,7 +1007,7 @@
       return { name: p[0], when: p[1] || '', where: p[2] || '', desc: p[3] || '', en: p[4] || '', descEn: p[5] || '' };
     }).filter(function (x) { return x.name; });
   }).catch(function () { data.circles = []; }).then(render);
-  load('news.txt').then(function (t) { data.news = parseItems(t); }).catch(function () { data.newsErr = true; }).then(render);
+  load('news.txt').then(function (t) { var td = todayStr(); data.news = parseItems(t).filter(function (it) { return !it.until || it.until >= td; }); }).catch(function () { data.newsErr = true; }).then(render);
   load('events.txt').then(function (t) { data.events = parseEvents(t); }).catch(function () { data.eventsErr = true; }).then(render);
   load('links.txt').then(function (text) {
     var groups = {};
