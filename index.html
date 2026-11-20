@@ -955,7 +955,7 @@
     data.circles.forEach(function (c) {
       var d = document.createElement('div'); d.className = 'circle';
       var b = document.createElement('b'); b.textContent = (lang === 'en' && c.en) ? c.en : c.name; d.appendChild(b);
-      [c.where, (lang === 'en' && c.descEn) ? c.descEn : c.desc].forEach(function (t) {
+      [c.when, c.where, (lang === 'en' && c.descEn) ? c.descEn : c.desc].forEach(function (t) {
         if (!t) return; var sp = document.createElement('span'); sp.textContent = t; d.appendChild(sp);
       });
       g.appendChild(d);
