@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="本町行政区">
-<meta name="build" content="20261121a">
+<meta name="build" content="20261121b">
 <script>
 /* 古いページが残っていたら、自動で最新に読み込み直す(開いた時と、アプリに戻った時) */
 (function () {
@@ -377,8 +377,8 @@
     <h2 data-i="h_circles">区民会館のサークル</h2>
     <div class="card pad">
       <p data-i="circles_lead">区民会館では、たくさんのサークルが、年間を通じて活動しています。新しい仲間も大歓迎です。見学・体験は、お気軽にどうぞ。</p>
-      <div class="news-photos" id="circles-list" style="margin-top:12px;"></div>
       <div class="circle-grid" id="circle-grid"></div>
+      <div class="news-photos" id="circles-list" style="margin-top:18px;"></div>
       <div class="news-photos" id="circles-pdf" style="margin-top:18px;"></div>
       <p class="note" data-i="circles_note">日時や、参加のしかたの詳しいことは、区のLINEか、区民会館でお問い合わせください。</p>
     </div>
@@ -954,7 +954,7 @@
   function renderCircles() {
     var g = document.getElementById('circle-grid');
     if (!g || !data.circles) return;
-    g.innerHTML = ''; g.hidden = (lang !== 'en');
+    g.innerHTML = ''; 
     data.circles.forEach(function (c) {
       var d = document.createElement('div'); d.className = 'circle';
       var b = document.createElement('b'); b.textContent = (lang === 'en' && c.en) ? c.en : c.name; d.appendChild(b);
