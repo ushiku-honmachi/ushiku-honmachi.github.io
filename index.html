@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="本町行政区">
-<meta name="build" content="20261121b">
+<meta name="build" content="20261121c">
 <script>
 /* 古いページが残っていたら、自動で最新に読み込み直す(開いた時と、アプリに戻った時) */
 (function () {
@@ -132,6 +132,7 @@
     font-weight: bold;
   }
   .list .text { flex: 1 1 240px; overflow-wrap: anywhere; }
+  .list li.ended .date, .list li.ended .text { color: var(--text-dim); text-decoration: line-through; font-weight: normal; }
   .list li.past .date, .list li.past .text { color: var(--text-dim); }
   .list li.past .date { font-weight: normal; }
   .empty { color: var(--text-dim); }
@@ -719,6 +720,7 @@
       var li = document.createElement('li');
       if (limit && n >= limit) li.hidden = true;
       if (dim && isPast(it.date)) li.className = 'past';
+      if (it.ended) li.className = 'ended';
       if (it.date) {
         var d = document.createElement('span');
         d.className = 'date';
@@ -728,7 +730,7 @@
       var t = document.createElement('span');
       t.className = 'text';
       var dn = dayNum(it.date), tn = todayNum();
-      if (dn !== null && dn - tn <= 1 && tn - dn <= 14 && listEl.id === 'news-list') {
+      if (!it.ended && dn !== null && dn - tn <= 1 && tn - dn <= 14 && listEl.id === 'news-list') {
         var nw = document.createElement('span'); nw.className = 'new'; nw.textContent = 'NEW'; t.appendChild(nw);
       }
       if (lang === 'en' && it.en) {
@@ -1061,7 +1063,14 @@
       return { name: p[0], when: p[1] || '', where: p[2] || '', desc: p[3] || '', en: p[4] || '', descEn: p[5] || '' };
     }).filter(function (x) { return x.name; });
   }).catch(function () { data.circles = []; }).then(render);
-  load('news.txt').then(function (t) { var td = todayStr(); data.news = parseItems(t).filter(function (it) { return !it.until || it.until >= td; }); }).catch(function () { data.newsErr = true; }).then(render);
+  load('news.txt').then(function (t) { var td = todayStr(); var ym = td.slice(0, 7), pin = [], act = [], end = [];
+      parseItems(t).forEach(function (it) {
+        var u = it.until ? it.until.replace(/(\d{4})-(\d{1,2})-(\d{1,2})/, function (a, y, m, d) { return y + '-' + ('0' + m).slice(-2) + '-' + ('0' + d).slice(-2); }) : '';
+        if (!u) pin.push(it);
+        else if (u >= td) act.push(it);
+        else if (u.slice(0, 7) === ym) { it.ended = true; end.push(it); }
+      });
+      data.news = pin.concat(act, end); }).catch(function () { data.newsErr = true; }).then(render);
   load('events.txt').then(function (t) { data.events = parseEvents(t); }).catch(function () { data.eventsErr = true; }).then(render);
   load('links.txt').then(function (text) {
     var groups = {};

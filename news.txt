@@ -1,7 +1,7 @@
 # お知らせの書き方: 「日付 | 内容」を1行ずつ。新しいものを一番上に足してください。
 # 日付は 2026-10-08 のように、半角で書きます。
 # 【終わったら自動で消す】日付のあとに「〜終了日」を足すと、その日が過ぎたら、お知らせから自動で消えます。(例: 2026-11-16〜2027-01-18 | 内容)
-#   終了日を書かなければ、ずっと表示されます。消えたお知らせも、このファイルには残ります。
+#   終了日を書かなければ、ずっと一番上に表示されます(「ホームページを開設しました」などに)。終了日が過ぎると、その月の終わりまでは「横線」を引いて一番下に残り、翌月になったら自動で消えます。消えたお知らせも、このファイルには残ります。
 # 回覧板のPDFなどのアドレスは、前後に半角スペースを入れて、そのまま書けます。
 # 英語版を出すときは、「日付 | 日本語 | English」のように、最後に英語を足します(なくてもOK)。
 2026-11-16〜2027-01-18 | 【ゴルフ大会のご案内】二小学区地区(本町・田宮・つつじが丘・第2つつじが丘・エスカードビル・神谷二区)の、第2回 親睦ゴルフ大会です。2027年1月18日(月)、江戸崎カントリークラブ(南コース、OUT・IN 各8:42 同時スタート)。参加費3,000円(プレー後に表彰・懇親会)、プレー費8,750円(税込・乗用セルフ。食事代などは個人)。募集6組(24名)で、定員になり次第締め切ります。申込締切は11月30日(月)です。案内と申込書(PDF)は、こちらです: https://ushiku-honmachi.github.io/golf-2027.pdf  | [Golf tournament] The 2nd friendly golf tournament of the Ni-shogaku (2nd Elementary School) area districts, including Honmachi. Monday, Jan 18, 2027, Edosaki Country Club (South Course, tee-off at 8:42 for both OUT and IN). Entry fee 3,000 yen (awards and social gathering after play); green fee 8,750 yen incl. tax (riding, self-play; meals etc. paid individually). 6 groups (24 players), closing when full. Application deadline: Monday, Nov 30. The notice and entry form (PDF): https://ushiku-honmachi.github.io/golf-2027.pdf
