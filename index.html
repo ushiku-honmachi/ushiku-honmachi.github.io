@@ -282,6 +282,7 @@
   .ushiku-tag { font-weight:bold; letter-spacing:.05em; margin-bottom:6px; color:#ffe35a; }
   #hall h2::before, #circles h2::before { background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='18' r='12' fill='%237fd083' stroke='%233f8f5a' stroke-width='1.2'/><ellipse cx='16' cy='7' rx='6' ry='2.6' fill='%23e9f7ff' stroke='%237bb6e0'/><circle cx='11' cy='16' r='3' fill='%23fff'/><circle cx='21' cy='16' r='3' fill='%23fff'/><circle cx='11' cy='16' r='1.3' fill='%23222'/><circle cx='21' cy='16' r='1.3' fill='%23222'/><ellipse cx='16' cy='23' rx='5' ry='2.6' fill='%23ffd45a'/></svg>"); }
   .circle-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-top:12px; }
+  .circle-grid[hidden] { display:none; }
   .circle { background:#fffbe0; border:2px solid var(--border); border-radius:12px; padding:10px 12px; box-shadow:0 2px 0 var(--yellow-d); }
   .circle b { display:block; font-size:1.1rem; color:var(--main-dark); line-height:1.4; }
   .circle span { display:block; font-size:.9rem; color:var(--text-dim); line-height:1.5; margin-top:2px; }
@@ -376,6 +377,7 @@
     <h2 data-i="h_circles">区民会館のサークル</h2>
     <div class="card pad">
       <p data-i="circles_lead">区民会館では、たくさんのサークルが、年間を通じて活動しています。新しい仲間も大歓迎です。見学・体験は、お気軽にどうぞ。</p>
+      <div class="news-photos" id="circles-list" style="margin-top:12px;"></div>
       <div class="circle-grid" id="circle-grid"></div>
       <div class="news-photos" id="circles-pdf" style="margin-top:18px;"></div>
       <p class="note" data-i="circles_note">日時や、参加のしかたの詳しいことは、区のLINEか、区民会館でお問い合わせください。</p>
@@ -838,14 +840,15 @@
     document.getElementById('photos-note').hidden = !!document.querySelectorAll('#photos-body figure, #news-photos figure').length;
   }
   function renderPhotos() {
-    var hp = document.getElementById('hall-photos'), pb = document.getElementById('photos-body'), nb = document.getElementById('news-photos'), ep = document.getElementById('events-pdf'), cp = document.getElementById('circles-pdf');
-    hp.innerHTML = ''; pb.innerHTML = ''; nb.innerHTML = ''; ep.innerHTML = ''; cp.innerHTML = '';
+    var hp = document.getElementById('hall-photos'), pb = document.getElementById('photos-body'), nb = document.getElementById('news-photos'), ep = document.getElementById('events-pdf'), cp = document.getElementById('circles-pdf'), cl = document.getElementById('circles-list');
+    hp.innerHTML = ''; pb.innerHTML = ''; nb.innerHTML = ''; ep.innerHTML = ''; cp.innerHTML = ''; cl.innerHTML = '';
     (data.photos || []).forEach(function (p) {
       if (p.group === '区民会館') hp.appendChild(makeFigure(p));
       else if (p.group === '行事') pb.appendChild(makeFigure(p));
       else if (p.group === '写真ニュース') nb.appendChild(makeNews(p));
       else if (p.group === '行事予定') ep.appendChild(makeNews(p));
       else if (p.group === 'サークル予定') cp.appendChild(makeNews(p));
+      else if (p.group === 'サークル一覧') cl.appendChild(makeNews(p));
     });
     renderPhotoNotes();
   }
@@ -951,11 +954,11 @@
   function renderCircles() {
     var g = document.getElementById('circle-grid');
     if (!g || !data.circles) return;
-    g.innerHTML = '';
+    g.innerHTML = ''; g.hidden = (lang !== 'en');
     data.circles.forEach(function (c) {
       var d = document.createElement('div'); d.className = 'circle';
       var b = document.createElement('b'); b.textContent = (lang === 'en' && c.en) ? c.en : c.name; d.appendChild(b);
-      [c.when, c.where, (lang === 'en' && c.descEn) ? c.descEn : c.desc].forEach(function (t) {
+      [c.where, (lang === 'en' && c.descEn) ? c.descEn : c.desc].forEach(function (t) {
         if (!t) return; var sp = document.createElement('span'); sp.textContent = t; d.appendChild(sp);
       });
       g.appendChild(d);
