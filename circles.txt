@@ -1,17 +1,31 @@
 # サークルの書き方: 「サークル名 | 活動日時 | 場所 | ひとこと説明 | English name | English説明」を1行ずつ。
 #   日時・場所・説明・Englishは、なければ空のままでOKです(例: 卓球 | 毎週火曜 10:00〜 | | | Table tennis)。
 #   行の先頭に # を付けると、表示されなくなります。
-吹き矢 | | | | Fukiya (blowgun)
-卓球 | | | | Table tennis
-麻雀 | | | | Mahjong
-ダンス | | | | Dance
-ヨガ | | | | Yoga
-大正琴 | | | | Taishogoto
-太極拳 | | | | Tai chi
-詩吟 | | | | Shigin poetry chanting
-短歌 | | | | Tanka
-日本舞踊 | | | | Japanese dance
-バンド | | | | Band
-ニチレクボール | | | | Nichireku ball
-輪投げクラブ | | | | Ring toss club
-カラオケクラブ | | | | Karaoke club
+# 活動日時は、令和8年10月の「本町サークル活動予定」にもとづきます。変わったときは、この行を書き換えてください。
+飛翔(吹き矢) | 毎週日曜 午前 | 区民会館 ホール |  | Hisho (Fukiya blowgun)
+麻雀(健康麻雀) | 毎週金曜 午後 | 区民会館 ホール |  | Mahjong
+麻雀Ⅱ(健康麻雀) | 毎週日曜 午後 | 区民会館 ホール |  | Mahjong II
+卓球 | 毎週金曜 午前 | 区民会館 ホール |  | Table tennis
+卓球Ⅱ | 毎週月曜 午後 | 区民会館 ホール |  | Table tennis II
+かっぱつ体操 | 毎週月曜 午後 | 区民会館 ホール |  | Kappatsu exercise
+ラウンド本町(ダンス) | 毎週月曜 午前 | 区民会館 ホール |  | Round Honmachi (dance)
+アシュタンガヨガ | 月曜 午前(不定期の練習会) | 区民会館 ホール |  | Ashtanga yoga
+いきいきヨガ | 毎週火曜 午前 | 区民会館 ホール |  | Ikiiki yoga
+輪投げクラブ | 毎週火曜 午後 | 区民会館 ホール |  | Ring toss club
+ニチレクボール | 毎週水曜 午前 | 区民会館 ホール |  | Nichireku ball
+カラオケ | 毎週水曜 午後 | 区民会館 ホール |  | Karaoke
+DB(牛久ブリッジクラブ) | 水曜 午後(年6回) | 区民会館 ホール | ブリッジ(トランプ) | DB (Ushiku Bridge Club)
+大正琴 | 第2・4水曜 午後 | 区民会館 メディアルーム |  | Taishogoto
+花裕々フラワーアレンジメント | 第3水曜 午後 | 区民会館 メディアルーム |  | Flower arrangement
+太極拳 | 毎週木曜 午前 | 区民会館 ホール |  | Tai chi
+コールさくら(コーラス) | 毎週木曜 午後 | 区民会館 ホール |  | Chor Sakura (chorus)
+うしくりとむ短歌の会 | 第1木曜 午後 | 区民会館 メディアルーム |  | Ushikuritomu tanka group
+日本舞踊 | 第1土曜 午前 | 区民会館 ホール |  | Japanese dance
+詩吟の会 | 第3・4土曜 午前 | 区民会館 ホール |  | Shigin poetry chanting
+森山ダンススクール | 不定期の土曜 午後 | 区民会館 ホール |  | Moriyama dance school
+本町シニアクラブ | 月1回 土曜 午後 | 区民会館 ホール | シニア会 | Honmachi senior club
+咲名 | 不定期の土曜 午後 | 区民会館 メディアルーム |  | Sakina
+牛久水彩クラブ | 不定期の土曜 午後 | 区民会館 メディアルーム |  | Ushiku watercolor club
+ユー楽団 | 第2・4日曜 午後 | 区民会館 メディアルーム |  | Yu band
+エンジョイウクレレ | 月2回 月曜 午後 | 区民会館 メディアルーム |  | Enjoy ukulele
+ロケラニ(焼き物) |  |  |  | Rokelani (pottery)

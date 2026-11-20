@@ -236,6 +236,14 @@
   .lyrics { background:#fff9d8; }
   footer { background:#3f8f5a; }
   @media (max-width:600px){ header h1{font-size:1.55rem;letter-spacing:.02em;} nav{position:static;} section{scroll-margin-top:12px;} }
+  .rollbox { position:relative; height:240px; border-radius:14px; overflow:hidden; margin:0 0 12px; background:#d9c7d0 url(top-sakura.jpg) center/cover; border:3px solid #fff; box-shadow:0 3px 10px rgba(0,0,0,.2); }
+  .rollbox::before { content:""; position:absolute; inset:0; background:rgba(40,15,30,.48); }
+  .rollin { position:absolute; left:18px; right:18px; top:100%; color:#fff; font-weight:700; line-height:1.95; text-align:center; text-shadow:0 1px 3px rgba(0,0,0,.7); animation:rollup 48s linear infinite; }
+  .rollin p { margin:0 0 .9em; }
+  .rollbox.paused .rollin { animation-play-state:paused; }
+  @keyframes rollup { to { transform:translateY(calc(-100% - 240px)); } }
+  .roll-btn { position:absolute; right:8px; bottom:8px; z-index:2; border:0; border-radius:999px; background:rgba(255,255,255,.92); color:#2b6b42; font:inherit; font-size:.85rem; font-weight:700; padding:6px 14px; cursor:pointer; }
+  @media (prefers-reduced-motion: reduce) { .rollin { animation:none; position:static; padding:16px 0; } .rollbox { height:auto; } .roll-btn { display:none; } }
   .hero-show { position:relative; width:100%; max-width:820px; margin:10px auto 0; aspect-ratio:16/9; overflow:hidden; border-radius:14px; border:3px solid #fff; box-shadow:0 3px 10px rgba(0,0,0,.2); background:#dfeeff; }
   .hero-show img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1.2s ease; }
   .hero-show img.on { opacity:1; }
@@ -328,6 +336,15 @@
 
   <section id="about">
     <h2 data-i="h_about">本町行政区の紹介</h2>
+    <div class="rollbox" id="rollbox" aria-hidden="true">
+      <div class="rollin">
+        <p data-i="intro1">「本町行政区」は茨城県牛久市の行政区（町会）のひとつで、ＪＲ常磐線牛久駅の西口付近の約1キロメートル四方の地域にあり、約４５０世帯で構成されています。</p>
+        <p data-i="intro2">地域環境は駅近くにマンションと商業施設、その周りに戸建て住宅が密集する落ち着いた街です。</p>
+        <p data-i="intro3">本町行政区は区内の「防犯パトロール」「街頭清掃活動」「防災訓練」など地域安全活動の他、親睦活動として「夏休みこども祭り」「地域合同体育祭」「バーベキュー大会」「餅つき大会」などを実施しています。</p>
+        <p data-i="intro4">また区民会館においてサークル活動「吹き矢」「卓球」「麻雀」「ダンス」「ヨガ」「大正琴」「太極拳」「詩吟」「短歌」「日本舞踊」「バンド」「ニチレクボール」「輪投げクラブ」「カラオケクラブ」など２０余のサークル団体が年間を通じて活動しています。</p>
+      </div>
+      <button type="button" class="roll-btn" id="roll-btn" aria-hidden="false">止める</button>
+    </div>
     <div class="card pad intro">
       <p data-i="intro1">「本町行政区」は茨城県牛久市の行政区（町会）のひとつで、ＪＲ常磐線牛久駅の西口付近の約1キロメートル四方の地域にあり、約４５０世帯で構成されています。</p>
       <p data-i="intro2">地域環境は駅近くにマンションと商業施設、その周りに戸建て住宅が密集する落ち着いた街です。</p>
@@ -807,6 +824,14 @@
     renderPhotoNotes();
   }
 
+
+  (function () {
+    var rb = document.getElementById('rollbox'), btn = document.getElementById('roll-btn');
+    if (!rb || !btn) return;
+    function lab() { var en = (document.documentElement.lang || '').indexOf('en') === 0 || (typeof lang !== 'undefined' && lang === 'en'); btn.textContent = rb.classList.contains('paused') ? (en ? 'Play' : '再開') : (en ? 'Pause' : '止める'); }
+    btn.addEventListener('click', function () { rb.classList.toggle('paused'); lab(); });
+    lab();
+  })();
 
   var heroBuilt = false;
   function buildHero() {
