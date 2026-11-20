@@ -377,6 +377,7 @@
     <div class="card pad">
       <p data-i="circles_lead">区民会館では、たくさんのサークルが、年間を通じて活動しています。新しい仲間も大歓迎です。見学・体験は、お気軽にどうぞ。</p>
       <div class="circle-grid" id="circle-grid"></div>
+      <div class="news-photos" id="circles-pdf" style="margin-top:18px;"></div>
       <p class="note" data-i="circles_note">日時や、参加のしかたの詳しいことは、区のLINEか、区民会館でお問い合わせください。</p>
     </div>
   </section>
@@ -837,13 +838,14 @@
     document.getElementById('photos-note').hidden = !!document.querySelectorAll('#photos-body figure, #news-photos figure').length;
   }
   function renderPhotos() {
-    var hp = document.getElementById('hall-photos'), pb = document.getElementById('photos-body'), nb = document.getElementById('news-photos'), ep = document.getElementById('events-pdf');
-    hp.innerHTML = ''; pb.innerHTML = ''; nb.innerHTML = ''; ep.innerHTML = '';
+    var hp = document.getElementById('hall-photos'), pb = document.getElementById('photos-body'), nb = document.getElementById('news-photos'), ep = document.getElementById('events-pdf'), cp = document.getElementById('circles-pdf');
+    hp.innerHTML = ''; pb.innerHTML = ''; nb.innerHTML = ''; ep.innerHTML = ''; cp.innerHTML = '';
     (data.photos || []).forEach(function (p) {
       if (p.group === '区民会館') hp.appendChild(makeFigure(p));
       else if (p.group === '行事') pb.appendChild(makeFigure(p));
       else if (p.group === '写真ニュース') nb.appendChild(makeNews(p));
       else if (p.group === '行事予定') ep.appendChild(makeNews(p));
+      else if (p.group === 'サークル予定') cp.appendChild(makeNews(p));
     });
     renderPhotoNotes();
   }
@@ -953,7 +955,7 @@
     data.circles.forEach(function (c) {
       var d = document.createElement('div'); d.className = 'circle';
       var b = document.createElement('b'); b.textContent = (lang === 'en' && c.en) ? c.en : c.name; d.appendChild(b);
-      [c.when, c.where, (lang === 'en' && c.descEn) ? c.descEn : c.desc].forEach(function (t) {
+      [c.where, (lang === 'en' && c.descEn) ? c.descEn : c.desc].forEach(function (t) {
         if (!t) return; var sp = document.createElement('span'); sp.textContent = t; d.appendChild(sp);
       });
       g.appendChild(d);
