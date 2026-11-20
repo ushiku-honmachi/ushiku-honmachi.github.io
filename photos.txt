@@ -1,5 +1,5 @@
 # 写真の載せ方: 「グループ | ファイル名 | 説明 | English(なくてもOK)」を1行ずつ。
-# グループは、次の2つから選びます: 区民会館 (「区民会館の写真・地図」に出る) / 行事 (「行事の写真」に出る)
+# グループは、次から選びます: 写真ニュース (「行事結果」の一番上に大きく出る。同じ名前のPDFが、タップで開く) /  区民会館 (「区民会館の写真・地図」に出る) / 行事 (「行事の写真」に出る)
 # 写真のファイルは、このファイル(photos.txt)と同じ場所にアップロードしておきます。
 # ファイル名は、半角の英数字だけにしてください。例: kumin-kaikan.jpg  bbq-2025.jpg
 # 写真を1枚ずつ小さく(横1200ピクセルほど)しておくと、スマホでも速く開きます。
@@ -22,3 +22,5 @@
 トップ | top-sakura.jpg | 牛久沼のほとりの桜 | Cherry blossoms by Lake Ushiku-numa
 トップ | top-ushiku-numa.jpg | 牛久沼の夕暮れ(かっぱの像) | Sunset over Lake Ushiku-numa (kappa statue)
 トップ | top-chateau.jpg | 牛久シャトー | Ushiku Chateau
+写真ニュース | photo-news-2026-10.jpg | 本町写真ニュース(令和8年10月:運動会・BBQ大会) | Honmachi Photo News (Oct 2026: Sports Day and BBQ)
+行事予定 | events-2026-11.jpg | 行事予定(令和8年11月〜令和9年1月)　最新の予定は、回覧板もご覧ください | Event schedule (Nov 2026 – Jan 2027)
